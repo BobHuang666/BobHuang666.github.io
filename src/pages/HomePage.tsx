@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import { Menu, X, Github, Mail, Code2, Award, BookOpen, Database, Globe, Shield, Trophy, Users, Brain } from 'lucide-react';
+import { Github, Mail, Code2, Award, BookOpen, Database, Globe, Shield, Trophy, Users, Brain } from 'lucide-react';
 
 function HomePage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const projects = [
     {
@@ -129,48 +127,8 @@ function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="bg-white shadow-lg fixed w-full z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Code2 className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-xl font-bold text-gray-800">BobHuang</span>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#about" className="text-gray-600 hover:text-indigo-600 transition-colors">角色档案</a>
-              <a href="#projects" className="text-gray-600 hover:text-indigo-600 transition-colors">任务中心</a>
-              <a href="#blog" className="text-gray-600 hover:text-indigo-600 transition-colors">游戏攻略</a>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden flex items-center">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-600 hover:text-gray-900 focus:outline-none"
-              >
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <a href="#about" className="block px-3 py-2 text-gray-600 hover:text-indigo-600">角色档案</a>
-              <a href="#projects" className="block px-3 py-2 text-gray-600 hover:text-indigo-600">任务中心</a>
-              <a href="#blog" className="block px-3 py-2 text-gray-600 hover:text-indigo-600">游戏攻略</a>
-            </div>
-          </div>
-        )}
-      </nav>
-
       {/* Hero Section */}
-      <section className="pt-20 pb-12 md:pt-32 md:pb-20 bg-gradient-to-r from-indigo-500 to-purple-600">
+      <section className="pt-4 pb-12 md:pt-16 md:pb-20 bg-gradient-to-r from-indigo-500 to-purple-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
             Bob Huang
@@ -181,6 +139,9 @@ function HomePage() {
           <div className="flex justify-center space-x-4">
             <a href="#projects" className="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
               查看项目
+            </a>
+            <a href="/profile" className="border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-indigo-600 transition-colors">
+              个人介绍
             </a>
             <a href="#contact" className="border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-indigo-600 transition-colors">
               CALL ME
