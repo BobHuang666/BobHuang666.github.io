@@ -1,0 +1,3 @@
+# commit 前已用 lint-staged 增量检查
+# push 前再做一次 typecheck，避免推送类型错误
+npm run typecheck

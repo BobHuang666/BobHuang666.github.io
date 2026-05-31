@@ -70,9 +70,6 @@ function ProfilePage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <InfoItem icon={Mail} text={profile.email || '邮箱待补充'} />
                 <InfoItem icon={MapPin} text={profile.location} />
-                {profile.education.studentId && (
-                  <InfoItem icon={CreditCard} text={`学号 ${profile.education.studentId}`} />
-                )}
                 <InfoItem icon={Calendar} text={profile.education.period} />
               </div>
             </div>

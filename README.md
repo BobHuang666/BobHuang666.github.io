@@ -42,7 +42,7 @@
 ## 本地开发
 
 ```bash
-# 安装依赖
+# 安装依赖（首次会自动初始化 husky 钩子）
 npm install
 
 # 启动开发服务器（默认 http://localhost:5173）
@@ -54,11 +54,14 @@ npm run build
 # 预览构建结果
 npm run preview
 
-# 部署到 gh-pages 分支
-npm run deploy
-
 # 代码检查
-npm run lint
+npm run lint            # 仅检查
+npm run lint:fix        # 检查并自动修复
+npm run typecheck       # TypeScript 类型检查
+npm run check           # typecheck + lint 一把梭
+
+# 打包体积报告（需先 build）
+npm run size
 ```
 
 > Windows PowerShell 用户可直接复制运行，命令是跨平台的。
@@ -184,11 +187,63 @@ src/
 
 ## 部署 GitHub Pages
 
+本项目已接入 **GitHub Actions 全自动部署**，无需手动执行任何命令。
+
+### 一次性配置（仅首次需要）
+
+进入仓库 **Settings → Pages → Build and deployment**：
+
+- **Source** 选择 **GitHub Actions**
+
+### 日常发布流程
+
 ```bash
-npm run deploy
+git push origin main
 ```
 
-会自动构建并推送到 `gh-pages` 分支。仓库 Settings → Pages → Source 选 `gh-pages`。
+推送到 `main` 后，`.github/workflows/deploy.yml` 会自动：
+
+1. 安装依赖、跑 `typecheck` + `lint` + `build` + `size` 检查
+2. 上传 `dist/` 产物到 GitHub Pages
+3. 部署完成后跑 Lighthouse 评分（首页 / 博客 / Profile）
+
+PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节失败都会阻塞合并。
+
+---
+
+## 自动化质量保障
+
+| 阶段 | 工具 | 触发 | 失败行为 |
+|---|---|---|---|
+| **本地 commit** | husky + lint-staged | `git commit` | 仅对暂存的 `.ts/.tsx` 跑 `eslint --fix`（毫秒级，仅检查改动） |
+| **本地 push** | husky | `git push` | 全量 `tsc --noEmit` 类型检查，类型错误本地拦截 |
+| **PR / push 到 main** | GitHub Actions `ci.yml` | 远端 | typecheck → lint → build → bundle size，任一失败阻塞 |
+| **合并到 main** | GitHub Actions `deploy.yml` | 远端 | 全量检查通过后自动构建 + 部署 + Lighthouse |
+| **依赖维护** | Dependabot | 每周一 | 自动开 PR 升级 npm 与 actions 依赖 |
+
+### 打包体积守门（`scripts/check-bundle-size.js`）
+
+智能区分**首屏关键 chunk** 与**按需加载 chunk**：
+
+| 维度 | 阈值（gzip） | 当前 |
+|---|---|---|
+| 单个 JS chunk | ≤ 250 KB | ✅ 最大 markdown 182 KB（按需） |
+| 首屏关键 JS 总和 | ≤ 250 KB | ✅ 238 KB |
+| 全部 JS 总和 | ≤ 1500 KB | ✅ 1265 KB |
+| 单个 CSS | ≤ 50 KB | ✅ 最大 12.67 KB |
+
+> mermaid 各 diagram、katex、cytoscape、wardley、markdown、giscus 等被识别为按需加载，**不计入首屏关键体积**。如需调整阈值或新增懒加载模式，编辑脚本顶部的 `LIMITS` / `LAZY_PATTERNS`。
+
+### Lighthouse CI
+
+`.github/lighthouse/lighthouserc.json` 设定的最低分（warn 级别，不阻塞部署）：
+
+- Performance ≥ 80
+- Accessibility ≥ 90
+- Best Practices ≥ 90
+- SEO ≥ 90
+
+每次部署后报告会上传到临时公开存储，可在 Actions 运行日志里点开链接查看。
 
 ---
 

@@ -139,7 +139,7 @@ ${items}
 
       const outPath = resolve(root, 'dist', filename);
       writeFileSync(outPath, xml, 'utf-8');
-      // eslint-disable-next-line no-console
+       
       console.log(`\n[rss-feed] ${posts.length} posts → dist/${filename}`);
     },
   };

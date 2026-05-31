@@ -5,20 +5,21 @@
 
 ---
 
-## 🎯 当前状态（v2.5）
+## 🎯 当前状态（v3.1）
 
-整站已完成 **4 个大版本** 的迭代，从一个套模板的简单 SPA 演化为：
+整站已完成 **7 个大版本** 的迭代，从一个套模板的简单 SPA 演化为：
 
 - 📱 **9 个完整页面** + 项目/博客/专题 3 套详情页
 - 🧩 **40+ 复用组件**，单一数据源
 - 🌐 **中英双语** + 暗色模式 + ⌘K 全站搜索
-- 📝 **Markdown 博客** + TOC + 代码高亮 + 阅读进度 + giscus 评论
-- 🚀 **PWA** + 路由懒加载 + 代码分割（5 段 chunk）
+- 📝 **Markdown 博客** + TOC + 代码高亮 + 阅读进度 + giscus 评论 + KaTeX + Mermaid
+- 🚀 **PWA** + 路由懒加载 + 代码分割（首屏 238KB gzip）
 - 🎨 **Hero 鼠标视差 + Aurora 极光 + 打字机** 视觉特效
-- 📊 GitHub 实时数据 + GoatCounter 统计 + Web Vitals
+- 📊 GitHub 实时数据 + 贡献热力图 + GoatCounter + Web Vitals
 - 🔒 追星专题可选密码保护
+- 🤖 **GitHub Actions 全自动 CI/CD** + Husky 本地钩子 + 体积守门 + Lighthouse 评分
 
-构建产物（gzip）：主入口 48KB · markdown 105KB（按需）· SearchPalette 13KB（按需）
+构建产物（gzip）：首屏关键 238KB · 主入口 49KB · markdown 182KB（按需）· SearchPalette 13KB（按需）
 
 ---
 
@@ -177,12 +178,15 @@
 - [ ] **404 页面隐藏游戏**
 
 ### 工程
-- [ ] **Lighthouse 实测调优**：目标 95+
 - [ ] **图片转 WebP**：等真实截图就位（基础设施已就绪，`SmartImage` 自动嗅探同名 webp）
 - [x] **sitemap.xml + robots.txt 构建时自动生成** ✅
 - [x] **RSS feed.xml 构建时自动生成** ✅
+- [x] **Lighthouse CI 自动评分** ✅ —— 部署后自动跑首页/博客/Profile，临时公开报告
+- [x] **打包体积守门** ✅ —— `scripts/check-bundle-size.js` 区分首屏/按需 chunk，超阈值阻塞 CI
+- [x] **CI/CD 自动 build & deploy** ✅ —— GitHub Actions 全流程，PR 阻塞 + 合并自动部署
+- [x] **Husky + lint-staged 本地钩子** ✅ —— commit 增量 eslint --fix / push 前 typecheck
+- [x] **Dependabot 周度依赖升级** ✅
 - [ ] **Vite Bundle Analyzer**：找进一步压缩空间
-- [ ] **CI/CD**：GitHub Actions 自动 build & deploy
 
 ---
 
@@ -241,3 +245,4 @@
 | v2.5 全功能 | 2026-05-31 | ⌘K 全站搜索 / Hero 视觉特效 / GoatCounter / Web Vitals / 专题 / 友链 / 追星 |
 | v2.6 导航重构 | 2026-05-31 | 页面中文化命名 / 顶部"更多"下拉 / Footer 四栏分组 / 全站 RelatedLink 互相串联 |
 | v3.0 内容增强 | 2026-05-31 | HashRouter 链接修复 / KaTeX 数学 / Mermaid 图表 / GitHub 热力图 / RSS / sitemap / SmartImage WebP-AVIF |
+| v3.1 工程化 | 2026-05-31 | GitHub Actions CI/CD / Husky 钩子 / 打包体积守门 / Lighthouse CI / Dependabot / 移除 gh-pages 手动部署 |

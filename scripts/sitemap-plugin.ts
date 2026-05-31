@@ -76,7 +76,7 @@ Allow: /
 Sitemap: ${siteUrl}sitemap.xml
 `;
       writeFileSync(resolve(root, 'dist', 'robots.txt'), robots, 'utf-8');
-      // eslint-disable-next-line no-console
+       
       console.log(`[sitemap] ${allUrls.length} urls → dist/sitemap.xml + robots.txt`);
     },
   };
