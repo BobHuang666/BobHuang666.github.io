@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BobHuang · 黄子博 博客</title>
+    <link>https://bobhuang666.github.io/</link>
+    <description>算法、前端、AI 实践与生活思考</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 31 May 2026 14:28:36 GMT</lastBuildDate>
+    <atom:link href="https://bobhuang666.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <managingEditor>2295672887@qq.com (Bob Huang)</managingEditor>
+    <webMaster>2295672887@qq.com (Bob Huang)</webMaster>
+    <item>
+      <title>你好，这里是 BobHuang 的小站</title>
+      <link>https://bobhuang666.github.io/#/blog/welcome</link>
+      <guid isPermaLink="false">https://bobhuang666.github.io/#/blog/welcome</guid>
+      <pubDate>Sun, 31 May 2026 00:00:00 GMT</pubDate>
+      <category>随笔</category><category>公告</category><category>关于</category>
+      <description><![CDATA[介绍一下我搭建这个网站的初衷，以及未来想在这里分享什么内容——可能是算法题解、项目复盘、读书笔记、追星杂感……]]></description>
+    </item>
+  </channel>
+</rss>

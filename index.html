@@ -1,17 +1,51 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#6366f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/assets/red-logo-CAVsm5KK.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BobHuang</title>
-  <script type="module" crossorigin src="/assets/index-1gexocma.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-CZLAsKdH.css">
-</head>
+    <!-- SEO -->
+    <title>BobHuang · 个人主页</title>
+    <meta name="description" content="BobHuang - 北京师范大学数据科学与大数据技术专业本科生，热爱算法竞赛与全栈开发。这里展示我的项目、技能、奖项与博客。" />
+    <meta name="keywords" content="BobHuang,北京师范大学,数据科学,算法竞赛,前端开发,iGEM,蓝桥杯,ICPC" />
+    <meta name="author" content="BobHuang" />
 
-<body>
-  <div id="root"></div>
-</body>
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="BobHuang · 个人主页" />
+    <meta property="og:description" content="北师大数据科学与大数据技术 · 算法竞赛 · 全栈开发 · AI 应用" />
+    <meta property="og:image" content="/static/img/avatar.jpg" />
+    <meta property="og:url" content="https://bobhuang666.github.io/" />
 
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="BobHuang · 个人主页" />
+    <meta name="twitter:description" content="北师大数据科学与大数据技术 · 算法竞赛 · 全栈开发 · AI 应用" />
+    <meta name="twitter:image" content="/static/img/avatar.jpg" />
+
+    <link rel="icon" type="image/x-icon" href="/assets/red-logo-CAVsm5KK.ico" />
+
+    <!-- 防 dark-mode 闪烁：在 React 加载前根据 localStorage / 系统偏好提前注入 class -->
+    <script>
+      (function () {
+        try {
+          var key = 'bh:theme';
+          var stored = localStorage.getItem(key);
+          var dark =
+            stored === 'dark' ||
+            (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-DwaeyRdN.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-DH_wPSnt.js">
+    <link rel="modulepreload" crossorigin href="/assets/motion-D65WXrik.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DNPzrdT0.css">
+  <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
