@@ -13,13 +13,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
+
+      - name: Verify lockfile is in sync with package.json
+        # 提前拦截 manifest 与 lockfile 不一致 / peer 冲突，错误信息更直观
+        run: npm ci --dry-run
 
       - name: Install dependencies
         run: npm ci
