@@ -1,338 +1,512 @@
-import { Github, Mail, Code2, Award, BookOpen, Database, Globe, Shield, Trophy, Users, Brain } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { TypeAnimation } from 'react-type-animation';
+import { useTranslation } from 'react-i18next';
+import {
+  Github, Mail, ArrowRight, Sparkles, ExternalLink, FileText,
+} from 'lucide-react';
+import { profile } from '../data/profile';
+import { techStack } from '../data/skills';
+import { projects } from '../data/projects';
+import { awards } from '../data/awards';
+import { blogData } from '../data/blog';
+import { SectionReveal } from '../components/SectionReveal';
+import { SmartImage } from '../components/SmartImage';
+import { HeroBackground } from '../components/HeroBackground';
+import { RelatedLink } from '../components/RelatedLink';
+import GitHubCard from '../components/GitHubCard';
+import GitHubHeatmap from '../components/GitHubHeatmap';
+
+type AwardLevel = 'all' | '国际级' | '国家级' | '省级' | '校级' | '院系级';
+const AWARD_LEVELS: AwardLevel[] = ['all', '国际级', '国家级', '省级', '校级', '院系级'];
+const LEVEL_I18N: Record<AwardLevel, string> = {
+  all: 'level.all',
+  国际级: 'level.international',
+  国家级: 'level.national',
+  省级: 'level.provincial',
+  校级: 'level.school',
+  院系级: 'level.college',
+};
 
 function HomePage() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const scrollToId = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  const [awardFilter, setAwardFilter] = useState<AwardLevel>('all');
+  const featuredBlogs = blogData.filter((b) => !b.isDraft).slice(0, 3);
 
-  const projects = [
-    {
-      title: "iGEM Wiki前端开发",
-      description: "国际基因工程机器大赛Wiki前端设计开发，使用HTML+CSS+JS实现响应式布局，设计10+动态模块，处理50MB+文字动画图表等科研资料可视化，获最佳Wiki提名",
-      image: "https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?auto=format&fit=crop&q=80&w=1000",
-      tags: ["HTML", "CSS", "JavaScript", "响应式设计"],
-      link: "https://2024.igem.wiki/bnuzh-china/",
-      demoLink: "/demo-desc"
-    },
-    {
-      title: "汕头善堂收客记录系统",
-      description: "数字人文课程项目，开发低门槛数据管理系统，前端使用TS+React设计搜索页与统计看板，后端基于Python Flask搭建API，实现多字段模糊搜索与分组统计",
-      image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=1000",
-      tags: ["TypeScript", "React", "Python", "Flask"],
-      link: "/demo",
-      demoLink: "/demo-desc"
-    },
-    {
-      title: "政府采购数据分析系统",
-      description: "国家级大创项目，使用Python处理10万+政府采购合同数据，通过jieba分词与匹配解析省份与地级市信息，构建城市加权税收依赖度指标体系，进行回归分析",
-      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=1000",
-      tags: ["Python", "数据分析", "机器学习", "jieba"],
-      link: "/demo",
-      demoLink: "/demo-desc"
-    }
-  ];
+  const filteredAwards = useMemo(() => {
+    const list = awardFilter === 'all' ? awards : awards.filter((a) => a.level === awardFilter);
+    return list.slice(0, 6);
+  }, [awardFilter]);
 
-  const techStack = [
-    { name: "编程语言", icon: Code2, skills: ["C/C++", "Java", "Python", "JavaScript", "TypeScript"] },
-    { name: "前端开发", icon: Globe, skills: ["React", "Vue", "HTML/CSS", "响应式设计"] },
-    { name: "后端开发", icon: Database, skills: ["Flask", "MySQL", "SQLServer", "API设计"] },
-    { name: "工具技能", icon: Shield, skills: ["Git", "Linux", "Docker", "SSH", "算法"] }
-  ];
+  // 从 profile.github URL 中提取用户名
+  const ghUsername = useMemo(() => {
+    const m = profile.github?.match(/github\.com\/([^/]+)/);
+    return m?.[1] ?? '';
+  }, []);
 
-  const blogPosts = [
-    {
-      title: "iGEM竞赛中的前端开发实践",
-      excerpt: "分享在国际基因工程机器大赛中负责Wiki前端开发的经历，包括响应式设计、动态模块开发、大数据可视化等技术的应用...",
-      date: "2024-01-15",
-      readTime: "10分钟",
-      category: "竞赛经历"
-    },
-    {
-      title: "Python在数据处理中的应用",
-      excerpt: "从政府采购数据分析项目出发，探讨Python在数据清洗、分词处理、统计分析等方面的实际应用技巧...",
-      date: "2024-01-10",
-      readTime: "12分钟",
-      category: "技术分享"
-    },
-    {
-      title: "全栈开发项目经验总结",
-      excerpt: "结合汕头善堂收客记录系统项目，分享TypeScript+React+Python Flask的全栈开发经验和技术选型思考...",
-      date: "2024-01-05",
-      readTime: "8分钟",
-      category: "项目经验"
-    }
-  ];
-
-  const awards = [
-    {
-      title: "蓝桥杯决赛三等奖",
-      organization: "第十六届蓝桥杯",
-      year: "2024",
-      description: "C/C++大学A组决赛三等奖，算法竞赛领域的重要成就",
-      icon: Trophy
-    },
-    {
-      title: "iGEM最佳Wiki提名",
-      organization: "国际基因工程机器大赛",
-      year: "2024",
-      description: "负责Wiki前端开发，获最佳Wiki提名，全球顶级合成生物学竞赛",
-      icon: Award
-    },
-    {
-      title: "京师杯一等奖",
-      organization: "北京师范大学",
-      year: "2024",
-      description: "政府采购与新质生产力发展研究论文获一等奖",
-      icon: BookOpen
-    },
-    {
-      title: "CCF算法能力大赛区域赛二等奖",
-      organization: "CCF算法能力大赛",
-      year: "2023",
-      description: "算法竞赛区域赛二等奖，展示算法设计与编程能力",
-      icon: Brain
-    },
-    {
-      title: "北京师范大学程序设计大赛金奖",
-      organization: "北京师范大学",
-      year: "2023",
-      description: "校内程序设计大赛最高荣誉，体现编程实力",
-      icon: Code2
-    },
-    {
-      title: "全国大学生数学建模竞赛广东省二等奖",
-      organization: "全国大学生数学建模竞赛",
-      year: "2023",
-      description: "数学建模竞赛省级二等奖，展示数学建模与问题解决能力",
-      icon: Users
-    },
-    {
-      title: "北京高校数学建模校际联赛一等奖",
-      organization: "北京高校数学建模校际联赛",
-      year: "2023",
-      description: "校际联赛一等奖，在数学建模领域表现优异",
-      icon: Users
-    }
-  ];
-
-  const handleProjectClick = (project: typeof projects[0], type: 'demo' | 'desc') => {
-    if (type === 'demo' && project.link.startsWith('http')) {
-      // 外部链接在新标签页打开
-      window.open(project.link, '_blank');
-    } else if (type === 'desc') {
-      // 项目详情在新标签页打开
-      window.open(project.demoLink, '_blank');
+  const handleProjectClick = (
+    e: React.MouseEvent,
+    project: typeof projects[number],
+    type: 'demo' | 'detail',
+  ) => {
+    e.preventDefault();
+    if (type === 'demo') {
+      if (!project.link) {
+        alert('该项目演示地址待补充');
+        return;
+      }
+      if (project.link.startsWith('http')) {
+        window.open(project.link, '_blank', 'noopener,noreferrer');
+      } else {
+        navigate(project.link);
+      }
     } else {
-      // 内部演示页面在新标签页打开
-      window.open(project.link, '_blank');
+      navigate(`/projects/${project.id}`);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="pt-4 pb-12 md:pt-16 md:pb-20 bg-gradient-to-r from-indigo-500 to-purple-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Bob Huang
-          </h1>
-          <p className="text-xl text-gray-100 mb-8 max-w-3xl mx-auto">
-            数据科学与大数据技术专业在读本科生，热爱编程。Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique vel mollitia atque, quos incidunt officiis rerum reprehenderit, consequatur accusantium, provident aspernatur praesentium vitae doloremque veniam quasi quo nulla quisquam dolore!
-          </p>
-          <div className="flex justify-center space-x-4">
-            <a href="#projects" className="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
-              查看项目
-            </a>
-            <a href="/profile" className="border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-indigo-600 transition-colors">
-              个人介绍
-            </a>
-            <a href="#contact" className="border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-indigo-600 transition-colors">
-              CALL ME
-            </a>
-          </div>
+    <div className="bg-slate-50 dark:bg-slate-950">
+      {/* ============ Hero ============ */}
+      <section className="relative overflow-hidden pt-10 pb-20 md:pt-16 md:pb-28 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 dark:from-indigo-900 dark:via-purple-900 dark:to-slate-900 bg-[length:200%_200%] animate-gradient-x">
+        {/* 增强背景 —— 网格 + blob + Aurora + 鼠标视差 */}
+        <HeroBackground />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* 头像 + 状态徽章组合 */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center mb-6"
+          >
+            <div className="relative group">
+              {/* 旋转光环 */}
+              <div className="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-pink-400 via-amber-300 to-indigo-400 opacity-70 blur-md animate-[spin_8s_linear_infinite]" />
+              <img
+                src={profile.avatar}
+                alt={profile.name}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><circle cx="48" cy="48" r="48" fill="%23ffffff" fill-opacity="0.2"/><text x="50%25" y="58%25" font-size="36" fill="white" text-anchor="middle" font-family="sans-serif" font-weight="bold">BH</text></svg>';
+                }}
+                className="relative w-24 h-24 md:w-28 md:h-28 rounded-full ring-4 ring-white/70 shadow-2xl object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="eager"
+                decoding="async"
+              />
+              {/* 在线指示 */}
+              <span className="absolute bottom-1 right-1 w-4 h-4 md:w-5 md:h-5 bg-green-400 rounded-full ring-2 ring-white shadow flex items-center justify-center">
+                <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-60" />
+              </span>
+            </div>
+
+            {/* 状态文案 —— 紧贴头像下方 */}
+            <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 backdrop-blur text-white/95 text-xs border border-white/20">
+              {t('home.status')}
+            </div>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight"
+          >
+            {profile.name}
+            <span className="block text-lg md:text-2xl font-medium text-white/85 mt-2">
+              {profile.nameZh} · {profile.education.major}
+            </span>
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-base md:text-lg text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed min-h-[3.5rem]"
+          >
+            <TypeAnimation
+              key={t('home.status') /* 切换语言时重挂载 */}
+              sequence={
+                t('home.status').startsWith('Online')
+                  ? [
+                      'CS undergrad @ BNU · Data Science track',
+                      2500,
+                      'Competitive programmer · ICPC / Lanqiao / CCF',
+                      2200,
+                      'Full-stack dev · Vue / React / Go / Python',
+                      2200,
+                      'Frontend intern @ Tencent CDG',
+                      2500,
+                    ]
+                  : [
+                      profile.tagline,
+                      2500,
+                      '算法竞赛选手 · ICPC / 蓝桥杯 / CCF 多项荣誉',
+                      2200,
+                      '全栈开发者 · Vue / React / Go / Python',
+                      2200,
+                      '正在腾讯 CDG 担任前端实习生',
+                      2500,
+                    ]
+              }
+              wrapper="span"
+              speed={55}
+              repeat={Infinity}
+              cursor
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-wrap justify-center gap-3"
+          >
+            <button
+              type="button"
+              onClick={() => scrollToId('projects')}
+              className="inline-flex items-center px-6 py-3 rounded-lg font-medium bg-white text-indigo-600 hover:bg-slate-50 transition-colors shadow-lg"
+            >
+              <Sparkles className="h-4 w-4 mr-2" />
+              {t('btn.viewProjects')}
+            </button>
+            <Link
+              to="/profile"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-medium border-2 border-white/70 text-white hover:bg-white hover:text-indigo-600 transition-colors"
+            >
+              {t('btn.aboutMe')} <ArrowRight className="h-4 w-4 ml-2" />
+            </Link>
+            <button
+              type="button"
+              onClick={() => scrollToId('contact')}
+              className="inline-flex items-center px-6 py-3 rounded-lg font-medium border-2 border-white/70 text-white hover:bg-white hover:text-indigo-600 transition-colors"
+            >
+              <Mail className="h-4 w-4 mr-2" /> {t('btn.contactMe')}
+            </button>
+            {profile.resumeUrl && (
+              <a
+                href={profile.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-6 py-3 rounded-lg font-medium border-2 border-white/70 text-white hover:bg-white hover:text-indigo-600 transition-colors"
+              >
+                <FileText className="h-4 w-4 mr-2" /> {t('btn.downloadCv')}
+              </a>
+            )}
+          </motion.div>
         </div>
       </section>
 
-      {/* About Section */}
-      {/* <section id="about" className="py-20 bg-white">
+      {/* ============ Skills ============ */}
+      <section id="skills" className="py-20 bg-white dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">关于我</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              我是北京师范大学数据科学与大数据技术专业的学生，专注于算法竞赛和全栈开发。
-              在国际基因工程机器大赛中负责Wiki前端开发，获得最佳Wiki提名。
-              同时担任学校程序设计竞赛社团社长，组织算法相关比赛与活动。
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 bg-gray-50 rounded-lg">
-              <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Trophy className="h-8 w-8 text-indigo-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">竞赛成就</h3>
-              <p className="text-gray-600">蓝桥杯决赛三等奖、CCF算法能力大赛二等奖、iGEM最佳Wiki提名等多项竞赛荣誉</p>
-            </div>
-            <div className="text-center p-6 bg-gray-50 rounded-lg">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Brain className="h-8 w-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">技术能力</h3>
-              <p className="text-gray-600">熟练掌握C/C++、Java、Python，具备全栈开发能力，熟悉算法与数据结构</p>
-            </div>
-            <div className="text-center p-6 bg-gray-50 rounded-lg">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">学生工作</h3>
-              <p className="text-gray-600">担任程序设计竞赛社团社长，校团委青年科技创新协会学术创新部部长</p>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
-      {/* Skills Section */}
-      <section id="skills" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">技能点</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <SectionReveal>
+            <h2 className="section-title">{t('home.skillsTitle')}</h2>
+            <p className="section-subtitle">{t('home.skillsSub')}</p>
+          </SectionReveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {techStack.map((category, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div className="flex items-center mb-4">
-                  <category.icon className="h-8 w-8 text-indigo-600 mr-3" />
-                  <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
-                </div>
-                <div className="space-y-2">
-                  {category.skills.map((skill, skillIndex) => (
-                    <div key={skillIndex} className="flex items-center">
-                      <div className="w-2 h-2 bg-indigo-500 rounded-full mr-3"></div>
-                      <span className="text-gray-700">{skill}</span>
+              <SectionReveal key={category.name} delay={index * 0.08}>
+                <div className="card-base p-6 h-full">
+                  <div className="flex items-center mb-4">
+                    <div className="w-11 h-11 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 flex items-center justify-center mr-3">
+                      <category.icon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">通关副本</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <img src={project.image} alt={project.title} className="w-full h-48 object-cover" />
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{project.title}</h3>
-                  <p className="text-gray-600 mb-4">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map((tag, tagIndex) => (
-                      <span key={tagIndex} className="bg-indigo-100 text-indigo-800 text-sm px-3 py-1 rounded-full">
-                        {tag}
+                    <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                      {category.name}
+                    </h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {category.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-2.5 py-1 rounded-md text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                      >
+                        {skill}
                       </span>
                     ))}
                   </div>
-                  <div className="flex space-x-3">
-                    <button
-                      onClick={() => handleProjectClick(project, 'demo')}
-                      className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors text-sm"
-                    >
-                      在线演示
-                    </button>
-                    <button
-                      onClick={() => handleProjectClick(project, 'desc')}
-                      className="flex-1 border border-indigo-600 text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition-colors text-sm"
-                    >
-                      项目详情
-                    </button>
-                  </div>
                 </div>
+              </SectionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ GitHub 实时数据 ============ */}
+      {ghUsername && (
+        <section id="github" className="py-20 bg-white dark:bg-slate-950">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionReveal>
+              <h2 className="section-title">{t('home.githubTitle')}</h2>
+              <p className="section-subtitle">{t('home.githubSub')}</p>
+            </SectionReveal>
+            <SectionReveal>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <GitHubCard username={ghUsername} />
+                <GitHubHeatmap username={ghUsername} />
               </div>
-            ))}
+            </SectionReveal>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Blog Section */}
-      <section id="blog" className="py-20 bg-gray-50">
+      {/* ============ Projects ============ */}
+      <section id="projects" className="py-20 bg-slate-50 dark:bg-slate-900/40 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">游戏攻略</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
-              <article key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                <div className="p-6">
-                  <div className="flex items-center mb-3">
-                    <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">
-                      {post.category}
-                    </span>
-                    <span className="text-gray-500 text-sm ml-auto">{post.readTime}</span>
+          <SectionReveal>
+            <h2 className="section-title">{t('home.projectsTitle')}</h2>
+            <p className="section-subtitle">{t('home.projectsSub')}</p>
+          </SectionReveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project, index) => (
+              <SectionReveal key={project.id} delay={index * 0.1}>
+                <div className="group card-base overflow-hidden h-full flex flex-col">
+                  <div className="relative h-44 overflow-hidden">
+                    <SmartImage
+                      src={project.image}
+                      alt={project.title}
+                      fallbackTitle={project.title}
+                      fallbackGradient={project.imageGradient}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {project.highlight && (
+                      <span className="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-gold-500/95 text-white text-xs font-medium shadow">
+                        {project.highlight}
+                      </span>
+                    )}
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3 hover:text-indigo-600 transition-colors cursor-pointer">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{post.date}</span>
-                    <button className="text-indigo-600 hover:text-indigo-500 text-sm font-medium">
-                      阅读全文 →
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Awards Section */}
-      <section id="awards" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">历史战绩</h2>
-          <div className="overflow-x-auto">
-            <div className="flex gap-6 pb-4 awards-container">
-              {awards.map((award, index) => (
-                <div key={index} className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-100 hover:shadow-lg transition-shadow flex-shrink-0 w-80">
-                  <div className="flex items-center mb-4">
-                    <award.icon className="h-10 w-10 text-indigo-600 mr-4" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">{award.title}</h3>
-                      <p className="text-sm text-gray-600">{award.organization}</p>
+                  <div className="p-5 flex flex-col flex-1">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1">
+                      {project.title}
+                    </h3>
+                    {project.subtitle && (
+                      <p className="text-xs text-indigo-600 dark:text-indigo-400 mb-2">
+                        {project.subtitle}
+                      </p>
+                    )}
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 flex-1 line-clamp-3">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {project.tags.slice(0, 4).map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 text-xs rounded bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex gap-2 mt-auto">
+                      <button
+                        onClick={(e) => handleProjectClick(e, project, 'demo')}
+                        className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-sm bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+                      >
+                        在线演示 <ExternalLink className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        onClick={(e) => handleProjectClick(e, project, 'detail')}
+                        className="flex-1 px-3 py-2 rounded-lg text-sm border border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-colors"
+                      >
+                        项目详情
+                      </button>
                     </div>
                   </div>
-                  <p className="text-gray-700 mb-3">{award.description}</p>
-                  <span className="inline-block bg-indigo-100 text-indigo-800 text-sm px-3 py-1 rounded-full">
-                    {award.year}
-                  </span>
                 </div>
-              ))}
+              </SectionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ Blog ============ */}
+      <section id="blog" className="py-20 bg-white dark:bg-slate-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <h2 className="section-title">{t('home.blogTitle')}</h2>
+            <p className="section-subtitle">{t('home.blogSub')}</p>
+          </SectionReveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredBlogs.map((post, index) => (
+              <SectionReveal key={post.id} delay={index * 0.08}>
+                <article
+                  onClick={() => navigate(`/blog/${post.id}`)}
+                  className="card-base p-6 h-full cursor-pointer group"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="px-2.5 py-1 text-xs rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
+                      {post.category}
+                    </span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                      {post.readTime} 分钟
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 line-clamp-3">
+                    {post.excerpt}
+                  </p>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 dark:text-slate-400">
+                      {post.publishDate}
+                    </span>
+                    <span className="text-indigo-600 dark:text-indigo-400 font-medium inline-flex items-center">
+                      阅读 <ArrowRight className="h-3.5 w-3.5 ml-1" />
+                    </span>
+                  </div>
+                </article>
+              </SectionReveal>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link
+              to="/blog"
+              className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium"
+            >
+              查看全部文章 <ArrowRight className="h-4 w-4 ml-1" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ Awards ============ */}
+      <section id="awards" className="py-20 bg-slate-50 dark:bg-slate-900/40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <h2 className="section-title">{t('home.awardsTitle')}</h2>
+            <p className="section-subtitle">
+              {t('home.awardsSubTpl', { count: awards.length })}
+            </p>
+          </SectionReveal>
+
+          {/* 级别筛选 */}
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            {AWARD_LEVELS.map((lv) => (
+              <button
+                key={lv}
+                onClick={() => setAwardFilter(lv)}
+                className={`px-3 py-1.5 text-xs rounded-full transition-all ${
+                  awardFilter === lv
+                    ? 'bg-indigo-600 text-white shadow-md'
+                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                }`}
+              >
+                {t(LEVEL_I18N[lv])}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredAwards.map((award, index) => (
+              <SectionReveal key={award.title} delay={index * 0.06}>
+                <div className="card-base p-6 h-full">
+                  <div className="flex items-center mb-3">
+                    <div
+                      className={`w-11 h-11 rounded-lg bg-gradient-to-br ${
+                        award.color ?? 'from-indigo-500 to-purple-500'
+                      } flex items-center justify-center mr-3 shadow-md`}
+                    >
+                      <award.icon className="h-5 w-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
+                        {award.title}
+                      </h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                        {award.organization}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
+                    {award.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="px-2 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
+                      {award.year}
+                    </span>
+                    <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                      {award.level}
+                    </span>
+                  </div>
+                </div>
+              </SectionReveal>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link
+              to="/profile"
+              className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium"
+            >
+              查看全部 {awards.length} 项荣誉 <ArrowRight className="h-4 w-4 ml-1" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ 更多探索 ============ */}
+      <section id="more" className="py-20 bg-white dark:bg-slate-950">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <h2 className="section-title">更多探索</h2>
+            <p className="section-subtitle">除了主线任务，还有这些副本可以探索</p>
+          </SectionReveal>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            <RelatedLink to="/series" emoji="📚" title="专题系列" desc="按主题看博客" />
+            <RelatedLink to="/now" emoji="✨" title="当前动态" desc="最近在做什么" />
+            <RelatedLink to="/uses" emoji="🛠" title="装备清单" desc="硬件与工具" />
+            <RelatedLink to="/friends" emoji="🤝" title="友人帐" desc="友情链接" />
+            <RelatedLink to="/fandom" emoji="💕" title="秘密花园" desc="追星专题" />
+          </div>
+        </div>
+      </section>
+
+      {/* ============ Contact ============ */}
+      <section id="contact" className="py-20 bg-white dark:bg-slate-950">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <SectionReveal>
+            <h2 className="section-title">{t('home.contactTitle')}</h2>
+            <p className="section-subtitle">{t('home.contactSub')}</p>
+
+            <div className="flex justify-center gap-4 mb-8">
+              {profile.github && (
+                <a
+                  href={profile.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white transition-colors"
+                  aria-label="GitHub"
+                >
+                  <Github className="h-5 w-5" />
+                </a>
+              )}
+              {profile.email && (
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white transition-colors"
+                  aria-label="Email"
+                >
+                  <Mail className="h-5 w-5" />
+                </a>
+              )}
             </div>
-          </div>
+
+            {profile.email && (
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Email：<a href={`mailto:${profile.email}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">{profile.email}</a>
+              </p>
+            )}
+          </SectionReveal>
         </div>
       </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">联系客服</h2>
-          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            如果你对算法竞赛、全栈开发或者技术交流感兴趣，欢迎随时联系我！
-            我期待与你一起探讨技术，共同进步。
-          </p>
-          <div className="flex justify-center space-x-6">
-            <a href="https://github.com" className="text-gray-600 hover:text-indigo-600 transition-colors">
-              <Github className="h-8 w-8" />
-            </a>
-            <a href="mailto:your.email@example.com" className="text-gray-600 hover:text-indigo-600 transition-colors">
-              <Mail className="h-8 w-8" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>© {new Date().getFullYear()} BobHuang. 保留所有权利。</p>
-        </div>
-      </footer>
     </div>
   );
 }
