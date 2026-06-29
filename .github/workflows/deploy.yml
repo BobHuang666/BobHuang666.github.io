@@ -90,8 +90,8 @@ jobs:
         with:
           urls: |
             https://bobhuang666.github.io/
-            https://bobhuang666.github.io/blog
-            https://bobhuang666.github.io/profile
+            https://bobhuang666.github.io/#/blog
+            https://bobhuang666.github.io/#/profile
           uploadArtifacts: true
           temporaryPublicStorage: true
           configPath: ./.github/lighthouse/lighthouserc.json
