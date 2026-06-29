@@ -56,6 +56,8 @@ export default defineConfig({
         ],
       },
       workbox: {
+        mode: 'development',
+        disableDevLogs: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp}'],
         // Mermaid / katex 体积大，不预缓存（按需加载即可）
         globIgnores: [
