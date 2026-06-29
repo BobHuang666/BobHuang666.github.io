@@ -25,9 +25,10 @@ export const HeroBackground = () => {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // 移动端（触摸设备）跳过鼠标视差
+    const isMobile = window.matchMedia('(hover: none)').matches;
 
-    // ---- 鼠标视差 ----
-    if (!reduced && containerRef.current) {
+    if (!reduced && !isMobile && containerRef.current) {
       let rafId = 0;
       const onMove = (e: MouseEvent) => {
         cancelAnimationFrame(rafId);
@@ -50,7 +51,9 @@ export const HeroBackground = () => {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return;
+    // 移动端跳过 canvas 粒子循环，节省 GPU/CPU
+    const isMobile = window.matchMedia('(hover: none)').matches;
+    if (reduced || isMobile) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;

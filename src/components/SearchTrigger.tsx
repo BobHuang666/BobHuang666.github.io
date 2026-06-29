@@ -1,4 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
+import { createPortal } from 'react-dom';
 import { Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -41,9 +42,13 @@ export const SearchTrigger = ({ className = '' }: { className?: string }) => {
         </kbd>
       </button>
 
-      <Suspense fallback={null}>
-        <SearchPalette open={open} onClose={() => setOpen(false)} />
-      </Suspense>
+      {/* Portal 挂载到 body，脱离 nav transform 的 stacking context，确保 fixed 蒙层全屏覆盖 */}
+      {createPortal(
+        <Suspense fallback={null}>
+          <SearchPalette open={open} onClose={() => setOpen(false)} />
+        </Suspense>,
+        document.body,
+      )}
     </>
   );
 };

@@ -38,7 +38,7 @@ const MORE_ITEMS: MoreItem[] = [
   { to: '/now', i18nKey: 'nav.now', icon: Sparkles, description: '我最近在做什么', descEn: 'What I am up to' },
   { to: '/uses', i18nKey: 'nav.uses', icon: Wrench, description: '硬件 & 工具清单', descEn: 'My toolkit' },
   { to: '/friends', i18nKey: 'nav.friends', icon: UsersRound, description: '友情链接', descEn: 'Friend links' },
-  { to: '/fandom', i18nKey: 'nav.fandom', icon: Heart, description: '追星专题（私密）', descEn: 'Fandom (private)' },
+  { to: '/fandom', i18nKey: 'nav.fandom', icon: Heart, description: '追星专题', descEn: 'Fandom (private)' },
 ];
 
 const Navigation = () => {

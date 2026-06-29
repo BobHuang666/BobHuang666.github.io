@@ -6,12 +6,12 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import ScrollRestoration from './components/ScrollRestoration';
-import MouseParticles from './components/MouseParticles';
-import AiAssistant from './components/AiAssistant';
 import { PageSkeleton } from './components/Skeleton';
 
-// 首页常驻，详情页全部懒加载
+// 首页常驻，浮层组件与详情页全部懒加载
 import HomePage from './pages/HomePage';
+const AiAssistant = lazy(() => import('./components/AiAssistant'));
+const MouseParticles = lazy(() => import('./components/MouseParticles'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
@@ -53,8 +53,8 @@ function App() {
           </div>
           <ScrollRestoration />
           <ScrollToTopButton />
-          <AiAssistant />
-          <MouseParticles />
+          <Suspense fallback={null}><AiAssistant /></Suspense>
+          <Suspense fallback={null}><MouseParticles /></Suspense>
         </Router>
       </ErrorBoundary>
     </ThemeProvider>

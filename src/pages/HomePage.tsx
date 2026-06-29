@@ -1,16 +1,24 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { TypeAnimation } from 'react-type-animation';
 import { useTranslation } from 'react-i18next';
 import {
   Github, Mail, ArrowRight, Sparkles, ExternalLink, FileText, Copy, Check,
+  Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal,
+  Globe, Database, Shield,
+  type LucideIcon,
 } from 'lucide-react';
+
+/** awards.ts / skills.ts 中 icon 字符串 → lucide 组件映射 */
+const ICON_MAP: Record<string, LucideIcon> = {
+  Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal,
+  Globe, Database, Shield,
+};
 import { profile } from '../data/profile';
 import { techStack } from '../data/skills';
 import { projects } from '../data/projects';
 import { awards } from '../data/awards';
-import { blogData } from '../data/blog';
+import { blogMeta } from '../data/blog';
 import { SectionReveal } from '../components/SectionReveal';
 import { SmartImage } from '../components/SmartImage';
 import { HeroBackground } from '../components/HeroBackground';
@@ -18,6 +26,62 @@ import { RelatedLink } from '../components/RelatedLink';
 import GitHubCard from '../components/GitHubCard';
 import GitHubHeatmap from '../components/GitHubHeatmap';
 import Avatar from '../components/Avatar';
+
+// ── 内置打字机组件，无需第三方库 ──────────────────────────
+function TypeWriter({ sequences, speed = 55 }: { sequences: (string | number)[]; speed?: number }) {
+  const strings = useMemo(
+    () => sequences.filter((s): s is string => typeof s === 'string'),
+    [sequences],
+  );
+  const pauses = useMemo(
+    () => sequences.filter((s): s is number => typeof s === 'number'),
+    [sequences],
+  );
+
+  const [text, setText] = useState('');
+  const state = useRef({ strIdx: 0, charIdx: 0, deleting: false });
+
+  const tick = useCallback(() => {
+    const { strIdx, charIdx, deleting } = state.current;
+    const cur = strings[strIdx];
+
+    if (!deleting) {
+      if (charIdx < cur.length) {
+        setText(cur.slice(0, charIdx + 1));
+        state.current.charIdx++;
+        return speed;
+      }
+      // 打完 → 等待后删除
+      state.current.deleting = true;
+      return pauses[strIdx] ?? 2200;
+    } else {
+      if (charIdx > 0) {
+        setText(cur.slice(0, charIdx - 1));
+        state.current.charIdx--;
+        return Math.max(20, speed / 2);
+      }
+      // 删完 → 切换
+      state.current.deleting = false;
+      state.current.strIdx = (strIdx + 1) % strings.length;
+      return 200;
+    }
+  }, [strings, pauses, speed]);
+
+  useEffect(() => {
+    let id: ReturnType<typeof setTimeout>;
+    const schedule = (ms: number) => { id = setTimeout(() => { schedule(tick()); }, ms); };
+    // 初始延迟后启动
+    id = setTimeout(() => { schedule(tick()); }, 600);
+    return () => clearTimeout(id);
+  }, [tick]);
+
+  return (
+    <span>
+      {text}
+      <span className="typewriter-cursor" aria-hidden="true" />
+    </span>
+  );
+}
 
 type AwardLevel = 'all' | '国际级' | '国家级' | '省级' | '校级' | '院系级';
 const AWARD_LEVELS: AwardLevel[] = ['all', '国际级', '国家级', '省级', '校级', '院系级'];
@@ -39,7 +103,7 @@ function HomePage() {
   };
   const [awardFilter, setAwardFilter] = useState<AwardLevel>('all');
   const [emailCopied, setEmailCopied] = useState(false);
-  const featuredBlogs = blogData.filter((b) => !b.isDraft).slice(0, 3);
+  const featuredBlogs = blogMeta.filter((b) => !b.isDraft).slice(0, 3);
 
   const copyEmail = async () => {
     if (!profile.email) return;
@@ -129,9 +193,9 @@ function HomePage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base md:text-lg text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed min-h-[3.5rem]"
           >
-            <TypeAnimation
+            <TypeWriter
               key={t('home.status') /* 切换语言时重挂载 */}
-              sequence={
+              sequences={
                 t('home.status').startsWith('Online')
                   ? [
                       'CS undergrad @ BNU · Data Science track',
@@ -154,10 +218,6 @@ function HomePage() {
                       2500,
                     ]
               }
-              wrapper="span"
-              speed={55}
-              repeat={Infinity}
-              cursor
             />
           </motion.div>
 
@@ -215,7 +275,7 @@ function HomePage() {
                 <div className="card-base p-6 h-full">
                   <div className="flex items-center mb-4">
                     <div className="w-11 h-11 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 flex items-center justify-center mr-3">
-                      <category.icon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                      {(() => { const Icon = ICON_MAP[category.icon] ?? Code2; return <Icon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />; })()}
                     </div>
                     <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
                       {category.name}
@@ -415,7 +475,7 @@ function HomePage() {
                         award.color ?? 'from-indigo-500 to-purple-500'
                       } flex items-center justify-center mr-3 shadow-md`}
                     >
-                      <award.icon className="h-5 w-5 text-white" />
+                      {(() => { const Icon = ICON_MAP[award.icon] ?? Trophy; return <Icon className="h-5 w-5 text-white" />; })()}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">

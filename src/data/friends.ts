@@ -13,23 +13,11 @@ export interface FriendLink {
 export const friends: FriendLink[] = [
   // 占位示例 —— 删掉换成真朋友的链接
   {
-    name: '示例朋友 A',
-    url: 'https://example.com',
-    description: '前端开发 · 摄影爱好者',
-    tags: ['Frontend'],
-  },
-  {
-    name: '示例朋友 B',
-    url: 'https://example.com',
-    description: '后端 · Go / Rust',
-    tags: ['Backend'],
-  },
-  {
-    name: 'BNUZH 程设社',
-    url: 'https://github.com/BobHuang666',
-    description: '北师大珠海校区程序设计竞赛社',
-    tags: ['社团'],
-  },
+    name: 'Dragon',
+    url: 'https://cjl20050909.github.io/acade-site/',
+    description: '财税政策评估、发展经济学应用、微观计量经济学',
+    tags: ['FIT'],
+  }
 ];
 
 /** 申请友链时给对方看到的本站信息 */

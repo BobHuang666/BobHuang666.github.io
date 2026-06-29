@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useInView } from '../hooks/useInView';
 
 interface DayCell {
   date: string;
@@ -32,6 +33,7 @@ const SCHEME_LIGHT: Record<string, [string, string, string, string, string]> = {
  * 该 API 无需 token，CORS 友好，免费
  */
 const GitHubHeatmap = ({ username, colorScheme = 'indigo' }: Props) => {
+  const { ref, inView } = useInView();
   const [days, setDays] = useState<DayCell[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [loading, setLoading] = useState(true);
@@ -43,14 +45,13 @@ const GitHubHeatmap = ({ username, colorScheme = 'indigo' }: Props) => {
     const observer = new MutationObserver(() => {
       setIsDark(document.documentElement.classList.contains('dark'));
     });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
   }, []);
 
+  // 进入视口后才发起请求
   useEffect(() => {
+    if (!inView) return;
     let ignore = false;
     setLoading(true);
     fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`)
@@ -70,11 +71,11 @@ const GitHubHeatmap = ({ username, colorScheme = 'indigo' }: Props) => {
         if (!ignore) setLoading(false);
       });
     return () => { ignore = true; };
-  }, [username]);
+  }, [username, inView]);
 
-  if (loading) {
+  if (!inView || loading) {
     return (
-      <div className="card-base p-6 animate-pulse">
+      <div ref={ref} className="card-base p-6 animate-pulse">
         <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/3 mb-4" />
         <div className="grid grid-cols-[repeat(53,minmax(0,1fr))] gap-[2px]">
           {Array.from({ length: 53 * 7 }).map((_, i) => (
@@ -87,7 +88,7 @@ const GitHubHeatmap = ({ username, colorScheme = 'indigo' }: Props) => {
 
   if (error || days.length === 0) {
     return (
-      <div className="card-base p-6 text-center text-sm text-slate-500 dark:text-slate-400">
+      <div ref={ref} className="card-base p-6 text-center text-sm text-slate-500 dark:text-slate-400">
         <p className="mb-1">热力图加载失败</p>
         <p className="text-xs text-slate-400">{error}</p>
         <a
@@ -129,7 +130,7 @@ const GitHubHeatmap = ({ username, colorScheme = 'indigo' }: Props) => {
   const height = 7 * (cellSize + cellGap);
 
   return (
-    <div className="card-base p-5 md:p-6">
+    <div ref={ref} className="card-base p-5 md:p-6">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div>
           <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">

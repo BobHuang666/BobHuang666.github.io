@@ -34,6 +34,18 @@ const LAZY_PATTERNS = [
   /giscus/i,
   /timeline-definition/i,
   /chunk-/i, // mermaid 内部子 chunk
+  /AiAssistant/i, // AI 助手，懒加载
+  /MouseParticles/i, // 鼠标粒子，懒加载
+  // mermaid 内部工具 chunk（不含 "mermaid"/"Diagram" 关键词，需单独列出）
+  /mindmap/i,
+  /kanban/i,
+  /dagre/i,
+  /defaultLocale/i,
+  /SearchPalette/i, // 搜索面板，按需弹出
+  // 路由懒加载的页面 chunk（React.lazy，非首屏）
+  /Page[^a-z]/,
+  /ProjectDetail/i,
+  /SeriesDetail/i,
 ]
 
 if (!existsSync(ASSETS)) {

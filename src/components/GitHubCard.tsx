@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Github, Star, GitFork, BookOpen, Users } from 'lucide-react';
+import { useInView } from '../hooks/useInView';
 
 interface GitHubUser {
   login: string;
@@ -41,12 +42,15 @@ const LANG_COLORS: Record<string, string> = {
 };
 
 const GitHubCard = ({ username }: Props) => {
+  const { ref, inView } = useInView();
   const [user, setUser] = useState<GitHubUser | null>(null);
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // 进入视口后才发起请求，避免首屏白白消耗网络
   useEffect(() => {
+    if (!inView) return;
     let ignore = false;
     setLoading(true);
 
@@ -63,7 +67,6 @@ const GitHubCard = ({ username }: Props) => {
       .then(([u, rs]: [GitHubUser, GitHubRepo[]]) => {
         if (ignore) return;
         setUser(u);
-        // 过滤 fork，按 star 排序取前 4
         const topRepos = (rs ?? [])
           .filter((r) => !r.fork)
           .sort((a, b) => b.stargazers_count - a.stargazers_count)
@@ -78,11 +81,11 @@ const GitHubCard = ({ username }: Props) => {
       });
 
     return () => { ignore = true; };
-  }, [username]);
+  }, [username, inView]);
 
-  if (loading) {
+  if (!inView || loading) {
     return (
-      <div className="card-base p-6 animate-pulse">
+      <div ref={ref} className="card-base p-6 animate-pulse">
         <div className="flex items-center gap-4 mb-4">
           <div className="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-700" />
           <div className="flex-1 space-y-2">
@@ -98,7 +101,7 @@ const GitHubCard = ({ username }: Props) => {
 
   if (error || !user) {
     return (
-      <div className="card-base p-6 text-center">
+      <div ref={ref} className="card-base p-6 text-center">
         <Github className="h-8 w-8 mx-auto text-slate-400 mb-2" />
         <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">
           GitHub 数据加载失败
@@ -119,7 +122,7 @@ const GitHubCard = ({ username }: Props) => {
   }
 
   return (
-    <div className="card-base p-6">
+    <div ref={ref} className="card-base p-6">
       <div className="flex items-start gap-4 mb-5">
         <img
           src={user.avatar_url}

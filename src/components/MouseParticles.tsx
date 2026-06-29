@@ -13,8 +13,8 @@ interface Particle {
   lit: number;
 }
 
-const SPAWN_COUNT = 4;
-const BASE_RADIUS = 3.5;
+const SPAWN_COUNT = 2;        // 减少每帧生成数量
+const BASE_RADIUS = 2.5;      // 缩小粒子半径
 const HUES_LIGHT = [250, 270, 290, 330, 210]; // indigo / violet / pink / blue
 const HUES_DARK  = [190, 210, 260, 170, 220];  // cyan / blue / purple / teal
 
@@ -40,8 +40,8 @@ const MouseParticles = () => {
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed - 0.8, // 微微上浮
         r: Math.random() * BASE_RADIUS + 1.5,
-        alpha: Math.random() * 0.5 + 0.5,
-        decay: Math.random() * 0.018 + 0.022,
+        alpha: Math.random() * 0.25 + 0.2,  // 初始透明度降至 0.2~0.45
+        decay: Math.random() * 0.022 + 0.028, // 衰减更快，寿命更短
         hue: hues[Math.floor(Math.random() * hues.length)],
         sat: darkRef.current ? 90 : 75,
         lit: darkRef.current ? 70 : 58,
@@ -110,7 +110,7 @@ const MouseParticles = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-[9999] pointer-events-none"
+      className="fixed inset-0 z-[50] pointer-events-none"
       aria-hidden="true"
     />
   );

@@ -64,16 +64,33 @@ export default defineConfig({
         // SW 安装后立即激活，不等待旧 SW 卸载
         skipWaiting: true,
         clientsClaim: true,
-        // 预缓存：JS/CSS/HTML + 本地图片，排除大体积按需资源
+        // 预缓存：关键 JS/CSS/HTML + 图片，排除所有大体积按需 chunk
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,avif}'],
         globIgnores: [
+          '**/workbox-*',
+          // mermaid / 图表类（各自 100~600KB gzip）
           '**/mermaid*',
           '**/cytoscape*',
           '**/katex*',
           '**/*Diagram*',
           '**/cose-bilkent*',
           '**/wardley*',
-          '**/workbox-*',
+          '**/dagre*',
+          '**/mindmap*',
+          '**/kanban*',
+          '**/timeline-definition*',
+          '**/defaultLocale*',
+          // 路由懒加载页面
+          '**/*Page*',
+          '**/ProjectDetail*',
+          '**/SeriesDetail*',
+          // 其他按需组件
+          '**/markdown*',
+          '**/giscus*',
+          '**/AiAssistant*',
+          '**/MouseParticles*',
+          '**/SearchPalette*',
+          '**/chunk-*',
         ],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         runtimeCaching: [

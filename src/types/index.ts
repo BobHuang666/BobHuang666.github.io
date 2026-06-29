@@ -1,4 +1,7 @@
-import type { LucideIcon } from 'lucide-react';
+export type { LucideIcon } from 'lucide-react';
+
+/** lucide 图标名称字符串，供数据层使用（组件层通过 ICON_MAP 解析） */
+export type IconName = string;
 
 export interface Project {
   id: string;
@@ -37,13 +40,13 @@ export interface ProjectDetailData extends Project {
 
 export interface SkillCategory {
   name: string;
-  icon: LucideIcon;
+  icon: IconName;
   skills: string[];
 }
 
 export interface SkillDetailCategory {
   category: string;
-  icon: LucideIcon;
+  icon: IconName;
   skills: {
     name: string;
     level: number;          // 0-100，仅用于排序参考
@@ -62,7 +65,7 @@ export interface Award {
   level: '国际级' | '国家级' | '省级' | '校级' | '院系级';
   description: string;
   rank?: string;
-  icon: LucideIcon;
+  icon: IconName;
   color?: string;
 }
 

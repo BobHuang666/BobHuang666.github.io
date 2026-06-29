@@ -1,11 +1,8 @@
-import {
-  Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal
-} from 'lucide-react';
 import type { Award as AwardType } from '../types';
 
 /**
  * 奖项数据 - 单一数据源，被 HomePage / ProfilePage 共用
- * 数据来源：profile.md
+ * icon 使用字符串 key，组件层通过 AWARD_ICON_MAP 解析，避免数据层引入 lucide 依赖
  */
 export const awards: AwardType[] = [
   {
@@ -15,7 +12,7 @@ export const awards: AwardType[] = [
     level: '国际级',
     description:
       '全球顶级合成生物学竞赛，负责团队 Wiki 前端开发，获最佳 Wiki 提名，整体团队入围全球 TOP10',
-    icon: Trophy,
+    icon: 'Trophy',
     color: 'from-yellow-500 to-amber-500',
   },
   {
@@ -24,7 +21,7 @@ export const awards: AwardType[] = [
     year: '2024',
     level: '国家级',
     description: 'ACM-ICPC 是全球公认含金量最高的算法竞赛',
-    icon: Code2,
+    icon: 'Code2',
     color: 'from-purple-500 to-pink-500',
   },
   {
@@ -33,7 +30,7 @@ export const awards: AwardType[] = [
     year: '2024',
     level: '国家级',
     description: '面向高校的大型团体程序设计赛事',
-    icon: Users,
+    icon: 'Users',
     color: 'from-cyan-500 to-blue-500',
   },
   {
@@ -42,7 +39,7 @@ export const awards: AwardType[] = [
     year: '2025',
     level: '国家级',
     description: '第十六届蓝桥杯 C/C++ 大学 A 组全国总决赛',
-    icon: Medal,
+    icon: 'Medal',
     color: 'from-blue-500 to-indigo-500',
   },
   {
@@ -51,7 +48,7 @@ export const awards: AwardType[] = [
     year: '2024',
     level: '省级',
     description: '广东省内程序设计竞赛认可，团队赛事',
-    icon: Code2,
+    icon: 'Code2',
     color: 'from-emerald-500 to-teal-500',
   },
   {
@@ -60,7 +57,7 @@ export const awards: AwardType[] = [
     year: '2024',
     level: '省级',
     description: '算法竞赛区域赛二等奖，展示算法设计与编程能力',
-    icon: Brain,
+    icon: 'Brain',
     color: 'from-indigo-500 to-purple-500',
   },
   {
@@ -69,7 +66,7 @@ export const awards: AwardType[] = [
     year: '2024',
     level: '省级',
     description: '北京地区高校间数学建模联赛一等奖',
-    icon: BookOpen,
+    icon: 'BookOpen',
     color: 'from-rose-500 to-pink-500',
   },
   {
@@ -78,7 +75,7 @@ export const awards: AwardType[] = [
     year: '2024',
     level: '省级',
     description: '国家级竞赛省级评奖，数学建模与问题解决能力',
-    icon: Users,
+    icon: 'Users',
     color: 'from-indigo-500 to-blue-500',
   },
   {
@@ -87,7 +84,7 @@ export const awards: AwardType[] = [
     year: '2023',
     level: '省级',
     description: '中国数学会主办的全国性数学竞赛',
-    icon: Brain,
+    icon: 'Brain',
     color: 'from-amber-500 to-orange-500',
   },
   {
@@ -96,7 +93,7 @@ export const awards: AwardType[] = [
     year: '2024',
     level: '国家级',
     description: 'CCF 软件能力认证，全国前 2.72%',
-    icon: Star,
+    icon: 'Star',
     color: 'from-violet-500 to-purple-500',
   },
   {
@@ -105,7 +102,7 @@ export const awards: AwardType[] = [
     year: '2025',
     level: '校级',
     description: '校内程序设计大赛最高荣誉，体现编程实力',
-    icon: Trophy,
+    icon: 'Trophy',
     color: 'from-red-500 to-rose-500',
   },
   {
@@ -114,7 +111,7 @@ export const awards: AwardType[] = [
     year: '2025',
     level: '校级',
     description: '政府采购与新质生产力发展研究论文',
-    icon: BookOpen,
+    icon: 'BookOpen',
     color: 'from-green-500 to-emerald-500',
   },
   {
@@ -123,7 +120,7 @@ export const awards: AwardType[] = [
     year: '2024',
     level: '校级',
     description: '北京师范大学优秀学生奖学金',
-    icon: Award,
+    icon: 'Award',
     color: 'from-yellow-500 to-amber-500',
   },
   {
@@ -132,7 +129,7 @@ export const awards: AwardType[] = [
     year: '2025',
     level: '院系级',
     description: '在学生工作中表现优异获得的院系级表彰',
-    icon: Users,
+    icon: 'Users',
     color: 'from-teal-500 to-cyan-500',
   },
   {
@@ -141,7 +138,7 @@ export const awards: AwardType[] = [
     year: '2024',
     level: '院系级',
     description: '社会实践活动中表现优异获得的表彰',
-    icon: Star,
+    icon: 'Star',
     color: 'from-pink-500 to-rose-500',
   },
 ];

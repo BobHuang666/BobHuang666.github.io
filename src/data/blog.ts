@@ -1,5 +1,7 @@
 import type { BlogPost } from '../types';
 
+export type BlogMeta = Omit<BlogPost, 'content'>;
+
 /**
  * 智能阅读时间估算
  * - 中文字符：350 字/分钟
@@ -106,6 +108,10 @@ const posts: BlogPost[] = Object.entries(modules)
   .sort((a, b) => (a.publishDate < b.publishDate ? 1 : -1));
 
 export const blogData: BlogPost[] = posts;
+
+/** 不含正文的轻量元数据，供首页/列表页使用 */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const blogMeta: BlogMeta[] = posts.map(({ content: _content, ...rest }) => rest);
 
 export function getPost(id: string): BlogPost | undefined {
   return posts.find((p) => p.id === id);

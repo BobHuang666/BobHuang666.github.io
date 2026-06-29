@@ -4,8 +4,15 @@ import {
   Heart, Plane, Music, Gamepad2, Brain, Users,
   Github, Star, Clock, Briefcase, FlaskConical, CreditCard,
   LayoutGrid, AlignLeft,
+  Trophy, Medal, Globe, Database, Shield,
+  type LucideIcon,
 } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+
+/** awards.ts / skills.ts icon 字符串 → lucide 组件映射 */
+const ICON_MAP: Record<string, LucideIcon> = {
+  Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal,
+  Globe, Database, Shield,
+};
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { profile } from '../data/profile';
@@ -232,7 +239,7 @@ function SkillsTab() {
         <div className="space-y-8">
           {skillsDetail.map((cat) => (
             <div key={cat.category}>
-              <SectionHeading icon={cat.icon} title={cat.category} />
+              <SectionHeading icon={ICON_MAP[cat.icon] ?? Code2} title={cat.category} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {cat.skills.map((skill) => (
                   <div
@@ -350,7 +357,7 @@ function AwardsTab() {
             >
               <div className="flex items-start mb-3">
                 <div className={`shrink-0 w-11 h-11 rounded-lg bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'} flex items-center justify-center mr-3 shadow`}>
-                  <award.icon className="h-5 w-5 text-white" />
+                  {(() => { const Icon = ICON_MAP[award.icon] ?? Trophy; return <Icon className="h-5 w-5 text-white" />; })()}
                 </div>
                 <div className="min-w-0">
                   <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">
@@ -400,7 +407,7 @@ function AwardsTab() {
                     <div className="ml-2 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
                       <div className="flex items-start gap-3">
                         <div className={`shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'} flex items-center justify-center shadow`}>
-                          <award.icon className="h-4 w-4 text-white" />
+                          {(() => { const Icon = ICON_MAP[award.icon] ?? Trophy; return <Icon className="h-4 w-4 text-white" />; })()}
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">

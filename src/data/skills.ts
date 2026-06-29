@@ -1,26 +1,26 @@
-import { Code2, Globe, Database, Shield } from 'lucide-react';
 import type { SkillCategory, SkillDetailCategory, Course, Experience, Research } from '../types';
 
+// icon 使用字符串 key，组件层通过 SKILL_ICON_MAP 解析
 // 首页用：简略技能栈
 export const techStack: SkillCategory[] = [
   {
     name: '编程语言',
-    icon: Code2,
+    icon: 'Code2',
     skills: ['C/C++', 'Python', 'TypeScript', 'JavaScript', 'Go'],
   },
   {
     name: '前端开发',
-    icon: Globe,
+    icon: 'Globe',
     skills: ['Vue 3', 'React', 'uni-app', 'HTML/CSS', 'SCSS', '响应式'],
   },
   {
     name: '后端 & 数据',
-    icon: Database,
+    icon: 'Database',
     skills: ['Go', 'Python', 'MySQL', '大数据处理', 'API 设计'],
   },
   {
     name: '工具 & 工程化',
-    icon: Shield,
+    icon: 'Shield',
     skills: ['Git', 'Linux', '敏捷开发', 'AI 工具链', '算法'],
   },
 ];
@@ -30,7 +30,7 @@ export const techStack: SkillCategory[] = [
 export const skillsDetail: SkillDetailCategory[] = [
   {
     category: '编程语言',
-    icon: Code2,
+    icon: 'Code2',
     skills: [
       {
         name: 'C/C++', level: 95, stars: 5, note: '算法竞赛核心语言', color: 'from-blue-500 to-blue-600',
@@ -59,7 +59,7 @@ export const skillsDetail: SkillDetailCategory[] = [
   },
   {
     category: '前端开发',
-    icon: Globe,
+    icon: 'Globe',
     skills: [
       {
         name: 'Vue 3', level: 90, stars: 5, note: '实习 + 挑战杯', color: 'from-green-500 to-emerald-600',
@@ -85,7 +85,7 @@ export const skillsDetail: SkillDetailCategory[] = [
   },
   {
     category: '后端 & 数据',
-    icon: Database,
+    icon: 'Database',
     skills: [
       {
         name: 'Go (Gin)', level: 70, stars: 3, note: '了解 + 实战', color: 'from-cyan-500 to-cyan-600',
@@ -99,7 +99,7 @@ export const skillsDetail: SkillDetailCategory[] = [
   },
   {
     category: '工具 & 工程化',
-    icon: Shield,
+    icon: 'Shield',
     skills: [
       { name: 'Git / GitHub', level: 90, stars: 5, note: '熟练协作', color: 'from-orange-500 to-orange-600' },
       { name: 'Linux', level: 80, stars: 4, note: '日常开发环境', color: 'from-yellow-500 to-yellow-600' },
