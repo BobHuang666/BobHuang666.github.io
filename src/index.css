@@ -6,6 +6,17 @@
 @tailwind utilities;
 
 
+/* ============ View Transition — 暗色模式圆形擦除动画 ============ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* 旧画面直接静止，新画面从圆形 clip-path 展开（由 JS 控制） */
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 9999; }
+
 /* ============ Global Base ============ */
 html {
   scroll-behavior: smooth;

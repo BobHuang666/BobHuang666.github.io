@@ -5,6 +5,7 @@ import {
   Layers, Sparkles, Wrench, Heart, UsersRound,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
@@ -134,6 +135,37 @@ const Navigation = () => {
         : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
     }`;
 
+  /** 带滑动下划线的 NavLink 包装 */
+  const AnimatedNavLink = ({ to, end, label, anchor }: { to: string; end?: boolean; label: string; anchor?: string }) => {
+    if (anchor) {
+      return (
+        <a
+          href="#/"
+          onClick={(e) => handleAnchorClick(e, anchor)}
+          className="relative px-2 py-1 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+        >
+          {label}
+        </a>
+      );
+    }
+    return (
+      <NavLink to={to} end={end} className={navItemClass}>
+        {({ isActive }) => (
+          <>
+            {label}
+            {isActive && (
+              <motion.span
+                layoutId="nav-underline"
+                className="absolute inset-x-0 -bottom-[1px] h-0.5 rounded-full bg-indigo-600 dark:bg-indigo-400"
+                transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+              />
+            )}
+          </>
+        )}
+      </NavLink>
+    );
+  };
+
   // 判断 "更多" 是否处于激活状态
   const isMoreActive = MORE_ITEMS.some((m) => location.pathname.startsWith(m.to));
 
@@ -164,27 +196,15 @@ const Navigation = () => {
 
           {/* Desktop */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-7">
-            {MAIN_ITEMS.map((item) =>
-              item.anchor ? (
-                <a
-                  key={item.i18nKey}
-                  href="#/"
-                  onClick={(e) => handleAnchorClick(e, item.anchor)}
-                  className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                >
-                  {t(item.i18nKey)}
-                </a>
-              ) : (
-                <NavLink
-                  key={item.i18nKey}
-                  to={item.to}
-                  end={item.end}
-                  className={navItemClass}
-                >
-                  {t(item.i18nKey)}
-                </NavLink>
-              ),
-            )}
+            {MAIN_ITEMS.map((item) => (
+              <AnimatedNavLink
+                key={item.i18nKey}
+                to={item.to}
+                end={item.end}
+                label={t(item.i18nKey)}
+                anchor={item.anchor}
+              />
+            ))}
 
             {/* "更多" 下拉 */}
             <div className="relative" ref={moreRef}>
@@ -193,7 +213,7 @@ const Navigation = () => {
                 onClick={() => setIsMoreOpen((v) => !v)}
                 aria-haspopup="menu"
                 aria-expanded={isMoreOpen}
-                className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${
+                className={`relative inline-flex items-center gap-1 px-2 py-1 text-sm font-medium transition-colors ${
                   isMoreActive || isMoreOpen
                     ? 'text-indigo-600 dark:text-indigo-400'
                     : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
@@ -201,6 +221,13 @@ const Navigation = () => {
               >
                 {t('nav.more')}
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
+                {isMoreActive && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute inset-x-0 -bottom-[1px] h-0.5 rounded-full bg-indigo-600 dark:bg-indigo-400"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                  />
+                )}
               </button>
 
               {isMoreOpen && (

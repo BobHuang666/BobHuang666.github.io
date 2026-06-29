@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Mail, Link2, Copy, Check, Github } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { friends, myLinkCard } from '../data/friends';
 import { profile } from '../data/profile';
 import { RelatedLink } from '../components/RelatedLink';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const FriendsPage = () => {
   const [copied, setCopied] = useState(false);
+  const { t } = useTranslation();
+  usePageMeta(t('friends.heading'));
 
   const myCardText = `Name: ${myLinkCard.name}
 URL: ${myLinkCard.url}
@@ -38,13 +42,13 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
         >
           <div className="flex items-center gap-2 mb-3 text-sm text-slate-500 dark:text-slate-400">
             <Link2 className="h-4 w-4" />
-            Friends · 友情链接
+            {t('friends.subtitle')}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
-            友人帐
+            {t('friends.heading')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
-            一些让我变得更好的人，与一些让我看见世界其他角度的网站。
+            {t('friends.desc')}
           </p>
         </motion.div>
 
@@ -90,10 +94,10 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
         >
           <h2 className="flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
             <Heart className="h-5 w-5 text-rose-500" />
-            申请友链
+            {t('friends.apply')}
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 mb-5 leading-relaxed">
-            欢迎技术友人 / 同好交换链接。建议双方先把对方放在自己站点，然后填写下面信息发邮件给我。
+            {t('friends.applyDesc')}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -101,14 +105,14 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
             <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  我的友链卡片
+                  {t('friends.myCard')}
                 </h3>
                 <button
                   onClick={copyCard}
                   className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-900/60 transition-colors"
                 >
                   {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                  {copied ? '已复制' : '复制'}
+                  {copied ? t('friends.copied') : t('friends.copy')}
                 </button>
               </div>
               <pre className="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-mono">{myCardText}</pre>
@@ -117,17 +121,17 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
             {/* 申请方式 */}
             <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800">
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
-                申请方式
+                {t('friends.howToApply')}
               </h3>
               <ol className="text-sm text-slate-700 dark:text-slate-300 space-y-2 list-decimal list-inside mb-4">
-                <li>把上面的卡片信息放到你的网站友链页</li>
-                <li>给我发邮件 / GitHub Issue 告知</li>
-                <li>我会尽快加上你的链接 ✨</li>
+                <li>{t('friends.step1')}</li>
+                <li>{t('friends.step2')}</li>
+                <li>{t('friends.step3')}</li>
               </ol>
               <div className="flex flex-wrap gap-2">
                 {mailto && (
                   <a href={mailto} className="btn-primary text-sm py-2 px-3">
-                    <Mail className="h-3.5 w-3.5 mr-1.5" /> 发邮件申请
+                    <Mail className="h-3.5 w-3.5 mr-1.5" /> {t('friends.mailBtn')}
                   </a>
                 )}
                 {profile.github && (
@@ -137,7 +141,7 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
                     rel="noopener noreferrer"
                     className="inline-flex items-center px-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    <Github className="h-3.5 w-3.5 mr-1.5" /> 提 Issue
+                    <Github className="h-3.5 w-3.5 mr-1.5" /> {t('friends.issueBtn')}
                   </a>
                 )}
               </div>
@@ -146,8 +150,8 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
         </motion.section>
 
         <div className="mt-10 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <RelatedLink to="/blog" emoji="📝" title="游戏攻略" desc="读读我写的文章" />
-          <RelatedLink to="/now" emoji="✨" title="当前动态" desc="我最近在做什么" />
+          <RelatedLink to="/blog" emoji="📝" title={t('nav.blog')} desc="读读我写的文章" />
+          <RelatedLink to="/now" emoji="✨" title={t('nav.now')} desc="我最近在做什么" />
         </div>
       </div>
     </div>

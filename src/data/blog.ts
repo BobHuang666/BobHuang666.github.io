@@ -1,6 +1,33 @@
 import type { BlogPost } from '../types';
 
 /**
+ * 智能阅读时间估算
+ * - 中文字符：350 字/分钟
+ * - 英文单词：200 词/分钟
+ * - 先剥离 Markdown 语法再统计
+ */
+function estimateReadTime(raw: string): number {
+  // 剥离代码块、Front-Matter 残留、HTML 标签、Markdown 符号
+  const text = raw
+    .replace(/```[\s\S]*?```/g, '')   // 代码块
+    .replace(/`[^`]+`/g, '')          // 行内代码
+    .replace(/!\[.*?\]\(.*?\)/g, '')   // 图片
+    .replace(/\[.*?\]\(.*?\)/g, '')    // 链接
+    .replace(/^#{1,6}\s/gm, '')        // 标题
+    .replace(/[*_~>#|-]+/g, ' ')       // 强调/引用/表格等符号
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  // 中文字符数
+  const zhChars = (text.match(/[\u4e00-\u9fa5\u3400-\u4dbf]/g) ?? []).length;
+  // 英文单词数（连续字母/数字序列）
+  const enWords = (text.match(/[a-zA-Z0-9]+/g) ?? []).length;
+
+  const minutes = zhChars / 350 + enWords / 200;
+  return Math.max(1, Math.round(minutes));
+}
+
+/**
  * 极简浏览器友好的 Front-Matter 解析器。
  * 仅支持 YAML 子集：string / number / boolean / 数组（[a, b, c] 或 - 行 列表）
  */
@@ -70,7 +97,7 @@ const posts: BlogPost[] = Object.entries(modules)
       category: (data.category as string) ?? '未分类',
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
       publishDate: (data.date as string) ?? '',
-      readTime: typeof data.readTime === 'number' ? data.readTime : Math.max(1, Math.ceil(content.length / 600)),
+      readTime: typeof data.readTime === 'number' ? data.readTime : estimateReadTime(content),
       author: (data.author as string) ?? 'Bob Huang',
       coverImage: (data.cover as string) || undefined,
       isDraft: Boolean(data.draft),

@@ -31,6 +31,8 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
+      // 新 SW 安装后立即接管，无需等待用户刷新
+      injectRegister: 'auto',
       includeAssets: ['static/img/red-logo.ico', 'static/img/avatar.jpg'],
       manifest: {
         name: 'BobHuang 个人主页',
@@ -56,10 +58,14 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // mode: 'development' 可规避 workbox-build terser 插件在 rollup 环境中的冲突
         mode: 'development',
         disableDevLogs: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp}'],
-        // Mermaid / katex 体积大，不预缓存（按需加载即可）
+        // SW 安装后立即激活，不等待旧 SW 卸载
+        skipWaiting: true,
+        clientsClaim: true,
+        // 预缓存：JS/CSS/HTML + 本地图片，排除大体积按需资源
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,avif}'],
         globIgnores: [
           '**/mermaid*',
           '**/cytoscape*',
@@ -67,24 +73,60 @@ export default defineConfig({
           '**/*Diagram*',
           '**/cose-bilkent*',
           '**/wardley*',
+          '**/workbox-*',
         ],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         runtimeCaching: [
+          // ① 导航请求（HTML）：NetworkFirst，离线时返回缓存
+          {
+            urlPattern: ({ request }: { request: Request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'pages-cache',
+              networkTimeoutSeconds: 5,
+              expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // ② GitHub REST API：NetworkFirst，30 分钟缓存
           {
             urlPattern: /^https:\/\/api\.github\.com\/.*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'github-api-cache',
+              networkTimeoutSeconds: 8,
               expiration: { maxEntries: 20, maxAgeSeconds: 60 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
+          // ③ GitHub 贡献热力图 API：NetworkFirst，6 小时缓存
           {
             urlPattern: /^https:\/\/github-contributions-api\.jogruber\.de\/.*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'github-contributions-cache',
+              networkTimeoutSeconds: 8,
               expiration: { maxEntries: 5, maxAgeSeconds: 60 * 60 * 6 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // ④ 外部字体（Google Fonts / CDN）：StaleWhileRevalidate
+          {
+            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // ⑤ 本站静态图片（/static/img/）：CacheFirst，30 天
+          {
+            urlPattern: /\/static\/img\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'static-images-cache',
+              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },

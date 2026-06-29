@@ -4,6 +4,8 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
+import ScrollToTopButton from './components/ScrollToTopButton';
+import { PageSkeleton } from './components/Skeleton';
 
 // 首页常驻，详情页全部懒加载
 import HomePage from './pages/HomePage';
@@ -19,15 +21,6 @@ const FriendsPage = lazy(() => import('./pages/FriendsPage'));
 const FandomPage = lazy(() => import('./pages/FandomPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
-const PageLoading = () => (
-  <div className="min-h-[60vh] flex items-center justify-center">
-    <div className="flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400">
-      <div className="w-10 h-10 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-      <span className="text-sm">载入副本中…</span>
-    </div>
-  </div>
-);
-
 function App() {
   return (
     <ThemeProvider>
@@ -36,7 +29,7 @@ function App() {
           <div className="min-h-screen flex flex-col">
             <Navigation />
             <main className="flex-1 pt-16">
-              <Suspense fallback={<PageLoading />}>
+              <Suspense fallback={<PageSkeleton />}>
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/profile" element={<ProfilePage />} />
@@ -55,6 +48,7 @@ function App() {
             </main>
             <Footer />
           </div>
+          <ScrollToTopButton />
         </Router>
       </ErrorBoundary>
     </ThemeProvider>

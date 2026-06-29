@@ -13,6 +13,8 @@ export interface Series {
   matchTags: string[];
   color: string;
   icon: '⚔️' | '📚' | '🧪' | '🎯' | '🤖' | '✈️';
+  /** 可选封面图路径（相对 public 根），留空则展示渐变色块 */
+  coverImage?: string;
 }
 
 export const series: Series[] = [

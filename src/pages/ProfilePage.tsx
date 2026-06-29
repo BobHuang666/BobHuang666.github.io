@@ -3,13 +3,17 @@ import {
   Mail, MapPin, Calendar, GraduationCap, Code2, Award, BookOpen,
   Heart, Plane, Music, Gamepad2, Brain, Users,
   Github, Star, Clock, Briefcase, FlaskConical, CreditCard,
+  LayoutGrid, AlignLeft,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { profile } from '../data/profile';
 import { awards } from '../data/awards';
 import { skillsDetail, courses, experiences, studentWork, research } from '../data/skills';
 import { RelatedLink } from '../components/RelatedLink';
+import SkillRadar from '../components/SkillRadar';
+import Avatar from '../components/Avatar';
 
 type TabId = 'basic' | 'skills' | 'awards' | 'courses' | 'experience' | 'research' | 'interests';
 
@@ -18,6 +22,16 @@ interface TabDef {
   name: string;
   icon: LucideIcon;
 }
+
+const TAB_KEYS: Record<TabId, string> = {
+  basic: 'profile.tabBasic',
+  skills: 'profile.tabSkills',
+  awards: 'profile.tabAwards',
+  experience: 'profile.tabExp',
+  research: 'profile.tabResearch',
+  courses: 'profile.tabCourses',
+  interests: 'profile.tabInterests',
+};
 
 const TABS: TabDef[] = [
   { id: 'basic', name: '基本信息', icon: CreditCard },
@@ -31,6 +45,7 @@ const TABS: TabDef[] = [
 
 function ProfilePage() {
   const [activeTab, setActiveTab] = useState<TabId>('basic');
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
@@ -43,20 +58,12 @@ function ProfilePage() {
           className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 md:p-8 mb-6 border border-slate-200 dark:border-slate-800"
         >
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
-            <div className="relative shrink-0">
-              <img
-                src={profile.avatar}
-                alt={profile.name}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="128" height="128" fill="%236366f1"/><text x="50%25" y="55%25" font-size="48" fill="white" text-anchor="middle" font-family="sans-serif">BH</text></svg>';
-                }}
-                className="w-28 h-28 md:w-32 md:h-32 rounded-full object-cover border-4 border-white dark:border-slate-800 shadow-lg"
-              />
-              <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-green-500 rounded-full border-4 border-white dark:border-slate-800 flex items-center justify-center">
-                <div className="w-2 h-2 bg-white rounded-full" />
-              </div>
-            </div>
+            <Avatar
+              src={profile.avatar}
+              name={profile.name}
+              size="lg"
+              showStatus
+            />
             <div className="flex-1 text-center md:text-left">
               <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">
                 {profile.name} <span className="text-slate-500 dark:text-slate-400 font-medium">/ {profile.nameZh}</span>
@@ -90,7 +97,7 @@ function ProfilePage() {
                 }`}
               >
                 <tab.icon className="h-4 w-4" />
-                {tab.name}
+                {t(TAB_KEYS[tab.id], tab.name)}
               </button>
             ))}
           </div>
@@ -176,53 +183,100 @@ const InfoLine = ({ label, value }: { label: string; value: string }) => (
 
 // ============ Skills ============
 function SkillsTab() {
+  const { t } = useTranslation();
+  const [view, setView] = useState<'list' | 'radar'>('list');
+
+  // 雷达图数据：从每个类别里选最高分技能，最多 8 个
+  const radarItems = skillsDetail.flatMap((cat) =>
+    cat.skills.slice(0, 2).map((s) => ({ label: s.name, value: s.level })),
+  ).slice(0, 8);
+
   return (
-    <div className="space-y-8">
-      {skillsDetail.map((cat) => (
-        <div key={cat.category}>
-          <SectionHeading icon={cat.icon} title={cat.category} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {cat.skills.map((skill) => (
-              <div
-                key={skill.name}
-                className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-5 hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-semibold text-slate-900 dark:text-slate-100">{skill.name}</span>
-                  <Stars count={skill.stars ?? Math.round((skill.level / 100) * 5)} />
-                </div>
-                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mb-3 overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${skill.level}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
-                    className={`h-1.5 rounded-full bg-gradient-to-r ${skill.color}`}
-                  />
-                </div>
-                {skill.note && (
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{skill.note}</p>
-                )}
-                {skill.evidence && skill.evidence.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-200 dark:border-slate-700">
-                    {skill.evidence.map((ev) => (
-                      <a
-                        key={ev.href + ev.label}
-                        href={ev.href}
-                        target={ev.href.startsWith('http') ? '_blank' : undefined}
-                        rel={ev.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                        className="inline-flex items-center px-2 py-0.5 text-[10px] rounded-md bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-900/60 transition-colors"
-                      >
-                        {ev.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+    <div className="space-y-6">
+      <div className="flex justify-end">
+        <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
+          <button
+            onClick={() => setView('list')}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              view === 'list'
+                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+            }`}
+          >
+            <AlignLeft className="h-3.5 w-3.5" />
+            {t('profile.listView')}
+          </button>
+          <button
+            onClick={() => setView('radar')}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              view === 'radar'
+                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+            }`}
+          >
+            <LayoutGrid className="h-3.5 w-3.5" />
+            {t('profile.radarView')}
+          </button>
         </div>
-      ))}
+      </div>
+
+      {view === 'radar' ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex justify-center py-4"
+        >
+          <SkillRadar items={radarItems} size={320} />
+        </motion.div>
+      ) : (
+        <div className="space-y-8">
+          {skillsDetail.map((cat) => (
+            <div key={cat.category}>
+              <SectionHeading icon={cat.icon} title={cat.category} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {cat.skills.map((skill) => (
+                  <div
+                    key={skill.name}
+                    className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-5 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-semibold text-slate-900 dark:text-slate-100">{skill.name}</span>
+                      <Stars count={skill.stars ?? Math.round((skill.level / 100) * 5)} />
+                    </div>
+                    <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mb-3 overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${skill.level}%` }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                        className={`h-1.5 rounded-full bg-gradient-to-r ${skill.color}`}
+                      />
+                    </div>
+                    {skill.note && (
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{skill.note}</p>
+                    )}
+                    {skill.evidence && skill.evidence.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-200 dark:border-slate-700">
+                        {skill.evidence.map((ev) => (
+                          <a
+                            key={ev.href + ev.label}
+                            href={ev.href}
+                            target={ev.href.startsWith('http') ? '_blank' : undefined}
+                            rel={ev.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                            className="inline-flex items-center px-2 py-0.5 text-[10px] rounded-md bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-900/60 transition-colors"
+                          >
+                            {ev.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -243,45 +297,131 @@ const Stars = ({ count }: { count: number }) => {
 
 // ============ Awards ============
 function AwardsTab() {
+  const { t } = useTranslation();
+  const [view, setView] = useState<'card' | 'timeline'>('card');
+
+  // 按年份倒序分组
+  const byYear = awards.reduce<Record<string, typeof awards>>((acc, a) => {
+    (acc[a.year] ??= []).push(a);
+    return acc;
+  }, {});
+  const years = Object.keys(byYear).sort((a, b) => +b - +a);
+
   return (
     <div>
-      <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-        累计 {awards.length} 项荣誉 · 涵盖国际级、国家级、省级与校院级
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {awards.map((award) => (
-          <div
-            key={award.title}
-            className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+      <div className="flex items-center justify-between mb-6">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          累计 {awards.length} 项荣誉 · 涵盖国际级、国家级、省级与校院级
+        </p>
+        <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
+          <button
+            onClick={() => setView('card')}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              view === 'card'
+                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+            }`}
           >
-            <div className="flex items-start mb-3">
-              <div className={`shrink-0 w-11 h-11 rounded-lg bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'} flex items-center justify-center mr-3 shadow`}>
-                <award.icon className="h-5 w-5 text-white" />
-              </div>
-              <div className="min-w-0">
-                <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">
-                  {award.title}
-                </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
-                  {award.organization}
-                </p>
-              </div>
-            </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
-              {award.description}
-            </p>
-            <div className="flex items-center justify-between text-xs">
-              <span className="px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
-                {award.year} · {award.level}
-              </span>
-              {award.rank && (
-                <span className="text-slate-500 dark:text-slate-400">{award.rank}</span>
-              )}
-              {!award.rank && <Star className="h-4 w-4 text-yellow-500" />}
-            </div>
-          </div>
-        ))}
+            <LayoutGrid className="h-3.5 w-3.5" />
+            {t('profile.cardView')}
+          </button>
+          <button
+            onClick={() => setView('timeline')}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              view === 'timeline'
+                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+            }`}
+          >
+            <AlignLeft className="h-3.5 w-3.5" />
+            {t('profile.timelineView')}
+          </button>
+        </div>
       </div>
+
+      {view === 'card' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {awards.map((award) => (
+            <motion.div
+              key={award.title}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+            >
+              <div className="flex items-start mb-3">
+                <div className={`shrink-0 w-11 h-11 rounded-lg bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'} flex items-center justify-center mr-3 shadow`}>
+                  <award.icon className="h-5 w-5 text-white" />
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">
+                    {award.title}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
+                    {award.organization}
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
+                {award.description}
+              </p>
+              <div className="flex items-center justify-between text-xs">
+                <span className="px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
+                  {award.year} · {award.level}
+                </span>
+                {award.rank ? (
+                  <span className="text-slate-500 dark:text-slate-400">{award.rank}</span>
+                ) : (
+                  <Star className="h-4 w-4 text-yellow-500" />
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-10">
+          {years.map((year) => (
+            <motion.div
+              key={year}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400 tabular-nums">
+                  {year}
+                </span>
+                <div className="flex-1 h-px bg-slate-200 dark:bg-slate-700" />
+                <span className="text-xs text-slate-400">{byYear[year].length} 项</span>
+              </div>
+              <div className="relative pl-5 space-y-4 before:absolute before:left-1.5 before:top-0 before:bottom-0 before:w-px before:bg-slate-200 dark:before:bg-slate-700">
+                {byYear[year].map((award) => (
+                  <div key={award.title} className="relative">
+                    <div className={`absolute -left-5 top-3 w-3 h-3 rounded-full bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'} shadow`} />
+                    <div className="ml-2 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
+                      <div className="flex items-start gap-3">
+                        <div className={`shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'} flex items-center justify-center shadow`}>
+                          <award.icon className="h-4 w-4 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                            {award.title}
+                          </h4>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                            {award.organization} · <span className="text-indigo-600 dark:text-indigo-400">{award.level}</span>
+                          </p>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
+                            {award.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { useTranslation } from 'react-i18next';
 import {
-  Github, Mail, ArrowRight, Sparkles, ExternalLink, FileText,
+  Github, Mail, ArrowRight, Sparkles, ExternalLink, FileText, Copy, Check,
 } from 'lucide-react';
 import { profile } from '../data/profile';
 import { techStack } from '../data/skills';
@@ -17,6 +17,7 @@ import { HeroBackground } from '../components/HeroBackground';
 import { RelatedLink } from '../components/RelatedLink';
 import GitHubCard from '../components/GitHubCard';
 import GitHubHeatmap from '../components/GitHubHeatmap';
+import Avatar from '../components/Avatar';
 
 type AwardLevel = 'all' | '国际级' | '国家级' | '省级' | '校级' | '院系级';
 const AWARD_LEVELS: AwardLevel[] = ['all', '国际级', '国家级', '省级', '校级', '院系级'];
@@ -37,7 +38,17 @@ function HomePage() {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   const [awardFilter, setAwardFilter] = useState<AwardLevel>('all');
+  const [emailCopied, setEmailCopied] = useState(false);
   const featuredBlogs = blogData.filter((b) => !b.isDraft).slice(0, 3);
+
+  const copyEmail = async () => {
+    if (!profile.email) return;
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2000);
+    } catch { /* ignore */ }
+  };
 
   const filteredAwards = useMemo(() => {
     const list = awardFilter === 'all' ? awards : awards.filter((a) => a.level === awardFilter);
@@ -86,25 +97,13 @@ function HomePage() {
             transition={{ duration: 0.6 }}
             className="flex flex-col items-center mb-6"
           >
-            <div className="relative group">
-              {/* 旋转光环 */}
-              <div className="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-pink-400 via-amber-300 to-indigo-400 opacity-70 blur-md animate-[spin_8s_linear_infinite]" />
-              <img
-                src={profile.avatar}
-                alt={profile.name}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><circle cx="48" cy="48" r="48" fill="%23ffffff" fill-opacity="0.2"/><text x="50%25" y="58%25" font-size="36" fill="white" text-anchor="middle" font-family="sans-serif" font-weight="bold">BH</text></svg>';
-                }}
-                className="relative w-24 h-24 md:w-28 md:h-28 rounded-full ring-4 ring-white/70 shadow-2xl object-cover transition-transform duration-300 group-hover:scale-105"
-                loading="eager"
-                decoding="async"
-              />
-              {/* 在线指示 */}
-              <span className="absolute bottom-1 right-1 w-4 h-4 md:w-5 md:h-5 bg-green-400 rounded-full ring-2 ring-white shadow flex items-center justify-center">
-                <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-60" />
-              </span>
-            </div>
+            <Avatar
+              src={profile.avatar}
+              name={profile.name}
+              size="md"
+              showRing
+              showStatus
+            />
 
             {/* 状态文案 —— 紧贴头像下方 */}
             <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 backdrop-blur text-white/95 text-xs border border-white/20">
@@ -247,12 +246,14 @@ function HomePage() {
               <h2 className="section-title">{t('home.githubTitle')}</h2>
               <p className="section-subtitle">{t('home.githubSub')}</p>
             </SectionReveal>
-            <SectionReveal>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SectionReveal variant="slide-left">
                 <GitHubCard username={ghUsername} />
+              </SectionReveal>
+              <SectionReveal variant="slide-right" delay={0.08}>
                 <GitHubHeatmap username={ghUsername} />
-              </div>
-            </SectionReveal>
+              </SectionReveal>
+            </div>
           </div>
         </section>
       )}
@@ -266,7 +267,7 @@ function HomePage() {
           </SectionReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
-              <SectionReveal key={project.id} delay={index * 0.1}>
+              <SectionReveal key={project.id} variant="scale" delay={index * 0.1}>
                 <div className="group card-base overflow-hidden h-full flex flex-col">
                   <div className="relative h-44 overflow-hidden">
                     <SmartImage
@@ -335,7 +336,7 @@ function HomePage() {
           </SectionReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredBlogs.map((post, index) => (
-              <SectionReveal key={post.id} delay={index * 0.08}>
+              <SectionReveal key={post.id} variant="scale" delay={index * 0.08}>
                 <article
                   onClick={() => navigate(`/blog/${post.id}`)}
                   className="card-base p-6 h-full cursor-pointer group"
@@ -471,39 +472,73 @@ function HomePage() {
 
       {/* ============ Contact ============ */}
       <section id="contact" className="py-20 bg-white dark:bg-slate-950">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionReveal>
             <h2 className="section-title">{t('home.contactTitle')}</h2>
             <p className="section-subtitle">{t('home.contactSub')}</p>
+          </SectionReveal>
 
-            <div className="flex justify-center gap-4 mb-8">
-              {profile.github && (
-                <a
-                  href={profile.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white transition-colors"
-                  aria-label="GitHub"
+          <SectionReveal delay={0.1}>
+            {/* 渐变卡片 */}
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 p-px shadow-xl">
+              <div className="relative rounded-[15px] bg-white dark:bg-slate-900 px-8 py-10">
+                {/* 装饰光晕 */}
+                <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-pink-400/10 blur-3xl pointer-events-none" />
+
+                {/* 社交图标 */}
+                <div className="relative flex justify-center gap-4 mb-7">
+                  {profile.github && (
+                    <a
+                      href={profile.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub"
+                      className="group w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white hover:scale-110 transition-all shadow-sm"
+                    >
+                      <Github className="h-5 w-5" />
+                    </a>
+                  )}
+                  {profile.email && (
+                    <a
+                      href={`mailto:${profile.email}`}
+                      aria-label="发送邮件"
+                      className="group w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white hover:scale-110 transition-all shadow-sm"
+                    >
+                      <Mail className="h-5 w-5" />
+                    </a>
+                  )}
+                </div>
+
+                {/* 邮箱 + 复制按钮 */}
+                {profile.email && (
+                  <div className="relative flex items-center justify-center gap-2">
+                    <code className="text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg font-mono">
+                      {profile.email}
+                    </code>
+                    <button
+                      onClick={copyEmail}
+                      aria-label="复制邮箱"
+                      className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-950/40 dark:hover:text-indigo-400 transition-colors"
+                    >
+                      {emailCopied
+                        ? <Check className="h-3.5 w-3.5 text-green-500" />
+                        : <Copy className="h-3.5 w-3.5" />}
+                    </button>
+                  </div>
+                )}
+
+                {/* 复制成功提示 */}
+                <motion.p
+                  initial={false}
+                  animate={{ opacity: emailCopied ? 1 : 0, y: emailCopied ? 0 : 4 }}
+                  transition={{ duration: 0.2 }}
+                  className="mt-2 text-xs text-green-600 dark:text-green-400 h-4"
                 >
-                  <Github className="h-5 w-5" />
-                </a>
-              )}
-              {profile.email && (
-                <a
-                  href={`mailto:${profile.email}`}
-                  className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white transition-colors"
-                  aria-label="Email"
-                >
-                  <Mail className="h-5 w-5" />
-                </a>
-              )}
+                  {emailCopied ? '邮箱已复制到剪贴板 ✓' : ''}
+                </motion.p>
+              </div>
             </div>
-
-            {profile.email && (
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                Email：<a href={`mailto:${profile.email}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">{profile.email}</a>
-              </p>
-            )}
           </SectionReveal>
         </div>
       </section>

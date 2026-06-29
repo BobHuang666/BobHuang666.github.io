@@ -51,16 +51,42 @@ const SeriesIndexPage = () => {
                 to={`/series/${s.slug}`}
                 className="block group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
               >
-                {/* 顶部渐变条 */}
-                <div className={`h-1.5 bg-gradient-to-r ${s.color}`} />
-
-                <div className="p-5">
-                  <div className="flex items-start justify-between mb-3">
-                    <span className="text-3xl">{s.icon}</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                {/* 封面图或渐变色块 */}
+                {s.coverImage ? (
+                  <div className="relative h-28 overflow-hidden">
+                    <img
+                      src={s.coverImage}
+                      alt={s.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    {/* 图标浮在封面上 */}
+                    <span className="absolute bottom-3 left-4 text-3xl drop-shadow-lg">{s.icon}</span>
+                    <span className="absolute bottom-3 right-3 text-xs px-2 py-0.5 rounded-full bg-black/40 text-white backdrop-blur-sm">
                       {count} 篇
                     </span>
                   </div>
+                ) : (
+                  <>
+                    {/* 无封面时：顶部渐变色块 + 图标 */}
+                    <div className={`relative h-20 bg-gradient-to-br ${s.color} flex items-center justify-between px-5`}>
+                      <span className="text-4xl drop-shadow">{s.icon}</span>
+                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/25 text-white font-medium">
+                        {count} 篇
+                      </span>
+                    </div>
+                  </>
+                )}
+
+                <div className={`p-5 ${!s.coverImage ? '' : ''}`}>
+                  {/* 有封面时不重复图标和数量 */}
+                  {s.coverImage && (
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                        {count} 篇
+                      </span>
+                    </div>
+                  )}
                   <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                     {s.title}
                   </h2>

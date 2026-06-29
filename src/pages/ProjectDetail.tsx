@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
-  Code2, Globe, Database, Shield, Zap, Users, Calendar, ArrowLeft, ExternalLink, Github,
+  Code2, Globe, Database, Shield, Zap, Users, Calendar, ArrowLeft, ExternalLink, Github, ZoomIn,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { projectsDetail } from '../data/projects';
 import { SmartImage } from '../components/SmartImage';
+import { usePageMeta } from '../hooks/usePageMeta';
+import Lightbox from '../components/Lightbox';
 
 const SECTIONS = [
   { id: 'overview', title: '项目概述', icon: Globe },
@@ -21,8 +23,14 @@ const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState<string>('overview');
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const projectData = id ? projectsDetail[id] : undefined;
+
+  usePageMeta(
+    projectData ? projectData.title : '项目不存在',
+    projectData?.description,
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -110,13 +118,32 @@ const ProjectDetail = () => {
             >
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="lg:w-1/3">
-                  <SmartImage
-                    src={projectData.image}
-                    alt={projectData.title}
-                    fallbackTitle={projectData.title}
-                    fallbackGradient={projectData.imageGradient}
-                    className="w-full h-44 object-cover rounded-lg"
-                  />
+                  <div
+                    className="relative group cursor-zoom-in"
+                    onClick={() => projectData.image && setLightboxOpen(true)}
+                    title={projectData.image ? '点击放大' : undefined}
+                  >
+                    <SmartImage
+                      src={projectData.image}
+                      alt={projectData.title}
+                      fallbackTitle={projectData.title}
+                      fallbackGradient={projectData.imageGradient}
+                      className="w-full h-44 object-cover rounded-lg"
+                    />
+                    {projectData.image && (
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 rounded-lg">
+                        <ZoomIn className="h-8 w-8 text-white drop-shadow" />
+                      </div>
+                    )}
+                  </div>
+                  {projectData.image && (
+                    <Lightbox
+                      src={projectData.image}
+                      alt={projectData.title}
+                      open={lightboxOpen}
+                      onClose={() => setLightboxOpen(false)}
+                    />
+                  )}
                 </div>
                 <div className="lg:w-2/3">
                   <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
