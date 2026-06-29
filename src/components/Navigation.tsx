@@ -189,7 +189,7 @@ const Navigation = () => {
             aria-label="返回首页"
           >
             <Code2 className="h-7 w-7 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform" />
-            <span className="ml-2 text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            <span className="ml-2 text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors hidden min-[360px]:inline">
               BobHuang
             </span>
           </NavLink>
@@ -267,7 +267,7 @@ const Navigation = () => {
           </div>
 
           {/* Mobile */}
-          <div className="md:hidden flex items-center gap-2">
+          <div className="md:hidden flex items-center gap-1 shrink-0">
             <SearchTrigger />
             <LanguageToggle />
             <ThemeToggle />

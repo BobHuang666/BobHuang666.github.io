@@ -48,7 +48,7 @@ const resources = {
         projectsSub: '精选代表性项目，每个都从立项打通到上线/获奖',
         blogTitle: '游戏攻略',
         blogSub: '算法题解 / 项目复盘 / 学习笔记 —— 正在持续更新',
-        awardsTitle: '历史战绩',
+        awardsTitle: '历史荣誉',
         awardsSubTpl: '累计 {{count}} 项荣誉 · 按级别筛选查看精选 6 项',
         contactTitle: '联系我',
         contactSub: '对算法竞赛、全栈开发、AI 应用感兴趣？欢迎交流，一起进步。',

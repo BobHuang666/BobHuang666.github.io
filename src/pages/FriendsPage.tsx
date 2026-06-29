@@ -115,7 +115,7 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
                   {copied ? t('friends.copied') : t('friends.copy')}
                 </button>
               </div>
-              <pre className="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-mono">{myCardText}</pre>
+              <pre className="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-wrap break-all font-mono">{myCardText}</pre>
             </div>
 
             {/* 申请方式 */}

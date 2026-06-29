@@ -353,7 +353,7 @@ const AiAssistant = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-22 left-6 z-50 w-80 sm:w-96 h-[520px] flex flex-col rounded-2xl overflow-hidden
+            className="fixed z-50 left-3 right-3 sm:left-6 sm:right-auto sm:w-96 h-[520px] flex flex-col rounded-2xl overflow-hidden
               bg-white/80 dark:bg-slate-900/85 backdrop-blur-2xl
               border border-white/50 dark:border-slate-700/60
               shadow-2xl shadow-indigo-500/10"

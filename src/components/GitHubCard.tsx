@@ -41,6 +41,22 @@ const LANG_COLORS: Record<string, string> = {
   CSS: '#563d7c',
 };
 
+// ── 本地缓存（1 小时有效，规避 GitHub API 60次/小时 匿名限制）──────
+const CACHE_TTL = 60 * 60 * 1000;
+
+function readCache<T>(key: string): T | null {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw) as { ts: number; data: T };
+    return Date.now() - ts < CACHE_TTL ? data : null;
+  } catch { return null; }
+}
+
+function writeCache<T>(key: string, data: T) {
+  try { localStorage.setItem(key, JSON.stringify({ ts: Date.now(), data })); } catch { /* quota */ }
+}
+
 const GitHubCard = ({ username }: Props) => {
   const { ref, inView } = useInView();
   const [user, setUser] = useState<GitHubUser | null>(null);
@@ -54,6 +70,16 @@ const GitHubCard = ({ username }: Props) => {
     let ignore = false;
     setLoading(true);
 
+    const cacheKey = `gh:${username}`;
+    const cached = readCache<{ user: GitHubUser; repos: GitHubRepo[] }>(cacheKey);
+
+    if (cached) {
+      setUser(cached.user);
+      setRepos(cached.repos);
+      setLoading(false);
+      return;
+    }
+
     Promise.all([
       fetch(`https://api.github.com/users/${username}`).then((r) => {
         if (!r.ok) throw new Error(`User ${r.status}`);
@@ -66,11 +92,12 @@ const GitHubCard = ({ username }: Props) => {
     ])
       .then(([u, rs]: [GitHubUser, GitHubRepo[]]) => {
         if (ignore) return;
-        setUser(u);
         const topRepos = (rs ?? [])
           .filter((r) => !r.fork)
           .sort((a, b) => b.stargazers_count - a.stargazers_count)
           .slice(0, 4);
+        writeCache(cacheKey, { user: u, repos: topRepos });
+        setUser(u);
         setRepos(topRepos);
       })
       .catch((e: Error) => {

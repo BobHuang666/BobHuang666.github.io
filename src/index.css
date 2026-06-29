@@ -54,6 +54,13 @@ body {
     background: transparent;
   }
 
+  .scrollbar-none {
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none; /* Chrome / Safari */
+  }
+
   /* 文字渐变 */
   .text-gradient-brand {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500;

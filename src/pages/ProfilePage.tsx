@@ -92,7 +92,7 @@ function ProfilePage() {
 
         {/* Tabs */}
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md mb-6 border border-slate-200 dark:border-slate-800">
-          <div className="flex overflow-x-auto scrollbar-thin">
+          <div className="flex overflow-x-auto scrollbar-none">
             {TABS.map((tab) => (
               <button
                 key={tab.id}

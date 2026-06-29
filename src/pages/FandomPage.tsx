@@ -161,7 +161,7 @@ const FandomPage = () => {
 
         {/* ===== Tabs ===== */}
         <div className="sticky top-16 z-10 -mx-4 px-4 py-2 mb-8 bg-gradient-to-b from-rose-50/90 via-rose-50/80 to-transparent dark:from-slate-950/90 dark:via-slate-950/80 backdrop-blur-sm">
-          <div className="flex gap-1 p-1 rounded-2xl bg-white/70 dark:bg-slate-900/70 border border-rose-100 dark:border-slate-800 w-fit overflow-x-auto scrollbar-thin">
+          <div className="flex gap-1 p-1 rounded-2xl bg-white/70 dark:bg-slate-900/70 border border-rose-100 dark:border-slate-800 w-fit max-w-full overflow-x-auto scrollbar-none">
             {TABS.map((tb) => (
               <button
                 key={tb.id}

@@ -15,7 +15,10 @@ export const ThemeToggle = ({ className = '' }: { className?: string }) => {
     const vt = (document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void> } })
       .startViewTransition;
 
-    if (!vt || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // 触摸设备跳过 clip-path 圆形擦除（全屏快照动画在移动端 GPU 开销过大）
+    const isTouch = navigator.maxTouchPoints > 0;
+
+    if (!vt || isTouch || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       toggleTheme();
       return;
     }
