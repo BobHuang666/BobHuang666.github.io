@@ -5,6 +5,9 @@ import Footer from './components/Footer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ScrollToTopButton from './components/ScrollToTopButton';
+import ScrollRestoration from './components/ScrollRestoration';
+import MouseParticles from './components/MouseParticles';
+import AiAssistant from './components/AiAssistant';
 import { PageSkeleton } from './components/Skeleton';
 
 // 首页常驻，详情页全部懒加载
@@ -48,7 +51,10 @@ function App() {
             </main>
             <Footer />
           </div>
+          <ScrollRestoration />
           <ScrollToTopButton />
+          <AiAssistant />
+          <MouseParticles />
         </Router>
       </ErrorBoundary>
     </ThemeProvider>
