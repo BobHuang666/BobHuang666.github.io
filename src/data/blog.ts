@@ -105,6 +105,10 @@ const posts: BlogPost[] = Object.entries(modules)
       isDraft: Boolean(data.draft),
     } as BlogPost;
   })
+  // A `draft: true` file may remain in a local checkout, but must never be
+  // addressable from the production application. CMS drafts live on their own
+  // workflow branches and are therefore absent from main altogether.
+  .filter((post) => !post.isDraft)
   .sort((a, b) => (a.publishDate < b.publishDate ? 1 : -1));
 
 export const blogData: BlogPost[] = posts;

@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+#
+# This file is public by design. Never add GitHub tokens, OAuth secrets, or API keys here.
+# See docs/BLOG_CMS_SETUP.md for the one-time OAuth setup.
+backend:
+  name: github
+  repo: BobHuang666/BobHuang666.github.io
+  branch: main
+  base_url: https://bobhuang-blog-auth.2295672887.workers.dev
+  auth_methods: [oauth]
+  auth_scope: public_repo
+  cms_label_prefix: blog-cms/
+  squash_merges: true
+
+# Every unpublished edit is isolated in a GitHub pull request. Only publishing it
+# merges it into main, which then triggers the existing GitHub Pages deployment.
+publish_mode: editorial_workflow
+
+# Vite copies public/ verbatim to the site root during build.
+media_folder: /public/uploads
+public_folder: /uploads
+media_libraries:
+  default:
+    config:
+      max_file_size: 10485760
+      slugify_filename: true
+
+collections:
+  - name: posts
+    label: 博客文章
+    label_singular: 文章
+    folder: /src/posts
+    extension: md
+    format: frontmatter
+    create: true
+    slug: '{{slug}}'
+    summary: '{{title}} · {{date}}'
+    fields:
+      - { label: 标题, name: title, widget: string, required: true }
+      - { label: 发布日期, name: date, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, required: true }
+      - { label: 分类, name: category, widget: select, options: ['项目复盘', '算法题解', '前端开发', '学习笔记', '随笔'], required: true }
+      - { label: 标签, name: tags, widget: list, required: false, hint: '输入后按 Enter 添加标签' }
+      - { label: 摘要, name: excerpt, widget: text, required: true, hint: '用于博客列表、SEO 描述和分享卡片。建议 80–160 字。' }
+      - { label: 封面图, name: cover, widget: image, required: false, hint: '上传后会保存到 public/uploads，正文中也可插入图片。' }
+      - { label: 阅读时间（分钟）, name: readTime, widget: number, value_type: int, min: 1, required: false, hint: '留空将由网站自动估算。' }
+      - { label: 作者, name: author, widget: string, default: 'Bob Huang', required: false }
+      # The CMS workflow—not this field—controls private drafts. Published entries
+      # are always written with draft: false so production never exposes a draft.
+      - { label: 发布状态, name: draft, widget: hidden, default: false }
+      - { label: 正文, name: body, widget: markdown, required: true }
