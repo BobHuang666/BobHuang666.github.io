@@ -2,10 +2,13 @@
 title: 你好，这里是 BobHuang 的小站
 date: 2026-05-31
 category: 随笔
-tags: [公告, 关于]
+tags:
+  - 公告
+  - 关于
 excerpt: 介绍一下我搭建这个网站的初衷，以及未来想在这里分享什么内容——可能是算法题解、项目复盘、读书笔记、追星杂感……
-readTime: 2
-cover:
+cover: https://picsum.photos/id/684/1920/1280.webp
+readTime: null
+author: Bob Huang
 draft: false
 ---
 
