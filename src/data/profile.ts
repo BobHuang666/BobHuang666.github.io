@@ -15,7 +15,6 @@ export const profile = {
   // 社交链接 - TODO: 请补充真实地址
   github: 'https://github.com/BobHuang666',
   blog: '', // 可填外部博客地址
-  resumeUrl: '', // PDF 简历下载地址，可暂时留空
 
   // 教育
   education: {

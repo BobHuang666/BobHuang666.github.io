@@ -112,11 +112,10 @@ const BlogPage = () => {
                   <button
                     key={c.id}
                     onClick={() => setSelectedCategory(c.id)}
-                    className={`w-full text-left px-3 py-1.5 rounded-md text-sm transition-all duration-200 flex items-center justify-between ${
-                      selectedCategory === c.id
-                        ? 'bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-medium'
-                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-                    }`}
+                    className={`w-full text-left px-3 py-1.5 rounded-md text-sm transition-all duration-200 flex items-center justify-between ${selectedCategory === c.id
+                      ? 'bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-medium'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                      }`}
                   >
                     <span>{c.name}</span>
                     <span className="text-xs bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded-full">
@@ -136,11 +135,10 @@ const BlogPage = () => {
                   <button
                     key={tag}
                     onClick={() => toggleTag(tag)}
-                    className={`px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${
-                      selectedTags.includes(tag)
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
-                    }`}
+                    className={`px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${selectedTags.includes(tag)
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                      }`}
                   >
                     {tag}
                   </button>
@@ -251,7 +249,6 @@ const BlogPage = () => {
 
             <div className="mt-10 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
               <RelatedLink to="/series" emoji="📚" title="专题系列" desc="按主题浏览博客" />
-              <RelatedLink to="/now" emoji="✨" title="当前动态" desc="最近在做什么" />
             </div>
           </div>
         </div>

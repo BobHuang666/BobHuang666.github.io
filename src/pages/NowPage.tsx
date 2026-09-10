@@ -64,7 +64,6 @@ const NowPage = () => {
           </div>
 
           <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <RelatedLink to="/uses" emoji="🛠" title={t('nav.uses')} desc="我用的硬件 & 工具" />
             <RelatedLink to="/series" emoji="📚" title={t('nav.series')} desc="博客按主题分类" />
             <RelatedLink to="/friends" emoji="🤝" title={t('nav.friends')} desc="友情链接 & 交换链接" />
             <RelatedLink to="/blog" emoji="📝" title={t('nav.blog')} desc="最新博客文章" />

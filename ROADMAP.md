@@ -37,6 +37,7 @@
 ## ✅ 已完成功能清单
 
 ### 路由与页面（11 个路由全部完成）
+
 - [x] `/` 主城（首页）
 - [x] `/profile` 角色档案
 - [x] `/projects/:id` 项目详情
@@ -49,6 +50,7 @@
 - [x] `*` 404 NotFound
 
 ### 导航与交互
+
 - [x] 顶部导航 4 主项 + "更多"下拉 5 子项
 - [x] 移动端汉堡菜单 + 更多分组
 - [x] **弹簧滑动下划线**路由活跃指示（framer-motion layoutId）
@@ -60,6 +62,7 @@
 - [x] **全局回到顶部按钮**（环形进度 + 玻璃拟态 + tooltip）
 
 ### 国际化
+
 - [x] react-i18next 中英双语
 - [x] LanguageDetector 自动识别
 - [x] `<html lang>` 联动
@@ -68,6 +71,7 @@
 - [x] Hero 打字机中英双轨
 
 ### 视觉与动画
+
 - [x] 暗色模式 + 防闪烁 + 系统偏好识别
 - [x] **暗色模式切换动画**（View Transition API + clip-path 圆形擦除，降级兼容）
 - [x] framer-motion 滚动进场 + `prefers-reduced-motion`
@@ -84,6 +88,7 @@
 - [x] **骨架屏组件体系**（CardSkeleton / ListItemSkeleton / PageSkeleton）
 
 ### 博客系统
+
 - [x] Markdown 文件加载（`import.meta.glob`）
 - [x] Front-Matter 解析（标题 / 日期 / 分类 / 标签 / 草稿等）
 - [x] **精准阅读时间估算**（剥离 Markdown 语法，中文 ÷350 / 英文单词 ÷200）
@@ -99,6 +104,7 @@
 - [x] **博客详情页动态 SEO**（title / meta description / OG tags）
 
 ### 简历内容
+
 - [x] 15 项奖项（国际/国家/省/校院级）+ 分级筛选
 - [x] **奖项卡片视图 / 时间线视图可切换**（按年份分组）
 - [x] 3 个核心项目完整详情 + 项目图片 Lightbox
@@ -108,6 +114,7 @@
 - [x] **通用 Avatar 组件**（旋转光环 / 在线状态圆点 / SVG 降级，首页与 Profile 统一复用）
 
 ### 数据管理（单一数据源）
+
 - [x] `src/data/profile.ts` — 基础信息
 - [x] `src/data/projects.ts` — 项目数据
 - [x] `src/data/awards.ts` — 奖项数据
@@ -121,6 +128,7 @@
 - [x] `src/lib/knowledgeBase.ts` — AI 助手 RAG 知识库（聚合全站数据，支持检索）
 
 ### 工程
+
 - [x] 路由懒加载，每页独立 chunk
 - [x] vendor / motion / markdown / giscus / SearchPalette / AiAssistant / MouseParticles 分包
 - [x] PWA：vite-plugin-pwa 自动 SW + manifest + 离线（skipWaiting + clientsClaim）
@@ -142,6 +150,7 @@
 - [x] Dependabot 周度升级
 
 ### SEO / 可访问性
+
 - [x] 所有内容页动态 title / description / OG tags（`usePageMeta` hook）
 - [x] Open Graph + Twitter Card
 - [x] sitemap.xml + robots.txt 构建时自动生成
@@ -157,13 +166,10 @@
 
 | 项 | 文件 | 说明 |
 |---|---|---|
-| 简历 PDF | `src/data/profile.ts` → `resumeUrl` | 上传 PDF 后填写路径，Hero 自动出现下载按钮 |
 | 项目截图 | `static/img/projects/` | 命名见 `projects.ts` 中 `image` 字段，SmartImage 自动展示 |
 | 腾讯 CDG 实习描述 | `src/data/skills.ts` → `experiences[0]` | 按合规范围补充工作内容 |
 | 友链真实数据 | `src/data/friends.ts` | 替换示例占位，填写真实友链 |
 | 追星真实数据 | `src/data/fandom.ts` | 决定是否公开/密码保护后填充 |
-| `/uses` 真实硬件 | `src/data/uses.ts` → `hardware` | 笔记本/键盘/显示器/耳机型号 |
-| `/now` 最新状态 | `src/data/now.ts` | 定期更新 lastUpdated + sections |
 | 博客草稿 | `src/posts/` | 完成 iGEM Wiki 复盘、AiCV 实习总结 |
 
 ---
@@ -171,12 +177,14 @@
 ## 🟠 P1 - 下一阶段重点
 
 ### 内容产出
+
 - [ ] **写出 2-3 篇完整博客**：
   - 「iGEM Wiki 前端开发实践」科研项目复盘
   - 「AiCV 小程序实习总结」工程化与踩坑
   - 「算法题解系列」开始 LeetCode 高频题解，自动归入「算法笔记」专题
 
 ### 功能完善
+
 - [ ] **博客修订历史**：基于 git commit 时间显示「最后更新于」
 - [ ] **博客列表分页**（文章超过 10 篇时防止列表过长）
 - [ ] **专题分 RSS Feed**（不同主题独立订阅链接）
@@ -186,18 +194,21 @@
 ## 🟡 P2 - 锦上添花
 
 ### 视觉体验
+
 - [x] **404 页面游戏化**：键盘控制弹弹球或像素小人
 - [x] **代码块语言标签 + 多语言切换**（展示同功能不同语言的示例时）
 - [x] **专题系列首页卡片升级**：展示文章数、预估阅读时间、最新发布日期
 - [ ] **Profile 打印样式**：`@media print` 隐藏导航/动画，输出干净的简历版面
 
 ### 游戏化彩蛋
+
 - [ ] **Konami 彩蛋**：↑↑↓↓←→←→BA 触发隐藏页面/特效
 - [x] **鼠标跟随粒子**：鼠标移动时产生短暂尾迹（`MouseParticles` canvas overlay，移动端自动关闭）
 - [ ] **页面访问经验值**：localStorage 记录访问深度，达到阈值解锁限定主题色
 - [ ] **BGM 切换按钮**：右下角可选背景音乐
 
 ### 工程优化
+
 - [x] **性能专项优化（v3.4）**：AiAssistant / MouseParticles 懒加载 / GitHub 组件 IntersectionObserver 延迟请求 / HeroBackground 移动端降级 / react-type-animation 替换为内置组件 / PWA 预缓存瘦身 / gray-matter 死依赖移除
 - [ ] **Vite Bundle Analyzer**：用 `rollup-plugin-visualizer` 找进一步压缩空间
 - [ ] **图片 WebP 转换**：等真实截图到位后批量转换（SmartImage 已就绪）
@@ -207,12 +218,14 @@
 ## 🟢 P3 - 未来探索方向
 
 ### 架构演进
+
 - [ ] **迁移到 Astro**：保留 React 组件岛，拿到 SSG + MDX + 极致性能
 - [ ] **CMS 化**：Notion API / Sanity 驱动内容，摆脱手动编辑数据文件
 - [ ] **动态站点**：Cloudflare Workers / EdgeOne 做留言、私信、订阅
 - [x] **站内 AI 助手**：`AiAssistant` + `knowledgeBase.ts` RAG 检索，支持 OpenAI 兼容接口流式对话，无 key 时展示知识库检索结果
 
 ### 内容扩展
+
 - [ ] **职业时间线页**：从入学到现在的关键事件可视化
 - [ ] **3D / WebGL Hero**：Three.js / Spline 3D 头像或背景
 - [ ] **动态简历 PDF 生成**：根据 `src/data/` 自动排版输出 PDF
@@ -220,6 +233,7 @@
 - [ ] **博客发文频率图表**：可视化写作习惯
 
 ### 数据可视化
+
 - [ ] **项目时间轴**：多项目并行进度可视化（Gantt 风格）
 - [ ] **访客地图**（结合 GoatCounter API）
 
@@ -236,6 +250,7 @@
 **问题**：`AiAssistant` 同步导入，通过 `knowledgeBase.ts` 静态引入全站数据，致首屏关键 JS 膨胀至 261.69 KB（超限 250 KB）。
 
 **修复**：
+
 - `AiAssistant` + `MouseParticles` 改为 `React.lazy()` + `<Suspense fallback={null}>`
 - `check-bundle-size.js` 补充 lazy 模式识别：`AiAssistant` / `MouseParticles` / `SearchPalette` / mermaid 内部子 chunk（`mindmap` / `kanban` / `dagre` / `defaultLocale`）/ 所有路由页面 chunk
 

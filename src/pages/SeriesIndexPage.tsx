@@ -132,7 +132,6 @@ const SeriesIndexPage = () => {
 
         <div className="mt-10 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <RelatedLink to="/blog" emoji="📝" title="全部博客" desc="按时间顺序浏览所有文章" />
-          <RelatedLink to="/now" emoji="✨" title="当前动态" desc="我最近在做什么" />
           <RelatedLink to="/profile" emoji="🎮" title="角色档案" desc="完整简历与获奖" />
           <RelatedLink to="/friends" emoji="🤝" title="友人帐" desc="友情链接" />
         </div>

@@ -97,11 +97,10 @@ function ProfilePage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-5 py-3.5 whitespace-nowrap transition-colors text-sm font-medium ${
-                  activeTab === tab.id
-                    ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400 bg-indigo-50/60 dark:bg-indigo-950/30'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
-                }`}
+                className={`flex items-center gap-2 px-5 py-3.5 whitespace-nowrap transition-colors text-sm font-medium ${activeTab === tab.id
+                  ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400 bg-indigo-50/60 dark:bg-indigo-950/30'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                  }`}
               >
                 <tab.icon className="h-4 w-4" />
                 {t(TAB_KEYS[tab.id], tab.name)}
@@ -131,8 +130,7 @@ function ProfilePage() {
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <RelatedLink to="/" emoji="🏰" title="返回主城" desc="查看项目与技能概览" />
           <RelatedLink to="/blog" emoji="📝" title="游戏攻略" desc="读我写的文章" />
-          <RelatedLink to="/now" emoji="✨" title="当前动态" desc="最近在做什么" />
-          <RelatedLink to="/uses" emoji="🛠" title="装备清单" desc="我用的工具" />
+          <RelatedLink to="/friends" emoji="🤝" title="友人帐" desc="友情链接" />
         </div>
       </div>
     </div>
@@ -204,22 +202,20 @@ function SkillsTab() {
         <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
           <button
             onClick={() => setView('list')}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              view === 'list'
-                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-            }`}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${view === 'list'
+              ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+              }`}
           >
             <AlignLeft className="h-3.5 w-3.5" />
             {t('profile.listView')}
           </button>
           <button
             onClick={() => setView('radar')}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              view === 'radar'
-                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-            }`}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${view === 'radar'
+              ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+              }`}
           >
             <LayoutGrid className="h-3.5 w-3.5" />
             {t('profile.radarView')}
@@ -323,22 +319,20 @@ function AwardsTab() {
         <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
           <button
             onClick={() => setView('card')}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              view === 'card'
-                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-            }`}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${view === 'card'
+              ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+              }`}
           >
             <LayoutGrid className="h-3.5 w-3.5" />
             {t('profile.cardView')}
           </button>
           <button
             onClick={() => setView('timeline')}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              view === 'timeline'
-                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-            }`}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${view === 'timeline'
+              ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+              }`}
           >
             <AlignLeft className="h-3.5 w-3.5" />
             {t('profile.timelineView')}

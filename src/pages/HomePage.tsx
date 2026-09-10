@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import {
-  Github, Mail, ArrowRight, Sparkles, ExternalLink, FileText, Copy, Check,
+  Github, Mail, ArrowRight, Sparkles, ExternalLink, Copy, Check,
   Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal,
   Globe, Database, Shield,
   type LucideIcon,
@@ -198,25 +198,25 @@ function HomePage() {
               sequences={
                 t('home.status').startsWith('Online')
                   ? [
-                      'CS undergrad @ BNU · Data Science track',
-                      2500,
-                      'Competitive programmer · ICPC / Lanqiao / CCF',
-                      2200,
-                      'Full-stack dev · Vue / React / Go / Python',
-                      2200,
-                      'Frontend intern @ Tencent CDG',
-                      2500,
-                    ]
+                    'CS undergrad @ BNU · Data Science track',
+                    2500,
+                    'Competitive programmer · ICPC / Lanqiao / CCF',
+                    2200,
+                    'Full-stack dev · Vue / React / Go / Python',
+                    2200,
+                    'Frontend intern @ Tencent CDG',
+                    2500,
+                  ]
                   : [
-                      profile.tagline,
-                      2500,
-                      '算法竞赛选手 · ICPC / 蓝桥杯 / CCF 多项荣誉',
-                      2200,
-                      '全栈开发者 · Vue / React / Go / Python',
-                      2200,
-                      '正在腾讯 CDG 担任前端实习生',
-                      2500,
-                    ]
+                    profile.tagline,
+                    2500,
+                    '算法竞赛选手 · ICPC / 蓝桥杯 / CCF 多项荣誉',
+                    2200,
+                    '全栈开发者 · Vue / React / Go / Python',
+                    2200,
+                    '正在腾讯 CDG 担任前端实习生',
+                    2500,
+                  ]
               }
             />
           </motion.div>
@@ -248,16 +248,6 @@ function HomePage() {
             >
               <Mail className="h-4 w-4 mr-2" /> {t('btn.contactMe')}
             </button>
-            {profile.resumeUrl && (
-              <a
-                href={profile.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 rounded-lg font-medium border-2 border-white/70 text-white hover:bg-white hover:text-indigo-600 transition-colors"
-              >
-                <FileText className="h-4 w-4 mr-2" /> {t('btn.downloadCv')}
-              </a>
-            )}
           </motion.div>
         </div>
       </section>
@@ -454,11 +444,10 @@ function HomePage() {
               <button
                 key={lv}
                 onClick={() => setAwardFilter(lv)}
-                className={`px-3 py-1.5 text-xs rounded-full transition-all ${
-                  awardFilter === lv
-                    ? 'bg-indigo-600 text-white shadow-md'
-                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
-                }`}
+                className={`px-3 py-1.5 text-xs rounded-full transition-all ${awardFilter === lv
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                  }`}
               >
                 {t(LEVEL_I18N[lv])}
               </button>
@@ -471,9 +460,8 @@ function HomePage() {
                 <div className="card-base p-6 h-full">
                   <div className="flex items-center mb-3">
                     <div
-                      className={`w-11 h-11 rounded-lg bg-gradient-to-br ${
-                        award.color ?? 'from-indigo-500 to-purple-500'
-                      } flex items-center justify-center mr-3 shadow-md`}
+                      className={`w-11 h-11 rounded-lg bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'
+                        } flex items-center justify-center mr-3 shadow-md`}
                     >
                       {(() => { const Icon = ICON_MAP[award.icon] ?? Trophy; return <Icon className="h-5 w-5 text-white" />; })()}
                     </div>
@@ -522,8 +510,6 @@ function HomePage() {
           </SectionReveal>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             <RelatedLink to="/series" emoji="📚" title="专题系列" desc="按主题看博客" />
-            <RelatedLink to="/now" emoji="✨" title="当前动态" desc="最近在做什么" />
-            <RelatedLink to="/uses" emoji="🛠" title="装备清单" desc="硬件与工具" />
             <RelatedLink to="/friends" emoji="🤝" title="友人帐" desc="友情链接" />
             <RelatedLink to="/fandom" emoji="💕" title="秘密花园" desc="追星专题" />
           </div>

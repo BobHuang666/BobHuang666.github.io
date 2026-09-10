@@ -58,7 +58,6 @@ const UsesPage = () => {
           </div>
 
           <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <RelatedLink to="/now" emoji="✨" title={t('nav.now')} desc="我最近在做什么" />
             <RelatedLink to="/blog" emoji="📝" title={t('nav.blog')} desc="最新博客文章" />
             <RelatedLink to="/series" emoji="📚" title={t('nav.series')} desc="按主题查看博客" />
             <RelatedLink to="/profile" emoji="🎮" title={t('nav.profile')} desc="完整简历与技能详情" />

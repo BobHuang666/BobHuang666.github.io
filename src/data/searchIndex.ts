@@ -37,8 +37,6 @@ const staticPages: SearchItem[] = [
     description: '所有博客文章列表',
     href: '#/blog',
   },
-  { id: 'page-now', kind: 'page', title: '/now · 我最近在做什么', description: '当前正在做的事 / 学的东西', href: '#/now' },
-  { id: 'page-uses', kind: 'page', title: '/uses · 装备清单', description: '硬件、开发工具、技术栈偏好', href: '#/uses' },
   { id: 'page-series', kind: 'page', title: '专题系列 / Series', description: '把博客按主题汇集：算法、前端、项目复盘、AI、旅行、数据科学', href: '#/series' },
   { id: 'page-friends', kind: 'page', title: '友人帐 / Friends', description: '友情链接 & 友链申请', href: '#/friends' },
 ];

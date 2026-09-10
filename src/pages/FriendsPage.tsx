@@ -27,8 +27,8 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
 
   const mailto = profile.email
     ? `mailto:${profile.email}?subject=${encodeURIComponent('友链申请 · Friend Link Request')}&body=${encodeURIComponent(
-        '你好 Bob：\n\n我想申请友链：\n名字：\n网址：\n简介：\n头像 URL：\n\n我已经把你的链接放在了我的网站上：\n',
-      )}`
+      '你好 Bob：\n\n我想申请友链：\n名字：\n网址：\n简介：\n头像 URL：\n\n我已经把你的链接放在了我的网站上：\n',
+    )}`
     : undefined;
 
   return (
@@ -151,7 +151,6 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
 
         <div className="mt-10 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <RelatedLink to="/blog" emoji="📝" title={t('nav.blog')} desc="读读我写的文章" />
-          <RelatedLink to="/now" emoji="✨" title={t('nav.now')} desc="我最近在做什么" />
         </div>
       </div>
     </div>

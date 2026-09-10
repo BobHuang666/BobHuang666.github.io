@@ -105,11 +105,10 @@ const FandomPage = () => {
               setError(false);
             }}
             placeholder="访问密码"
-            className={`w-full px-3 py-2 rounded-lg border ${
-              error
+            className={`w-full px-3 py-2 rounded-lg border ${error
                 ? 'border-rose-400 focus:ring-rose-400'
                 : 'border-slate-300 dark:border-slate-700 focus:ring-indigo-500'
-            } bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 transition-colors mb-2`}
+              } bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 transition-colors mb-2`}
             autoFocus
           />
           {error && <p className="text-xs text-rose-500 mb-2">密码不对，再试一次？</p>}
@@ -166,11 +165,10 @@ const FandomPage = () => {
               <button
                 key={tb.id}
                 onClick={() => setTab(tb.id)}
-                className={`relative flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
-                  tab === tb.id
+                className={`relative flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${tab === tb.id
                     ? 'text-white'
                     : 'text-slate-500 dark:text-slate-400 hover:text-rose-500'
-                }`}
+                  }`}
               >
                 {tab === tb.id && (
                   <motion.span
@@ -227,7 +225,6 @@ const FandomPage = () => {
         )}
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <RelatedLink to="/now" emoji="✨" title="当前动态" desc="我最近在做什么" />
           <RelatedLink to="/blog" emoji="📝" title="游戏攻略" desc="看看其他文章" />
         </div>
 
@@ -549,11 +546,10 @@ const FilterChip = ({
 }: { active: boolean; onClick: () => void; children: React.ReactNode }) => (
   <button
     onClick={onClick}
-    className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-      active
+    className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${active
         ? 'bg-rose-500 text-white shadow'
         : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-rose-300 dark:hover:border-rose-700'
-    }`}
+      }`}
   >
     {children}
   </button>

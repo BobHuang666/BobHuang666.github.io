@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   Code2, Menu, X, ChevronDown,
-  Layers, Sparkles, Wrench, Heart, UsersRound,
+  Layers, Heart, UsersRound,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -35,8 +35,6 @@ const MAIN_ITEMS: MainItem[] = [
 
 const MORE_ITEMS: MoreItem[] = [
   { to: '/series', i18nKey: 'nav.series', icon: Layers, description: '博客按主题汇集', descEn: 'Posts by topic' },
-  { to: '/now', i18nKey: 'nav.now', icon: Sparkles, description: '我最近在做什么', descEn: 'What I am up to' },
-  { to: '/uses', i18nKey: 'nav.uses', icon: Wrench, description: '硬件 & 工具清单', descEn: 'My toolkit' },
   { to: '/friends', i18nKey: 'nav.friends', icon: UsersRound, description: '友情链接', descEn: 'Friend links' },
   { to: '/fandom', i18nKey: 'nav.fandom', icon: Heart, description: '追星专题', descEn: 'Fandom (private)' },
 ];
@@ -129,10 +127,9 @@ const Navigation = () => {
   };
 
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
-    `relative px-2 py-1 text-sm font-medium transition-colors ${
-      isActive
-        ? 'text-indigo-600 dark:text-indigo-400'
-        : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
+    `relative px-2 py-1 text-sm font-medium transition-colors ${isActive
+      ? 'text-indigo-600 dark:text-indigo-400'
+      : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
     }`;
 
   /** 带滑动下划线的 NavLink 包装 */
@@ -171,13 +168,11 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      } ${
-        isScrolled
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'
+        } ${isScrolled
           ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur shadow-sm border-b border-slate-200/60 dark:border-slate-800/60'
           : 'bg-white dark:bg-slate-950'
-      }`}
+        }`}
       role="navigation"
       aria-label="主导航"
     >
@@ -213,11 +208,10 @@ const Navigation = () => {
                 onClick={() => setIsMoreOpen((v) => !v)}
                 aria-haspopup="menu"
                 aria-expanded={isMoreOpen}
-                className={`relative inline-flex items-center gap-1 px-2 py-1 text-sm font-medium transition-colors ${
-                  isMoreActive || isMoreOpen
-                    ? 'text-indigo-600 dark:text-indigo-400'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
-                }`}
+                className={`relative inline-flex items-center gap-1 px-2 py-1 text-sm font-medium transition-colors ${isMoreActive || isMoreOpen
+                  ? 'text-indigo-600 dark:text-indigo-400'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
+                  }`}
               >
                 {t('nav.more')}
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
@@ -240,10 +234,9 @@ const Navigation = () => {
                       key={item.to}
                       to={item.to}
                       className={({ isActive }) =>
-                        `flex items-start gap-3 px-4 py-3 transition-colors ${
-                          isActive
-                            ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300'
-                            : 'hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
+                        `flex items-start gap-3 px-4 py-3 transition-colors ${isActive
+                          ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300'
+                          : 'hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
                         }`
                       }
                       role="menuitem"
@@ -311,10 +304,9 @@ const Navigation = () => {
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-md transition-colors ${
-                      isActive
-                        ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 font-medium'
-                        : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900'
+                    `block px-3 py-2 rounded-md transition-colors ${isActive
+                      ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 font-medium'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900'
                     }`
                   }
                   role="menuitem"
@@ -334,10 +326,9 @@ const Navigation = () => {
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
-                      isActive
-                        ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 font-medium'
-                        : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900'
+                    `flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${isActive
+                      ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 font-medium'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900'
                     }`
                   }
                   role="menuitem"
