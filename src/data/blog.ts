@@ -99,6 +99,7 @@ const posts: BlogPost[] = Object.entries(modules)
       category: (data.category as string) ?? '未分类',
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
       publishDate: (data.date as string) ?? '',
+      updatedDate: (data.updated as string) || undefined,
       readTime: typeof data.readTime === 'number' ? data.readTime : estimateReadTime(content),
       author: (data.author as string) ?? 'Bob Huang',
       coverImage: (data.cover as string) || undefined,

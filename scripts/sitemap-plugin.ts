@@ -18,6 +18,14 @@ function parseDate(raw: string): string {
   return line.replace(/^date:\s*/, '').replace(/^['"]|['"]$/g, '').trim();
 }
 
+function parseUpdatedDate(raw: string): string {
+  const m = raw.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (!m) return '';
+  const line = m[1].split(/\r?\n/).find((l) => l.startsWith('updated:'));
+  if (!line) return '';
+  return line.replace(/^updated:\s*/, '').replace(/^['"]|['"]$/g, '').trim().slice(0, 10);
+}
+
 function isDraft(raw: string): boolean {
   const m = raw.match(/^---\s*\n([\s\S]*?)\n---/);
   if (!m) return false;
@@ -43,7 +51,7 @@ export function sitemap(options: Options): Plugin {
           const id = f.replace(/\.md$/, '');
           blogUrls.push({
             loc: `${siteUrl}#/blog/${id}`,
-            lastmod: parseDate(raw) || new Date().toISOString().slice(0, 10),
+            lastmod: parseUpdatedDate(raw) || parseDate(raw) || new Date().toISOString().slice(0, 10),
           });
         }
       } catch {

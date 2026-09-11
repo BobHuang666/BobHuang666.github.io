@@ -77,6 +77,7 @@ export interface BlogPost {
   category: string;
   tags: string[];
   publishDate: string;
+  updatedDate?: string;
   readTime: number;
   author: string;
   coverImage?: string;

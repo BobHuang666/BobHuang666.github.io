@@ -9,5 +9,13 @@
   <body>
     <!-- CMS UI is loaded separately so it does not increase the public site's bundle. -->
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <script>
+      // Keep the public "updated" metadata reliable without asking the author
+      // to remember a second date field on every edit.
+      CMS.registerEventListener({
+        name: 'preSave',
+        handler: ({ entry }) => entry.get('data').set('updated', new Date().toISOString()),
+      });
+    </script>
   </body>
 </html>

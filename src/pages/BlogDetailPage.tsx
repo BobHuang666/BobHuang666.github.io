@@ -108,8 +108,14 @@ const BlogDetailPage = () => {
               <div className="flex items-center gap-5 text-sm text-slate-500 dark:text-slate-400 flex-wrap">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
-                  {post.publishDate}
+                  发布于 {post.publishDate}
                 </span>
+                {post.updatedDate && (
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="h-4 w-4" />
+                    更新于 {post.updatedDate.slice(0, 10)}
+                  </span>
+                )}
                 <span className="flex items-center gap-1.5">
                   <Clock className="h-4 w-4" />
                   {t('misc.readingMin', { n: post.readTime })}

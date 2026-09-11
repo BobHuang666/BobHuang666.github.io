@@ -23,6 +23,7 @@ const SeriesDetailPage = lazy(() => import('./pages/SeriesDetailPage'));
 const FriendsPage = lazy(() => import('./pages/FriendsPage'));
 const FandomPage = lazy(() => import('./pages/FandomPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const ServerErrorPage = lazy(() => import('./pages/ServerErrorPage'));
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
                   <Route path="/series/:slug" element={<SeriesDetailPage />} />
                   <Route path="/friends" element={<FriendsPage />} />
                   <Route path="/fandom" element={<FandomPage />} />
+                  <Route path="/500" element={<ServerErrorPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Suspense>

@@ -37,7 +37,8 @@ collections:
     summary: '{{title}} · {{date}}'
     fields:
       - { label: 标题, name: title, widget: string, required: true }
-      - { label: 发布日期, name: date, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, required: true }
+      - { label: 发布日期, name: date, widget: datetime, type: date, default: '{{now}}', required: true, hint: '首次公开日期；新建时默认今天，可手动调整。' }
+      - { label: 修改日期, name: updated, widget: hidden, default: '{{datetime}}' }
       - { label: 分类, name: category, widget: select, options: ['项目复盘', '算法题解', '前端开发', '学习笔记', '随笔'], required: true }
       - { label: 标签, name: tags, widget: list, required: false, hint: '输入后按 Enter 添加标签' }
       - { label: 摘要, name: excerpt, widget: text, required: true, hint: '用于博客列表、SEO 描述和分享卡片。建议 80–160 字。' }
