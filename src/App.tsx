@@ -16,10 +16,6 @@ const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage'));
-const NowPage = lazy(() => import('./pages/NowPage'));
-const UsesPage = lazy(() => import('./pages/UsesPage'));
-const SeriesIndexPage = lazy(() => import('./pages/SeriesIndexPage'));
-const SeriesDetailPage = lazy(() => import('./pages/SeriesDetailPage'));
 const FriendsPage = lazy(() => import('./pages/FriendsPage'));
 const FandomPage = lazy(() => import('./pages/FandomPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
@@ -40,10 +36,6 @@ function App() {
                   <Route path="/projects/:id" element={<ProjectDetail />} />
                   <Route path="/blog" element={<BlogPage />} />
                   <Route path="/blog/:id" element={<BlogDetailPage />} />
-                  <Route path="/now" element={<NowPage />} />
-                  <Route path="/uses" element={<UsesPage />} />
-                  <Route path="/series" element={<SeriesIndexPage />} />
-                  <Route path="/series/:slug" element={<SeriesDetailPage />} />
                   <Route path="/friends" element={<FriendsPage />} />
                   <Route path="/fandom" element={<FandomPage />} />
                   <Route path="/500" element={<ServerErrorPage />} />

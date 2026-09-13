@@ -45,7 +45,6 @@ const LAZY_PATTERNS = [
   // 路由懒加载的页面 chunk（React.lazy，非首屏）
   /Page[^a-z]/,
   /ProjectDetail/i,
-  /SeriesDetail/i,
 ]
 
 if (!existsSync(ASSETS)) {

@@ -37,7 +37,6 @@ const staticPages: SearchItem[] = [
     description: '所有博客文章列表',
     href: '#/blog',
   },
-  { id: 'page-series', kind: 'page', title: '专题系列 / Series', description: '把博客按主题汇集：算法、前端、项目复盘、AI、旅行、数据科学', href: '#/series' },
   { id: 'page-friends', kind: 'page', title: '友人帐 / Friends', description: '友情链接 & 友链申请', href: '#/friends' },
 ];
 

@@ -23,10 +23,6 @@
 ### 探索（导航栏「更多」下拉）
 | 路由 | 页面 | 说明 |
 |---|---|---|
-| `/series` | **专题系列** | 6 个专题按标签自动归类博客 |
-| `/series/:slug` | 专题详情 | 单专题的彩色页面 |
-| `/now` | **当前动态** | 仿 nownownow.com · 我最近在做什么 |
-| `/uses` | **装备清单** | 仿 uses.tech · 硬件 / 工具 / 技术栈 |
 | `/friends` | **友人帐** | 友情链接 + 申请友链流程 |
 | `/fandom` | **秘密花园** | 追星专题 · 可选密码保护 |
 
@@ -101,7 +97,6 @@ src/
 │   ├── awards.ts            # 奖项（15 项）
 │   ├── skills.ts            # 技能 + 课程 + 实习 + 科研
 │   ├── blog.ts              # 自动加载 src/posts/*.md
-│   ├── series.ts            # 专题定义
 │   ├── friends.ts           # 友链
 │   ├── fandom.ts            # 追星
 │   ├── searchIndex.ts       # 搜索语料聚合
@@ -114,10 +109,6 @@ src/
 │   ├── ProjectDetail.tsx
 │   ├── BlogPage.tsx
 │   ├── BlogDetailPage.tsx
-│   ├── SeriesIndexPage.tsx
-│   ├── SeriesDetailPage.tsx
-│   ├── NowPage.tsx
-│   ├── UsesPage.tsx
 │   ├── FriendsPage.tsx
 │   ├── FandomPage.tsx
 │   └── NotFoundPage.tsx
@@ -166,7 +157,6 @@ src/
 | 添加奖项 | `src/data/awards.ts` |
 | 修改技能 / 课程 / 实习 / 科研 | `src/data/skills.ts` |
 | 添加博客 | 在 `src/posts/` 新建 `xxx.md`，自动出现在列表 |
-| 专题分类 | `src/data/series.ts`（按 `matchTags` 自动归类） |
 | 友链 | `src/data/friends.ts` |
 | 追星 | `src/data/fandom.ts`（可设密码） |
 | 主题色 / 字体 | `tailwind.config.js` |

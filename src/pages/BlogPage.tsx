@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Search, FileText, Tag as TagIcon, Filter, Rss } from 'lucide-react';
 import { blogData } from '../data/blog';
 import { motion } from 'framer-motion';
-import { RelatedLink } from '../components/RelatedLink';
 
 const categories = [
   { id: 'all', name: '全部' },
@@ -18,7 +17,6 @@ const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [showDrafts, setShowDrafts] = useState(false);
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
@@ -37,7 +35,6 @@ const BlogPage = () => {
   const filtered = useMemo(() => {
     const kw = searchTerm.trim().toLowerCase();
     return blogData.filter((p) => {
-      if (!showDrafts && p.isDraft) return false;
       const matchKw =
         !kw ||
         p.title.toLowerCase().includes(kw) ||
@@ -48,7 +45,7 @@ const BlogPage = () => {
         selectedTags.length === 0 || selectedTags.some((t) => p.tags.includes(t));
       return matchKw && matchCat && matchTags;
     });
-  }, [searchTerm, selectedCategory, selectedTags, showDrafts]);
+  }, [searchTerm, selectedCategory, selectedTags]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -145,17 +142,6 @@ const BlogPage = () => {
                 ))}
               </div>
 
-              {/* Draft toggle */}
-              <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-600 dark:text-slate-400 mb-3">
-                <input
-                  type="checkbox"
-                  checked={showDrafts}
-                  onChange={(e) => setShowDrafts(e.target.checked)}
-                  className="rounded text-indigo-600 focus:ring-indigo-500"
-                />
-                显示草稿文章
-              </label>
-
               {(searchTerm || selectedCategory !== 'all' || selectedTags.length > 0) && (
                 <button
                   onClick={clearFilters}
@@ -200,11 +186,6 @@ const BlogPage = () => {
                         <span className="px-2.5 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
                           {post.category}
                         </span>
-                        {post.isDraft && (
-                          <span className="px-2.5 py-0.5 text-xs rounded-full bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300">
-                            草稿
-                          </span>
-                        )}
                         <span className="text-xs text-slate-500 dark:text-slate-400">
                           {post.publishDate}
                         </span>
@@ -247,9 +228,6 @@ const BlogPage = () => {
               </div>
             )}
 
-            <div className="mt-10 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <RelatedLink to="/series" emoji="📚" title="专题系列" desc="按主题浏览博客" />
-            </div>
           </div>
         </div>
       </div>

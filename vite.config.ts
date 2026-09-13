@@ -22,9 +22,6 @@ export default defineConfig({
         '/',
         '/profile',
         '/blog',
-        '/series',
-        '/now',
-        '/uses',
         '/friends',
         '/fandom',
       ],
@@ -83,7 +80,6 @@ export default defineConfig({
           // 路由懒加载页面
           '**/*Page*',
           '**/ProjectDetail*',
-          '**/SeriesDetail*',
           // 其他按需组件
           '**/markdown*',
           '**/giscus*',

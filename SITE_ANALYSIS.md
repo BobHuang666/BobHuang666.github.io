@@ -61,10 +61,6 @@ flowchart TD
 - `/projects/:id`：项目详情
 - `/blog`：博客列表
 - `/blog/:id`：博客详情
-- `/series`：专题总览
-- `/series/:slug`：专题详情
-- `/now`：当前动态
-- `/uses`：装备清单
 - `/friends`：友人帐
 - `/fandom`：秘密花园
 - `*`：404 页面
@@ -129,47 +125,15 @@ Hero 区使用渐变背景、`HeroBackground`、头像状态徽章和 `react-typ
 
 ### 5.5 博客详情页 `BlogDetailPage.tsx`
 
-博客详情页通过文章 id 调用 `getPost`。存在文章时展示标题、摘要、分类、标签、发布时间、阅读时间、作者、Markdown 正文、目录、阅读进度、评论、相关文章和专题上下篇导航。
+博客详情页通过文章 id 调用 `getPost`。存在文章时展示标题、摘要、分类、标签、发布时间、阅读时间、作者、Markdown 正文、目录、阅读进度、评论和相关文章。
 
-专题匹配基于 `series.matchTags` 和文章 tags 的交集。相关文章基于同分类或共享标签生成。同专题上下篇根据匹配专题下的文章顺序计算。
+相关文章基于同分类或共享标签生成。
 
 正文由 `MarkdownRenderer` 渲染，支持 GFM、数学公式、代码高亮、Mermaid 图表和代码组。评论通过 `Comments` 接入 Giscus。
 
-亮点：博客详情把 Markdown 内容系统、专题系统、目录、阅读进度和评论串成完整阅读体验，接近独立博客系统。
+亮点：博客详情把 Markdown 内容系统、目录、阅读进度和评论串成完整阅读体验，接近独立博客系统。
 
-### 5.6 专题总览页 `SeriesIndexPage.tsx`
-
-专题总览页不手工维护文章列表，而是遍历 `series`，再用 `series.matchTags` 自动匹配 `blogData`。每个专题卡片会计算文章数量、最新文章和总阅读时间。
-
-卡片支持封面图或渐变色块两种表现。没有文章时会展示“暂无文章”的提示，方便后续逐步补全专题内容。
-
-亮点：专题是派生数据，不需要重复维护。只要博客文章带上对应标签，就能自动进入专题。
-
-### 5.7 专题详情页 `SeriesDetailPage.tsx`
-
-专题详情页通过 `slug` 查找专题定义，再筛选匹配文章。页面头部使用专题配置中的渐变色、图标、英文名和封面图，正文区域展示文章列表。
-
-不存在的专题会返回友好空状态。没有文章的专题会提示应给博客添加对应标签，并提供返回博客列表的入口。
-
-亮点：专题详情把“标签聚合”包装成更具产品感的阅读路径，提升了博客内容的可发现性。
-
-### 5.8 当前动态页 `NowPage.tsx`
-
-`NowPage` 参考 nownownow.com 的内容形态，从 `nowLastUpdated` 和 `nowSections` 渲染当前正在写的代码、正在读的内容、正在做的事和生活状态。
-
-页面结构很轻，重点是保持更新成本低。内容完全由 `src/data/now.ts` 驱动，页面只负责布局、动效和相关链接。
-
-亮点：它让网站从“静态简历”变成“持续更新的个人状态页”，增强真实感。
-
-### 5.9 装备清单页 `UsesPage.tsx`
-
-`UsesPage` 参考 uses.tech，把硬件、开发工具、命令行、技术栈偏好等内容整理成结构化清单。数据来自 `usesCategories`，标题支持 i18n fallback。
-
-页面使用定义列表 `dl/dt/dd` 展示工具名和值，语义清晰，维护成本低。
-
-亮点：这类页面能快速传达开发者的工作流和技术偏好，也能补充简历之外的生活化信息。
-
-### 5.10 友人帐页 `FriendsPage.tsx`
+### 5.6 友人帐页 `FriendsPage.tsx`
 
 友人帐页展示 `friends` 列表，并提供本站友链卡片 `myLinkCard`。用户可以一键复制友链信息，也可以通过邮件或 GitHub Issue 发起友链申请。
 
@@ -287,18 +251,13 @@ flowchart LR
   C[src/data/blog.ts] --> H
   C --> BL[BlogPage]
   C --> BD[BlogDetailPage]
-  C --> SI[SeriesIndexPage]
-  C --> SD[SeriesDetailPage]
-  E[src/data/series.ts] --> BD
-  E --> SI
-  E --> SD
   G[src/data/searchIndex.ts] --> SP[SearchPalette]
   K[src/lib/knowledgeBase.ts] --> AI[AiAssistant]
 ```
 
 ## 8. Hook、上下文与工具模块
 
-`usePageMeta.ts` 用于动态更新页面标题、meta description 和 OG 标签。项目详情、博客详情、专题详情、Now、Uses、Friends、Fandom 等页面都可以用它设置页面级 SEO 信息。
+`usePageMeta.ts` 用于动态更新页面标题、meta description 和 OG 标签。项目详情、博客详情、Friends、Fandom 等页面都可以用它设置页面级 SEO 信息。
 
 `ThemeContext.tsx` 读取 localStorage 或系统偏好得到初始主题，主题变化时同步 `html.dark` class，并写回 localStorage。`themeContextValue.ts` 定义主题类型、Context 和存储 key。`useTheme.ts` 则提供消费 Context 的 Hook。
 
@@ -373,12 +332,6 @@ SEO 层面，`index.html` 提供基础 meta 和 OG 信息，页面内通过 `use
 1. 在 `src/data/projects.ts` 的项目列表中增加基础信息。
 2. 在详情字典中补充 `overview`、`features`、`techStack`、`challenges`、`solutions`、`results`、`lessons`。
 3. 确保 `id` 与详情路由 `/projects/:id` 一致。
-
-新增专题：
-
-1. 在 `src/data/series.ts` 添加专题定义。
-2. 设置 `slug`、`title`、`description`、`matchTags`、`icon`、`color`。
-3. 给对应博客添加匹配标签，页面会自动聚合。
 
 新增页面：
 

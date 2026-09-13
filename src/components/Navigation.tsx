@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   Code2, Menu, X, ChevronDown,
-  Layers, Heart, UsersRound,
+  Heart, UsersRound,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -34,7 +34,6 @@ const MAIN_ITEMS: MainItem[] = [
 ];
 
 const MORE_ITEMS: MoreItem[] = [
-  { to: '/series', i18nKey: 'nav.series', icon: Layers, description: '博客按主题汇集', descEn: 'Posts by topic' },
   { to: '/friends', i18nKey: 'nav.friends', icon: UsersRound, description: '友情链接', descEn: 'Friend links' },
   { to: '/fandom', i18nKey: 'nav.fandom', icon: Heart, description: '追星专题', descEn: 'Fandom (private)' },
 ];

@@ -508,8 +508,7 @@ function HomePage() {
             <h2 className="section-title">更多探索</h2>
             <p className="section-subtitle">除了主线任务，还有这些副本可以探索</p>
           </SectionReveal>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-            <RelatedLink to="/series" emoji="📚" title="专题系列" desc="按主题看博客" />
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             <RelatedLink to="/friends" emoji="🤝" title="友人帐" desc="友情链接" />
             <RelatedLink to="/fandom" emoji="💕" title="秘密花园" desc="追星专题" />
           </div>

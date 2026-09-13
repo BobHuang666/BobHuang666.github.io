@@ -1,8 +1,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, Clock, Tag as TagIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Tag as TagIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getPost, blogData } from '../data/blog';
-import { series } from '../data/series';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import TableOfContents from '../components/TableOfContents';
 import ReadingProgress from '../components/ReadingProgress';
@@ -21,10 +20,7 @@ const BlogDetailPage = () => {
     post?.excerpt,
   );
 
-  // 推荐 & 专题：放在 useParams 后，无 post 时 short-circuit
-  const matchedSeries = post
-    ? series.filter((s) => s.matchTags.some((tag) => post.tags.includes(tag)))
-    : [];
+  // 推荐阅读：放在 useParams 后，无 post 时 short-circuit
   const related = post
     ? blogData
         .filter(
@@ -35,25 +31,6 @@ const BlogDetailPage = () => {
         )
         .slice(0, 2)
     : [];
-
-  // 同专题上下篇
-  const seriesPostIds =
-    matchedSeries.length > 0
-      ? blogData
-          .filter(
-            (p) =>
-              !p.isDraft &&
-              matchedSeries[0].matchTags.some((tag) => p.tags.includes(tag)),
-          )
-          .map((p) => p.id)
-      : [];
-  const curIdx = post ? seriesPostIds.indexOf(post.id) : -1;
-  const prevPost =
-    curIdx > 0 ? blogData.find((p) => p.id === seriesPostIds[curIdx - 1]) : undefined;
-  const nextPost =
-    curIdx >= 0 && curIdx < seriesPostIds.length - 1
-      ? blogData.find((p) => p.id === seriesPostIds[curIdx + 1])
-      : undefined;
 
   if (!post) {
     return (
@@ -93,11 +70,6 @@ const BlogDetailPage = () => {
                 <span className="px-2.5 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
                   {post.category}
                 </span>
-                {post.isDraft && (
-                  <span className="px-2.5 py-0.5 text-xs rounded-full bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300">
-                    {t('misc.draft')}
-                  </span>
-                )}
               </div>
 
               <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-slate-100 mb-4 leading-tight">
@@ -140,27 +112,6 @@ const BlogDetailPage = () => {
 
             <MarkdownRenderer content={post.content} />
 
-            {/* 所属专题 */}
-            {matchedSeries.length > 0 && (
-              <div className="mt-10 pt-6 border-t border-slate-200 dark:border-slate-800">
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
-                  📚 本文所属专题
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {matchedSeries.map((s) => (
-                    <Link
-                      key={s.slug}
-                      to={`/series/${s.slug}`}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs text-white bg-gradient-to-r ${s.color} hover:shadow-md transition-shadow`}
-                    >
-                      <span>{s.icon}</span>
-                      {s.title}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* 推荐阅读 */}
             {related.length > 0 && (
               <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
@@ -182,49 +133,6 @@ const BlogDetailPage = () => {
             )}
 
             <Comments term={`blog-${post.id}`} />
-
-            {/* 同专题上下篇导航 */}
-            {(prevPost || nextPost) && (
-              <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
-                <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">
-                  📚 {matchedSeries[0]?.title} · 专题导航
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {prevPost ? (
-                    <Link
-                      to={`/blog/${prevPost.id}`}
-                      className="group flex flex-col gap-1 p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-sm transition-all"
-                    >
-                      <span className="flex items-center gap-1 text-xs text-slate-400 group-hover:text-indigo-500 transition-colors">
-                        <ChevronLeft className="h-3.5 w-3.5" />
-                        上一篇
-                      </span>
-                      <span className="text-sm font-medium text-slate-800 dark:text-slate-200 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                        {prevPost.title}
-                      </span>
-                    </Link>
-                  ) : (
-                    <div />
-                  )}
-                  {nextPost ? (
-                    <Link
-                      to={`/blog/${nextPost.id}`}
-                      className="group flex flex-col gap-1 p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-sm transition-all text-right sm:items-end"
-                    >
-                      <span className="flex items-center gap-1 text-xs text-slate-400 group-hover:text-indigo-500 transition-colors justify-end">
-                        下一篇
-                        <ChevronRight className="h-3.5 w-3.5" />
-                      </span>
-                      <span className="text-sm font-medium text-slate-800 dark:text-slate-200 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                        {nextPost.title}
-                      </span>
-                    </Link>
-                  ) : (
-                    <div />
-                  )}
-                </div>
-              </div>
-            )}
 
             <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 text-center">
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">

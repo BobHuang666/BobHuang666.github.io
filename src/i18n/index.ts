@@ -18,9 +18,6 @@ const resources = {
         projects: '任务中心',
         blog: '游戏攻略',
         more: '更多',
-        series: '专题系列',
-        now: '当前动态',
-        uses: '装备清单',
         friends: '友人帐',
         fandom: '秘密花园',
       },
@@ -65,7 +62,6 @@ const resources = {
       // 杂
       misc: {
         readingMin: '{{n}} 分钟阅读',
-        draft: '草稿',
         comments: '评论区',
         commentsHint: '基于 GitHub Discussions（giscus）· 需要 GitHub 账号',
         toc: '目录',
@@ -74,28 +70,6 @@ const resources = {
         nav: '导航',
         contact: '联系',
         builtWith: '本站使用 React + Vite + Tailwind 构建',
-      },
-      // /now 页面
-      now: {
-        lastUpdated: '最后更新：',
-        heading: '当前动态',
-        intro: '灵感来自',
-        introSuffix: '。比朋友圈更结构化，比博客更轻量，记录当下的状态。',
-        sec_code: '正在写的代码',
-        sec_reading: '正在读的书 / 学的东西',
-        sec_doing: '正在做的事',
-        sec_life: '生活',
-      },
-      // /uses 页面
-      uses: {
-        heading: '装备清单',
-        intro: '灵感来自',
-        introSuffix: '。这里记录我开发、学习、生活中常用的工具和装备 —— 也欢迎你推荐更好的。',
-        hardware: '硬件',
-        devtools: '开发工具',
-        cli: '常用命令行',
-        stack: '技术栈偏好',
-        other: '其他',
       },
       // /friends 页面
       friends: {
@@ -113,18 +87,6 @@ const resources = {
         step3: '我会尽快加上你的链接 ✨',
         mailBtn: '发邮件申请',
         issueBtn: '提 Issue',
-      },
-      // /series 页面
-      series: {
-        heading: '专题系列',
-        desc: '把零散的博客文章按主题组织成系列，方便按兴趣系统阅读。',
-        articles: '篇文章',
-        backToList: '返回专题列表',
-        noPost: '这个专题还没有文章',
-        noPostHint: '当博客文章带上',
-        noPostHint2: '等标签时会自动归入',
-        viewAll: '查看全部文章',
-        matchTags: '匹配标签：',
       },
       // profile 页面
       profile: {
@@ -150,9 +112,6 @@ const resources = {
         projects: 'Projects',
         blog: 'Blog',
         more: 'More',
-        series: 'Series',
-        now: 'Now',
-        uses: 'Uses',
         friends: 'Friends',
         fandom: 'Garden',
       },
@@ -194,7 +153,6 @@ const resources = {
       },
       misc: {
         readingMin: '{{n}} min read',
-        draft: 'Draft',
         comments: 'Comments',
         commentsHint: 'Powered by GitHub Discussions (giscus) · GitHub login required',
         toc: 'Contents',
@@ -203,26 +161,6 @@ const resources = {
         nav: 'Navigation',
         contact: 'Contact',
         builtWith: 'Built with React + Vite + Tailwind',
-      },
-      now: {
-        lastUpdated: 'Last updated: ',
-        heading: 'Now',
-        intro: 'Inspired by',
-        introSuffix: '. More structured than social media, lighter than a blog post.',
-        sec_code: 'Currently coding',
-        sec_reading: 'Currently reading / learning',
-        sec_doing: 'Currently doing',
-        sec_life: 'Life',
-      },
-      uses: {
-        heading: 'Uses',
-        intro: 'Inspired by',
-        introSuffix: '. Tools and gear I use daily for dev, learning and life.',
-        hardware: 'Hardware',
-        devtools: 'Dev Tools',
-        cli: 'CLI',
-        stack: 'Tech Stack',
-        other: 'Other',
       },
       friends: {
         subtitle: 'Friends · Link Exchange',
@@ -239,17 +177,6 @@ const resources = {
         step3: "I'll add your link as soon as possible ✨",
         mailBtn: 'Send Email',
         issueBtn: 'Open Issue',
-      },
-      series: {
-        heading: 'Series',
-        desc: 'Blog posts organized by topic for focused reading.',
-        articles: 'articles',
-        backToList: 'Back to series',
-        noPost: 'No posts in this series yet',
-        noPostHint: 'Posts tagged with',
-        noPostHint2: 'will appear here automatically',
-        viewAll: 'View all posts',
-        matchTags: 'Tags: ',
       },
       profile: {
         tabBasic: 'Basic Info',

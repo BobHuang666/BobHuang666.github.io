@@ -75,7 +75,6 @@ const Footer = () => {
           <div>
             <h4 className="text-sm font-semibold text-white mb-3">{t('nav.more')}</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#/series" className="hover:text-indigo-400 transition-colors">{t('nav.series')}</a></li>
               <li><a href="#/friends" className="hover:text-indigo-400 transition-colors">{t('nav.friends')}</a></li>
               <li><a href="#/fandom" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
                 {t('nav.fandom')}

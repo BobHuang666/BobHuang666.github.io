@@ -2,7 +2,6 @@ import { profile } from '../data/profile';
 import { projects } from '../data/projects';
 import { blogData } from '../data/blog';
 import { skillsDetail, experiences, studentWork, courses } from '../data/skills';
-import { nowSections } from '../data/now';
 import { awards } from '../data/awards';
 
 export interface KBChunk {
@@ -134,15 +133,6 @@ export function buildKB(): KBChunk[] {
       });
     }
   }
-
-  // ── 近况 ────────────────────────────────────────────────
-  chunks.push({
-    id: 'now',
-    category: '近况动态',
-    title: '现在在做什么',
-    content: '近期动态：\n' + nowSections.map(s => s.items.map(i => `  · ${i}`).join('\n')).join('\n'),
-    keywords: ['现在', '近况', '最近', '目前', '当前', '在做', '活动', '动态', '今'],
-  });
 
   return chunks;
 }
