@@ -28,8 +28,8 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: false,
       // 新 SW 安装后立即接管，无需等待用户刷新
-      injectRegister: 'auto',
       includeAssets: ['static/img/red-logo.ico', 'static/img/avatar.jpg'],
       manifest: {
         name: 'BobHuang 个人主页',

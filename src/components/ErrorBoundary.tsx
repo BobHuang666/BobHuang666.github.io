@@ -36,7 +36,7 @@ export class ErrorBoundary extends Component<Props, State> {
               系统开小差了 💥
             </h2>
             <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-md">
-              这个页面遇到了意外问题。你可以刷新页面重试，或回到主页继续浏览。
+              这个页面遇到了意外问题。请按 Ctrl+Shift+R / Cmd+Shift+R 强制刷新重试。
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               <button type="button" onClick={() => window.location.reload()} className="btn-primary">
