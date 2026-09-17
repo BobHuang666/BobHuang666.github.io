@@ -1,6 +1,7 @@
 ---
 title: 你好，这里是 BobHuang 的小站
 date: 2026-05-31
+updated: 2026-09-17T12:01:55.007Z
 category: 随笔
 tags:
   - 公告
@@ -77,6 +78,6 @@ graph LR
 | TOC 目录 | ✅ | 右侧浮动 |
 | 数学公式 | ✅ | KaTeX |
 | 流程图 | ✅ | Mermaid |
-| 评论 | ⏳ | 需要配置 giscus |
+| 评论 | ✅ | 需要配置 giscus |
 
 > 留言、互动、纠错，都欢迎～可以通过页面底部的邮箱联系我。
