@@ -1,5 +1,7 @@
 # BobHuang · 个人主页
 
+> 参与开发前请阅读 [前端结构设计与协作约定](docs/ARCHITECTURE.md)。
+
 [![Live](https://img.shields.io/badge/Live-bobhuang666.github.io-6366f1?style=flat-square)](https://bobhuang666.github.io/)
 [![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-5-646cff?style=flat-square&logo=vite)](https://vitejs.dev)
@@ -66,63 +68,22 @@ npm run size
 
 ## 目录结构
 
+完整的目录职责、依赖方向和新增文件的放置规则见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。以下为当前结构概览：
+
 ```
 src/
-├── components/              # 通用组件
-│   ├── Navigation.tsx       # 顶部导航（主导航 + 更多下拉 + 移动菜单）
-│   ├── Footer.tsx           # 四栏页脚
-│   ├── ThemeToggle.tsx      # 暗色切换
-│   ├── LanguageToggle.tsx   # 中英切换
-│   ├── SearchTrigger.tsx    # 搜索按钮 + ⌘K
-│   ├── SearchPalette.tsx    # 命令面板（懒加载）
-│   ├── HeroBackground.tsx   # Hero 视觉特效层
-│   ├── SmartImage.tsx       # 智能图片（带降级）
-│   ├── SectionReveal.tsx    # 滚动进场动画包装
-│   ├── RelatedLink.tsx      # 页面底部跳转卡片
-│   ├── MarkdownRenderer.tsx # 博客 Markdown 渲染
-│   ├── CodeBlock.tsx        # 带复制按钮的代码块
-│   ├── TableOfContents.tsx  # 博客右侧目录
-│   ├── ReadingProgress.tsx  # 顶部阅读进度
-│   ├── Comments.tsx         # giscus 评论
-│   ├── GitHubCard.tsx       # GitHub 实时数据
-│   └── ErrorBoundary.tsx
-├── contexts/
-│   ├── ThemeContext.tsx
-│   └── themeContextValue.ts
-├── hooks/
-│   └── useTheme.ts
-├── data/                    # 单一数据源（被多页面共享）
-│   ├── profile.ts           # 基础信息
-│   ├── projects.ts          # 项目列表 + 详情
-│   ├── awards.ts            # 奖项（15 项）
-│   ├── skills.ts            # 技能 + 课程 + 实习 + 科研
-│   ├── blog.ts              # 自动加载 src/posts/*.md
-│   ├── friends.ts           # 友链
-│   ├── fandom.ts            # 追星
-│   ├── searchIndex.ts       # 搜索语料聚合
-│   └── giscus.ts            # 评论配置
-├── i18n/
-│   └── index.ts             # react-i18next 中英双语
-├── pages/
-│   ├── HomePage.tsx
-│   ├── ProfilePage.tsx
-│   ├── ProjectDetail.tsx
-│   ├── BlogPage.tsx
-│   ├── BlogDetailPage.tsx
-│   ├── FriendsPage.tsx
-│   ├── FandomPage.tsx
-│   └── NotFoundPage.tsx
-├── posts/                   # Markdown 博客（含 Front-Matter）
-│   ├── welcome.md
-│   ├── igem-frontend.md
-│   └── aicv-mp-intern.md
-├── utils/
-│   └── analytics.ts         # GoatCounter + Web Vitals
-├── types/
-│   └── index.ts
-├── App.tsx
-├── main.tsx
-└── index.css
+├── app/                     # 根壳层、Provider 与路由定义
+├── features/
+│   └── assistant/           # AI 助手的视图、API、配置、类型和知识库
+├── shared/components/       # 跨业务复用的布局、控件、UI 与视觉效果
+├── contexts/                # 全局 React Context
+├── hooks/                   # 跨功能复用 Hook
+├── data/                    # 内容单一事实来源及轻量派生索引
+├── posts/                   # Markdown 博客正文
+├── types/                   # 跨领域数据模型
+├── utils/                   # 无 React 状态的工具
+├── main.tsx                 # 浏览器入口
+└── index.css                # 全局样式
 ```
 
 ---
@@ -239,4 +200,4 @@ PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节
 
 ## 后续迭代
 
-详见 [`ROADMAP.md`](./ROADMAP.md)
+详见 [`docs/ROADMAP.md`](docs/ROADMAP.md)
