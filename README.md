@@ -2,7 +2,7 @@
 
 > 参与开发前请阅读 [前端结构设计与协作约定](docs/ARCHITECTURE.md)。
 
-[![Live](https://img.shields.io/badge/Live-bobhuang666.github.io-6366f1?style=flat-square)](https://bobhuang666.github.io/)
+[![Live](https://img.shields.io/badge/Live-blog.bobhuang.cn-6366f1?style=flat-square)](https://blog.bobhuang.cn/)
 [![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-5-646cff?style=flat-square&logo=vite)](https://vitejs.dev)
 [![Tailwind](https://img.shields.io/badge/Tailwind-3-38bdf8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)

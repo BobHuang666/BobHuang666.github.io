@@ -23,7 +23,7 @@ export const friends: FriendLink[] = [
 /** 申请友链时给对方看到的本站信息 */
 export const myLinkCard = {
   name: 'BobHuang',
-  url: 'https://bobhuang666.github.io/',
+  url: 'https://blog.bobhuang.cn/',
   description: '北师大数据科学与大数据技术 · 算法竞赛 / 全栈开发',
   // 用作头像
   avatar: '/static/img/avatar.jpg',

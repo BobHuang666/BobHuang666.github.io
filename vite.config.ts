@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { rssFeed } from './scripts/rss-feed-plugin'
 import { sitemap } from './scripts/sitemap-plugin'
 
-const SITE_URL = 'https://bobhuang666.github.io/'
+const SITE_URL = 'https://blog.bobhuang.cn/'
 
 // https://vitejs.dev/config/
 export default defineConfig({

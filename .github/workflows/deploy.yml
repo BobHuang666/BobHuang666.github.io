@@ -89,9 +89,9 @@ jobs:
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
-            https://bobhuang666.github.io/
-            https://bobhuang666.github.io/#/blog
-            https://bobhuang666.github.io/#/profile
+            https://blog.bobhuang.cn/
+            https://blog.bobhuang.cn/#/blog
+            https://blog.bobhuang.cn/#/profile
           uploadArtifacts: true
           temporaryPublicStorage: true
           configPath: ./.github/lighthouse/lighthouserc.json
