@@ -4,13 +4,34 @@
  * 启用方式：
  * 1. 注册 https://www.goatcounter.com/  → 拿到 yourcode.goatcounter.com
  * 2. 把下面的 code 改为你的名字
- * 3. 即可生效（HashRouter SPA 已做 hashchange 上报兼容）
+ * 3. 即可生效（HashRouter SPA 已做路径归一化 + hashchange 上报兼容）
  *
  * 设为空字符串则关闭（默认）
  */
 export const ANALYTICS = {
-  goatcounterCode: 'bobhuang', // 例 'bobhuang'
+  goatcounterCode: 'bobhuang',
 } as const;
+
+type GoatCounterWindow = Window & {
+  goatcounter?: {
+    path?: string | (() => string);
+    count?: (opts: { path: string | (() => string) }) => void;
+  };
+};
+
+/**
+ * 归一化上报路径，避免同一页面被拆成多条记录：
+ * - `/` 与 `/#/` 统一为 `/`（HashRouter 初始化后 hash 才写入）
+ * - 去掉 query（如 giscus 登录回调的 /?giscus=xxx）
+ * - 非本站路由（如 /ledger）保留原样，便于发现死链
+ */
+function normalizePath(): string {
+  const { pathname, hash } = window.location;
+  let path = hash.startsWith('#/') ? hash.slice(1) : pathname;
+  const queryAt = path.indexOf('?');
+  if (queryAt !== -1) path = path.slice(0, queryAt);
+  return path || '/';
+}
 
 let initialized = false;
 
@@ -21,6 +42,10 @@ export function initAnalytics() {
   if (!code) return;
   if (typeof window === 'undefined') return;
 
+  // 必须在 count.js 执行前写入，否则首次上报会用未清洗的 URL
+  const w = window as GoatCounterWindow;
+  w.goatcounter = { ...(w.goatcounter ?? {}), path: normalizePath };
+
   // 注入 GoatCounter 脚本
   const s = document.createElement('script');
   s.async = true;
@@ -28,14 +53,20 @@ export function initAnalytics() {
   s.src = '//gc.zgo.at/count.js';
   document.head.appendChild(s);
 
+  // 同一路径 1s 内重复触发（count.js 自动上报 + hashchange）只计一次
+  let lastPath = '';
+  let lastAt = 0;
+
   // HashRouter 兼容：监听 hashchange 手动上报
   window.addEventListener('hashchange', () => {
     setTimeout(() => {
-      type GoatCounterWindow = Window & {
-        goatcounter?: { count?: (opts: { path: string }) => void };
-      };
       const gc = (window as GoatCounterWindow).goatcounter;
-      gc?.count?.({ path: location.pathname + location.hash });
+      const path = normalizePath();
+      const now = Date.now();
+      if (path === lastPath && now - lastAt < 1000) return;
+      lastPath = path;
+      lastAt = now;
+      gc?.count?.({ path });
     }, 50);
   });
 }
