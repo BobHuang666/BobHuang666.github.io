@@ -1,6 +1,7 @@
 export type { LucideIcon } from 'lucide-react';
+import type { GradientTone } from '../utils/gradients';
 
-/** lucide 图标名称字符串，供数据层使用（组件层通过 ICON_MAP 解析） */
+/** lucide 图标名称字符串，供数据层使用（组件层通过 resolveIcon() 解析） */
 export type IconName = string;
 
 export interface Project {
@@ -10,8 +11,8 @@ export interface Project {
   description: string;
   /** 可选：项目封面图，不存在则降级为渐变色块 */
   image?: string;
-  /** 与 image 配对的渐变 fallback，例：'from-indigo-500 via-purple-500 to-pink-500' */
-  imageGradient?: string;
+  /** 封面图缺失时的渐变 fallback：语义名，由 gradient() 映射为类名 */
+  imageTone?: GradientTone;
   tags: string[];
   link: string;      // 在线演示 / 外链
   github?: string;
@@ -52,21 +53,25 @@ export interface SkillDetailCategory {
     level: number;          // 0-100，仅用于排序参考
     stars?: 1 | 2 | 3 | 4 | 5;
     note?: string;
-    color: string;
+    tone: GradientTone;
     /** 证据链接：项目 id 或外链 */
     evidence?: { label: string; href: string }[];
   }[];
 }
 
+/** 奖项级别常量：数据、筛选器、类型共用同一份，避免各处重复声明 */
+export const AWARD_LEVELS = ['国际级', '国家级', '省级', '校级', '院系级'] as const;
+export type AwardLevel = (typeof AWARD_LEVELS)[number];
+
 export interface Award {
   title: string;
   organization: string;
   year: string;
-  level: '国际级' | '国家级' | '省级' | '校级' | '院系级';
+  level: AwardLevel;
   description: string;
   rank?: string;
   icon: IconName;
-  color?: string;
+  tone?: GradientTone;
 }
 
 export interface BlogPost {

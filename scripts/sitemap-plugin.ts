@@ -1,35 +1,13 @@
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import type { Plugin } from 'vite';
+import { parseFrontMatter } from '../src/utils/frontMatter';
 
 interface Options {
   siteUrl: string;
   /** 静态路由列表（不含博客详情） */
   routes: string[];
   postsDir?: string;
-}
-
-function parseDate(raw: string): string {
-  const m = raw.match(/^---\s*\n([\s\S]*?)\n---/);
-  if (!m) return '';
-  const fm = m[1];
-  const line = fm.split(/\r?\n/).find((l) => l.startsWith('date:'));
-  if (!line) return '';
-  return line.replace(/^date:\s*/, '').replace(/^['"]|['"]$/g, '').trim();
-}
-
-function parseUpdatedDate(raw: string): string {
-  const m = raw.match(/^---\s*\n([\s\S]*?)\n---/);
-  if (!m) return '';
-  const line = m[1].split(/\r?\n/).find((l) => l.startsWith('updated:'));
-  if (!line) return '';
-  return line.replace(/^updated:\s*/, '').replace(/^['"]|['"]$/g, '').trim().slice(0, 10);
-}
-
-function isDraft(raw: string): boolean {
-  const m = raw.match(/^---\s*\n([\s\S]*?)\n---/);
-  if (!m) return false;
-  return /draft:\s*true/i.test(m[1]);
 }
 
 /** 生成 sitemap.xml + robots.txt */
@@ -47,11 +25,14 @@ export function sitemap(options: Options): Plugin {
         const files = readdirSync(resolve(root, postsDir)).filter((f) => f.endsWith('.md'));
         for (const f of files) {
           const raw = readFileSync(join(root, postsDir, f), 'utf-8');
-          if (isDraft(raw)) continue;
+          const { data } = parseFrontMatter(raw);
+          if (data.draft) continue;
           const id = f.replace(/\.md$/, '');
+          const updated = typeof data.updated === 'string' ? data.updated.slice(0, 10) : '';
+          const date = typeof data.date === 'string' ? data.date : '';
           blogUrls.push({
             loc: `${siteUrl}#/blog/${id}`,
-            lastmod: parseUpdatedDate(raw) || parseDate(raw) || new Date().toISOString().slice(0, 10),
+            lastmod: updated || date || new Date().toISOString().slice(0, 10),
           });
         }
       } catch {

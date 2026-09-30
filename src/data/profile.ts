@@ -7,7 +7,6 @@ export const profile = {
   email: '2295672887@qq.com',
   // 出于隐私公开站点不展示手机号，保留为占位
   location: '北京师范大学',
-  status: '在线 · 探索新副本中',
   politicalStatus: '中共预备党员',
   // 社交链接
   github: 'https://github.com/BobHuang666',

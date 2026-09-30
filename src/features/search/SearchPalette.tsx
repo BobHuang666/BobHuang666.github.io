@@ -1,8 +1,17 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import Fuse from 'fuse.js';
 import { Search, X, ArrowRight, CornerDownLeft } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { searchCorpus, KIND_META, type SearchItem } from '../../data/searchIndex';
+import { searchCorpus, type SearchItem, type SearchResultKind } from '../../data/searchIndex';
+import { copy } from '../../copy';
+
+/** 结果类型徽章的展示样式（只有本组件用，故留在组件层而非数据层） */
+const KIND_META: Record<SearchResultKind, { label: string; color: string }> = {
+  blog: { label: copy.search.kind.blog, color: 'text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/40' },
+  project: { label: copy.search.kind.project, color: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40' },
+  award: { label: copy.search.kind.award, color: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40' },
+  skill: { label: copy.search.kind.skill, color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40' },
+  page: { label: copy.search.kind.page, color: 'text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800' },
+};
 
 interface Props {
   open: boolean;
@@ -10,8 +19,6 @@ interface Props {
 }
 
 const SearchPalette = ({ open, onClose }: Props) => {
-  const { i18n } = useTranslation();
-  const isEn = i18n.resolvedLanguage?.startsWith('en');
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -104,7 +111,7 @@ const SearchPalette = ({ open, onClose }: Props) => {
       className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4"
       role="dialog"
       aria-modal="true"
-      aria-label={isEn ? 'Search' : '搜索'}
+      aria-label="搜索"
     >
       {/* 遮罩 */}
       <button
@@ -127,11 +134,7 @@ const SearchPalette = ({ open, onClose }: Props) => {
               setActive(0);
             }}
             onKeyDown={handleKey}
-            placeholder={
-              isEn
-                ? 'Search projects, posts, awards, skills…'
-                : '搜索项目、博客、奖项、技能…'
-            }
+            placeholder="搜索项目、博客、奖项、技能…"
             className="flex-1 bg-transparent outline-none text-base placeholder-slate-400 text-slate-900 dark:text-slate-100"
           />
           <button
@@ -147,7 +150,7 @@ const SearchPalette = ({ open, onClose }: Props) => {
         <div ref={listRef} className="max-h-[60vh] overflow-y-auto scrollbar-thin">
           {results.length === 0 ? (
             <div className="py-12 text-center text-sm text-slate-500 dark:text-slate-400">
-              {isEn ? 'No results' : '没有找到匹配的内容'}
+              {'没有找到匹配的内容'}
             </div>
           ) : (
             <ul role="listbox" className="py-2">
@@ -169,7 +172,7 @@ const SearchPalette = ({ open, onClose }: Props) => {
                       <span
                         className={`shrink-0 mt-0.5 px-1.5 py-0.5 text-[10px] uppercase tracking-wider rounded ${meta.color}`}
                       >
-                        {isEn ? meta.labelEn : meta.label}
+                        {meta.label}
                       </span>
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
@@ -191,14 +194,14 @@ const SearchPalette = ({ open, onClose }: Props) => {
         {/* 底栏快捷键提示 */}
         <div className="flex items-center justify-between gap-2 px-4 py-2 text-[11px] text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60">
           <div className="flex items-center gap-3">
-            <Kbd>↑↓</Kbd> {isEn ? 'Navigate' : '上下导航'}
+            <Kbd>↑↓</Kbd> 上下导航
             <Kbd>
               <CornerDownLeft className="h-3 w-3" />
             </Kbd>{' '}
-            {isEn ? 'Open' : '打开'}
-            <Kbd>esc</Kbd> {isEn ? 'Close' : '关闭'}
+            打开
+            <Kbd>esc</Kbd> 关闭
           </div>
-          <span>{results.length} {isEn ? 'results' : '项'}</span>
+          <span>{results.length} 项</span>
         </div>
       </div>
     </div>

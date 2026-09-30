@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import type { Plugin } from 'vite';
+import { parseFrontMatter, deriveExcerpt, FRONT_MATTER_DEFAULTS } from '../src/utils/frontMatter';
 
 interface Options {
   siteUrl: string;
@@ -21,33 +22,6 @@ interface ParsedPost {
   category: string;
   tags: string[];
   isDraft: boolean;
-}
-
-function parseFrontMatter(raw: string) {
-  const m = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
-  if (!m) return { data: {} as Record<string, unknown>, content: raw };
-  const fm = m[1];
-  const data: Record<string, unknown> = {};
-  fm.split(/\r?\n/).forEach((line) => {
-    const kv = line.match(/^([A-Za-z0-9_]+)\s*:\s*(.*)$/);
-    if (!kv) return;
-    const key = kv[1];
-    const value = kv[2].trim();
-    if (value.startsWith('[') && value.endsWith(']')) {
-      data[key] = value
-        .slice(1, -1)
-        .split(',')
-        .map((s) => s.trim().replace(/^['"]|['"]$/g, ''))
-        .filter(Boolean);
-    } else if (/^(true|false)$/i.test(value)) {
-      data[key] = value.toLowerCase() === 'true';
-    } else if (/^-?\d+(\.\d+)?$/.test(value)) {
-      data[key] = Number(value);
-    } else {
-      data[key] = value.replace(/^['"]|['"]$/g, '');
-    }
-  });
-  return { data, content: m[2] };
 }
 
 function escapeXml(s: string) {
@@ -90,10 +64,9 @@ export function rssFeed(options: Options): Plugin {
           return {
             id: f.replace(/\.md$/, ''),
             title: (data.title as string) ?? f,
-            excerpt:
-              (data.excerpt as string) ?? content.slice(0, 200).replace(/[#>*`]/g, ''),
+            excerpt: (data.excerpt as string) ?? deriveExcerpt(content),
             date: (data.date as string) ?? '',
-            category: (data.category as string) ?? '随笔',
+            category: (data.category as string) ?? FRONT_MATTER_DEFAULTS.category,
             tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
             isDraft: Boolean(data.draft),
           };

@@ -8,9 +8,9 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import {
   idols, lessons, concerts, supportRecords, collections, fandomConfig,
-  supportTypeMeta, collectionCategoryMeta, rarityMeta,
-  type Idol, type SupportType, type CollectionCategory,
+  type Idol, type SupportType, type CollectionCategory, type Rarity,
 } from '../../data/fandom';
+import { gradient } from '../../utils/gradients';
 import { RelatedLink } from '../../shared/components/ui/RelatedLink';
 import { usePageMeta } from '../../hooks/usePageMeta';
 
@@ -34,6 +34,54 @@ const categoryIcons: Record<CollectionCategory, LucideIcon> = {
   goods: Gift,
   sign: PenLine,
   ticket: Ticket,
+};
+
+/** 应援类型展示元数据（文案 + 徽章色） */
+const supportTypeMeta: Record<SupportType, { label: string; badgeClass: string }> = {
+  vote: { label: '打榜', badgeClass: 'text-rose-600 dark:text-rose-400 bg-rose-100/70 dark:bg-rose-950/40' },
+  fund: { label: '集资', badgeClass: 'text-amber-600 dark:text-amber-400 bg-amber-100/70 dark:bg-amber-950/40' },
+  lightstick: { label: '灯牌应援', badgeClass: 'text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-100/70 dark:bg-fuchsia-950/40' },
+  banner: { label: '手幅应援', badgeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-100/70 dark:bg-indigo-950/40' },
+  birthday: { label: '生日应援', badgeClass: 'text-pink-600 dark:text-pink-400 bg-pink-100/70 dark:bg-pink-950/40' },
+  stream: { label: '打卡刷量', badgeClass: 'text-cyan-600 dark:text-cyan-400 bg-cyan-100/70 dark:bg-cyan-950/40' },
+};
+
+/** 收藏类别展示元数据 */
+const collectionCategoryMeta: Record<CollectionCategory, string> = {
+  album: '专辑',
+  photocard: '小卡',
+  lightstick: '应援棒',
+  goods: '周边',
+  sign: '签名',
+  ticket: '票根',
+};
+
+/** 珍藏度展示元数据（文案 + 边框光效类） */
+const rarityMeta: Record<Rarity, { label: string; ring: string; glow: string; badge: string }> = {
+  common: {
+    label: '普通',
+    ring: 'ring-slate-200 dark:ring-slate-700',
+    glow: '',
+    badge: 'text-slate-500 bg-slate-100 dark:bg-slate-800 dark:text-slate-400',
+  },
+  rare: {
+    label: '稀有',
+    ring: 'ring-sky-300 dark:ring-sky-500/60',
+    glow: 'shadow-[0_0_24px_-6px] shadow-sky-400/40',
+    badge: 'text-sky-600 bg-sky-100 dark:bg-sky-950/50 dark:text-sky-400',
+  },
+  epic: {
+    label: '史诗',
+    ring: 'ring-fuchsia-300 dark:ring-fuchsia-500/60',
+    glow: 'shadow-[0_0_28px_-4px] shadow-fuchsia-400/50',
+    badge: 'text-fuchsia-600 bg-fuchsia-100 dark:bg-fuchsia-950/50 dark:text-fuchsia-400',
+  },
+  legend: {
+    label: '传说',
+    ring: 'ring-amber-300 dark:ring-amber-400/70',
+    glow: 'shadow-[0_0_32px_-2px] shadow-amber-400/60',
+    badge: 'text-amber-600 bg-amber-100 dark:bg-amber-950/50 dark:text-amber-400',
+  },
 };
 
 const fmtDate = (d: string) =>
@@ -298,11 +346,11 @@ const IdolBlock = ({
           transition={{ duration: 0.35, delay: idx * 0.05 }}
           className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden hover:shadow-lg transition-shadow"
         >
-          <div className={`h-20 bg-gradient-to-br ${i.color} relative`}>
+          <div className={`h-20 bg-gradient-to-br ${gradient(i.tone)} relative`}>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,white_0%,transparent_50%)] opacity-30" />
           </div>
           <div className="p-4 -mt-8 relative">
-            <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${i.color} ring-4 ring-white dark:ring-slate-900 flex items-center justify-center text-white font-bold text-lg shadow mb-2`}>
+            <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${gradient(i.tone)} ring-4 ring-white dark:ring-slate-900 flex items-center justify-center text-white font-bold text-lg shadow mb-2`}>
               {i.name.charAt(0)}
             </div>
             <h3 className="font-semibold text-slate-900 dark:text-slate-100">{i.name}</h3>
@@ -347,7 +395,7 @@ const ConcertsTab = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: idx * 0.06 }}
-                  className={`relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br ${c.color} shadow-lg`}
+                  className={`relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br ${gradient(c.tone)} shadow-lg`}
                 >
                   <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/15 blur-2xl" />
                   <div className="relative">
@@ -372,7 +420,7 @@ const ConcertsTab = () => {
                         <Ticket className="h-3 w-3" />{c.seat}
                       </span>
                     )}
-                    {c.highlight && <p className="text-sm mt-3 opacity-95 leading-relaxed">“{c.highlight}”</p>}
+                    {c.highlight && <p className="text-sm mt-3 opacity-95 leading-relaxed">"{c.highlight}"</p>}
                   </div>
                 </motion.div>
               );
@@ -396,7 +444,7 @@ const ConcertsTab = () => {
                   transition={{ duration: 0.35, delay: idx * 0.05 }}
                   className="relative"
                 >
-                  <span className={`absolute -left-[18px] top-4 w-3 h-3 rounded-full bg-gradient-to-br ${c.color} ring-4 ring-white dark:ring-slate-950`} />
+                  <span className={`absolute -left-[18px] top-4 w-3 h-3 rounded-full bg-gradient-to-br ${gradient(c.tone)} ring-4 ring-white dark:ring-slate-950`} />
                   <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between gap-2 mb-1.5">
                       <h4 className="font-semibold text-slate-900 dark:text-slate-100">{c.tour}</h4>
@@ -408,7 +456,7 @@ const ConcertsTab = () => {
                       {c.seat && <span className="inline-flex items-center gap-1"><Ticket className="h-3 w-3" />{c.seat}</span>}
                     </div>
                     {c.highlight && (
-                      <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">“{c.highlight}”</p>
+                      <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">"{c.highlight}"</p>
                     )}
                   </div>
                 </motion.div>
@@ -447,7 +495,7 @@ const SupportTab = () => {
               <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between gap-2 mb-1.5">
                   <div className="flex items-center gap-2">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium ${meta.tone}`}>
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium ${meta.badgeClass}`}>
                       {meta.label}
                     </span>
                     <h4 className="font-semibold text-slate-900 dark:text-slate-100">{s.title}</h4>
@@ -504,7 +552,7 @@ const CollectionTab = () => {
               transition={{ duration: 0.3, delay: idx * 0.04 }}
               className={`group rounded-2xl bg-white dark:bg-slate-900 ring-2 ${rarity.ring} ${rarity.glow} overflow-hidden hover:-translate-y-1 transition-transform`}
             >
-              <div className={`relative aspect-[4/3] bg-gradient-to-br ${c.color} flex items-center justify-center`}>
+              <div className={`relative aspect-[4/3] bg-gradient-to-br ${gradient(c.tone)} flex items-center justify-center`}>
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,white_0%,transparent_55%)] opacity-25" />
                 <Icon className="relative h-9 w-9 text-white/90 drop-shadow group-hover:scale-110 transition-transform" />
                 {c.rarity === 'legend' && (

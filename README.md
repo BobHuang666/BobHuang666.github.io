@@ -8,7 +8,7 @@
 [![Tailwind](https://img.shields.io/badge/Tailwind-3-38bdf8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 [![PWA](https://img.shields.io/badge/PWA-ready-5a0fc8?style=flat-square)](https://web.dev/progressive-web-apps/)
 
-> 基于 React 18 + Vite 5 + TypeScript + Tailwind CSS 构建的个人主页，支持 i18n / 暗色模式 / 全站搜索 / PWA / Markdown 博客 / 评论 / 数据统计。部署在 GitHub Pages。
+> 基于 React 18 + Vite 5 + TypeScript + Tailwind CSS 构建的个人主页，支持暗色模式 / 全站搜索 / PWA / Markdown 博客 / 评论 / 数据统计。部署在 GitHub Pages。
 
 ---
 
@@ -94,7 +94,7 @@ src/
 |---|---|
 | **路由** | HashRouter（规避 GH Pages 刷新 404）+ 路由懒加载 + Suspense |
 | **暗色模式** | `prefers-color-scheme` + localStorage 持久化 + 防闪烁脚本 |
-| **国际化** | react-i18next 中英双语，`<html lang>` 联动 |
+| **中文文案层** | `src/copy.ts` 集中管理 UI 文案，无 i18n 运行时 |
 | **博客** | Markdown 文件自动加载，含 Front-Matter / GFM / 代码高亮 / 复制 / TOC / 阅读进度 |
 | **搜索** | Fuse.js 命令面板，⌘K / Ctrl+K / `/` 触发 |
 | **评论** | giscus 集成（GitHub Discussions） |
@@ -121,7 +121,7 @@ src/
 | 友链 | `src/data/friends.ts` |
 | 追星 | `src/data/fandom.ts`（可设密码） |
 | 主题色 / 字体 | `tailwind.config.js` |
-| i18n 文案 | `src/i18n/index.ts` |
+| 中文文案 | `src/copy.ts` |
 
 ### 启用评论（giscus）
 1. 仓库改为 public

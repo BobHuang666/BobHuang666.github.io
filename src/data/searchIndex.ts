@@ -2,6 +2,7 @@ import { blogData } from './blog';
 import { projects } from './projects';
 import { awards } from './awards';
 import { skillsDetail } from './skills';
+import { copy } from '../copy';
 
 export type SearchResultKind = 'blog' | 'project' | 'award' | 'skill' | 'page';
 
@@ -15,29 +16,13 @@ export interface SearchItem {
   href: string;
 }
 
+const { pages } = copy.search;
+
 const staticPages: SearchItem[] = [
-  {
-    id: 'page-home',
-    kind: 'page',
-    title: '主城 / Home',
-    description: '个人主页，包含技能、项目、奖项、博客与联系方式',
-    href: '#/',
-  },
-  {
-    id: 'page-profile',
-    kind: 'page',
-    title: '角色档案 / Profile',
-    description: '基本信息、教育背景、获奖、课程、实习、科研',
-    href: '#/profile',
-  },
-  {
-    id: 'page-blog',
-    kind: 'page',
-    title: '游戏攻略 / Blog',
-    description: '所有博客文章列表',
-    href: '#/blog',
-  },
-  { id: 'page-friends', kind: 'page', title: '友人帐 / Friends', description: '友情链接 & 友链申请', href: '#/friends' },
+  { id: 'page-home', kind: 'page', title: pages.home, description: pages.homeDesc, href: '#/' },
+  { id: 'page-profile', kind: 'page', title: pages.profile, description: pages.profileDesc, href: '#/profile' },
+  { id: 'page-blog', kind: 'page', title: pages.blog, description: pages.blogDesc, href: '#/blog' },
+  { id: 'page-friends', kind: 'page', title: pages.friends, description: pages.friendsDesc, href: '#/friends' },
 ];
 
 const projectItems: SearchItem[] = projects.map((p) => ({
@@ -49,8 +34,8 @@ const projectItems: SearchItem[] = projects.map((p) => ({
   href: `#/projects/${p.id}`,
 }));
 
-const awardItems: SearchItem[] = awards.map((a, i) => ({
-  id: `award-${i}`,
+const awardItems: SearchItem[] = awards.map((a) => ({
+  id: `award-${a.title}`,
   kind: 'award',
   title: a.title,
   description: `${a.organization} · ${a.year} · ${a.level} · ${a.description}`,
@@ -72,7 +57,7 @@ const blogItems: SearchItem[] = blogData.map((b) => ({
   id: `blog-${b.id}`,
   kind: 'blog',
   title: b.title,
-  description: `${b.excerpt}\n${b.content.slice(0, 300)}`,
+  description: b.excerpt,
   tags: b.tags,
   href: `#/blog/${b.id}`,
 }));
@@ -84,11 +69,3 @@ export const searchCorpus: SearchItem[] = [
   ...awardItems,
   ...skillItems,
 ];
-
-export const KIND_META: Record<SearchResultKind, { label: string; labelEn: string; color: string }> = {
-  blog: { label: '博客', labelEn: 'Blog', color: 'text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/40' },
-  project: { label: '项目', labelEn: 'Project', color: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40' },
-  award: { label: '奖项', labelEn: 'Award', color: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40' },
-  skill: { label: '技能', labelEn: 'Skill', color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40' },
-  page: { label: '页面', labelEn: 'Page', color: 'text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800' },
-};

@@ -1,9 +1,8 @@
 import { Github, Mail, Heart, Rss } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { copy } from '../../../copy';
 import { profile } from '../../../data/profile';
 
 const Footer = () => {
-  const { t } = useTranslation();
   return (
     <footer className="bg-slate-900 text-slate-300 mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -49,10 +48,10 @@ const Footer = () => {
 
           {/* 主导航 */}
           <div>
-            <h4 className="text-sm font-semibold text-white mb-3">{t('footer.nav')}</h4>
+            <h4 className="text-sm font-semibold text-white mb-3">{copy.footer.nav}</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#/" className="hover:text-indigo-400 transition-colors">{t('nav.home')}</a></li>
-              <li><a href="#/profile" className="hover:text-indigo-400 transition-colors">{t('nav.profile')}</a></li>
+              <li><a href="#/" className="hover:text-indigo-400 transition-colors">{copy.nav.home}</a></li>
+              <li><a href="#/profile" className="hover:text-indigo-400 transition-colors">{copy.nav.profile}</a></li>
               <li>
                 <a
                   href="#/"
@@ -64,20 +63,20 @@ const Footer = () => {
                   }}
                   className="hover:text-indigo-400 transition-colors"
                 >
-                  {t('nav.projects')}
+                  {copy.nav.projects}
                 </a>
               </li>
-              <li><a href="#/blog" className="hover:text-indigo-400 transition-colors">{t('nav.blog')}</a></li>
+              <li><a href="#/blog" className="hover:text-indigo-400 transition-colors">{copy.nav.blog}</a></li>
             </ul>
           </div>
 
           {/* 探索 */}
           <div>
-            <h4 className="text-sm font-semibold text-white mb-3">{t('nav.more')}</h4>
+            <h4 className="text-sm font-semibold text-white mb-3">{copy.nav.more}</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#/friends" className="hover:text-indigo-400 transition-colors">{t('nav.friends')}</a></li>
+              <li><a href="#/friends" className="hover:text-indigo-400 transition-colors">{copy.nav.friends}</a></li>
               <li><a href="#/fandom" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
-                {t('nav.fandom')}
+                {copy.nav.fandom}
                 <Heart className="h-3 w-3 text-rose-400" />
               </a></li>
             </ul>
@@ -86,7 +85,7 @@ const Footer = () => {
 
         <div className="mt-8 pt-6 border-t border-slate-800 flex flex-col sm:flex-row gap-2 items-center justify-between text-xs text-slate-500">
           <span>© {new Date().getFullYear()} {profile.name}. All rights reserved.</span>
-          <span>{t('footer.builtWith')}</span>
+          <span>{copy.footer.builtWith}</span>
         </div>
       </div>
     </footer>

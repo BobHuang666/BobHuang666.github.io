@@ -1,19 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+import { copy } from '../../copy';
+import { resolveIcon } from '../../utils/iconMap';
+import { AWARD_LEVELS, type AwardLevel } from '../../types';
+import { gradient } from '../../utils/gradients';
 import {
-  Github, Mail, ArrowRight, Sparkles, ExternalLink, Copy, Check,
-  Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal,
-  Globe, Database, Shield,
-  type LucideIcon,
+  Github, Mail, ArrowRight, Sparkles, ExternalLink, Copy, Check, Trophy,
 } from 'lucide-react';
 
-/** awards.ts / skills.ts 中 icon 字符串 → lucide 组件映射 */
-const ICON_MAP: Record<string, LucideIcon> = {
-  Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal,
-  Globe, Database, Shield,
-};
 import { profile } from '../../data/profile';
 import { techStack } from '../../data/skills';
 import { projects } from '../../data/projects';
@@ -83,25 +78,16 @@ function TypeWriter({ sequences, speed = 55 }: { sequences: (string | number)[];
   );
 }
 
-type AwardLevel = 'all' | '国际级' | '国家级' | '省级' | '校级' | '院系级';
-const AWARD_LEVELS: AwardLevel[] = ['all', '国际级', '国家级', '省级', '校级', '院系级'];
-const LEVEL_I18N: Record<AwardLevel, string> = {
-  all: 'level.all',
-  国际级: 'level.international',
-  国家级: 'level.national',
-  省级: 'level.provincial',
-  校级: 'level.school',
-  院系级: 'level.college',
-};
+type AwardFilter = 'all' | AwardLevel;
+const AWARD_FILTERS: AwardFilter[] = ['all', ...AWARD_LEVELS];
 
 function HomePage() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const scrollToId = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-  const [awardFilter, setAwardFilter] = useState<AwardLevel>('all');
+  const [awardFilter, setAwardFilter] = useState<AwardFilter>('all');
   const [emailCopied, setEmailCopied] = useState(false);
   const featuredBlogs = blogMeta.filter((b) => !b.isDraft).slice(0, 3);
 
@@ -171,7 +157,7 @@ function HomePage() {
 
             {/* 状态文案 —— 紧贴头像下方 */}
             <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 backdrop-blur text-white/95 text-xs border border-white/20">
-              {t('home.status')}
+              {copy.home.status}
             </div>
           </motion.div>
 
@@ -194,30 +180,16 @@ function HomePage() {
             className="text-base md:text-lg text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed min-h-[3.5rem]"
           >
             <TypeWriter
-              key={t('home.status') /* 切换语言时重挂载 */}
-              sequences={
-                t('home.status').startsWith('Online')
-                  ? [
-                    'CS undergrad @ BNU · Data Science track',
-                    2500,
-                    'Competitive programmer · ICPC / Lanqiao / CCF',
-                    2200,
-                    'Full-stack dev · Vue / React / Go / Python',
-                    2200,
-                    'Frontend intern @ Tencent CDG',
-                    2500,
-                  ]
-                  : [
-                    profile.tagline,
-                    2500,
-                    '算法竞赛选手 · ICPC / 蓝桥杯 / CCF 多项荣誉',
-                    2200,
-                    '全栈开发者 · Vue / React / Go / Python',
-                    2200,
-                    '正在腾讯 CDG 担任前端实习生',
-                    2500,
-                  ]
-              }
+              sequences={[
+                profile.tagline,
+                2500,
+                '算法竞赛选手 · ICPC / 蓝桥杯 / CCF 多项荣誉',
+                2200,
+                '全栈开发者 · Vue / React / Go / Python',
+                2200,
+                '正在腾讯 CDG 担任前端实习生',
+                2500,
+              ]}
             />
           </motion.div>
 
@@ -233,20 +205,20 @@ function HomePage() {
               className="inline-flex items-center px-6 py-3 rounded-lg font-medium bg-white text-indigo-600 hover:bg-slate-50 transition-colors shadow-lg"
             >
               <Sparkles className="h-4 w-4 mr-2" />
-              {t('btn.viewProjects')}
+              {copy.btn.viewProjects}
             </button>
             <Link
               to="/profile"
               className="inline-flex items-center px-6 py-3 rounded-lg font-medium border-2 border-white/70 text-white hover:bg-white hover:text-indigo-600 transition-colors"
             >
-              {t('btn.aboutMe')} <ArrowRight className="h-4 w-4 ml-2" />
+              {copy.btn.aboutMe} <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
             <button
               type="button"
               onClick={() => scrollToId('contact')}
               className="inline-flex items-center px-6 py-3 rounded-lg font-medium border-2 border-white/70 text-white hover:bg-white hover:text-indigo-600 transition-colors"
             >
-              <Mail className="h-4 w-4 mr-2" /> {t('btn.contactMe')}
+              <Mail className="h-4 w-4 mr-2" /> {copy.btn.contactMe}
             </button>
           </motion.div>
         </div>
@@ -256,8 +228,8 @@ function HomePage() {
       <section id="projects" className="py-20 bg-slate-50 dark:bg-slate-900/40 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <h2 className="section-title">{t('home.projectsTitle')}</h2>
-            <p className="section-subtitle">{t('home.projectsSub')}</p>
+            <h2 className="section-title">{copy.home.projectsTitle}</h2>
+            <p className="section-subtitle">{copy.home.projectsSub}</p>
           </SectionReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
@@ -268,7 +240,7 @@ function HomePage() {
                       src={project.image}
                       alt={project.title}
                       fallbackTitle={project.title}
-                      fallbackGradient={project.imageGradient}
+                      fallbackGradient={gradient(project.imageTone)}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {project.highlight && (
@@ -325,8 +297,8 @@ function HomePage() {
       <section id="blog" className="py-20 bg-white dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <h2 className="section-title">{t('home.blogTitle')}</h2>
-            <p className="section-subtitle">{t('home.blogSub')}</p>
+            <h2 className="section-title">{copy.home.blogTitle}</h2>
+            <p className="section-subtitle">{copy.home.blogSub}</p>
           </SectionReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredBlogs.map((post, index) => (
@@ -376,15 +348,15 @@ function HomePage() {
       <section id="awards" className="py-20 bg-slate-50 dark:bg-slate-900/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <h2 className="section-title">{t('home.awardsTitle')}</h2>
+            <h2 className="section-title">{copy.home.awardsTitle}</h2>
             <p className="section-subtitle">
-              {t('home.awardsSubTpl', { count: awards.length })}
+              {copy.home.awardsSub(awards.length)}
             </p>
           </SectionReveal>
 
           {/* 级别筛选 */}
           <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {AWARD_LEVELS.map((lv) => (
+            {AWARD_FILTERS.map((lv) => (
               <button
                 key={lv}
                 onClick={() => setAwardFilter(lv)}
@@ -393,7 +365,7 @@ function HomePage() {
                   : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
                   }`}
               >
-                {t(LEVEL_I18N[lv])}
+                {lv === 'all' ? copy.level.all : lv}
               </button>
             ))}
           </div>
@@ -404,10 +376,9 @@ function HomePage() {
                 <div className="card-base p-6 h-full">
                   <div className="flex items-center mb-3">
                     <div
-                      className={`w-11 h-11 rounded-lg bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'
-                        } flex items-center justify-center mr-3 shadow-md`}
+                      className={`w-11 h-11 rounded-lg bg-gradient-to-br ${gradient(award.tone)} flex items-center justify-center mr-3 shadow-md`}
                     >
-                      {(() => { const Icon = ICON_MAP[award.icon] ?? Trophy; return <Icon className="h-5 w-5 text-white" />; })()}
+                      {(() => { const Icon = resolveIcon(award.icon, Trophy); return <Icon className="h-5 w-5 text-white" />; })()}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
@@ -449,8 +420,8 @@ function HomePage() {
       <section id="skills" className="py-20 bg-slate-50 dark:bg-slate-900/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <h2 className="section-title">{t('home.skillsTitle')}</h2>
-            <p className="section-subtitle">{t('home.skillsSub')}</p>
+            <h2 className="section-title">{copy.home.skillsTitle}</h2>
+            <p className="section-subtitle">{copy.home.skillsSub}</p>
           </SectionReveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {techStack.map((category, index) => (
@@ -458,7 +429,7 @@ function HomePage() {
                 <div className="card-base p-6 h-full">
                   <div className="flex items-center mb-4">
                     <div className="w-11 h-11 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 flex items-center justify-center mr-3">
-                      {(() => { const Icon = ICON_MAP[category.icon] ?? Code2; return <Icon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />; })()}
+                      {(() => { const Icon = resolveIcon(category.icon); return <Icon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />; })()}
                     </div>
                     <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
                       {category.name}
@@ -486,8 +457,8 @@ function HomePage() {
         <section id="github" className="py-20 bg-white dark:bg-slate-950">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-              <h2 className="section-title">{t('home.githubTitle')}</h2>
-              <p className="section-subtitle">{t('home.githubSub')}</p>
+              <h2 className="section-title">{copy.home.githubTitle}</h2>
+              <p className="section-subtitle">{copy.home.githubSub}</p>
             </SectionReveal>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <SectionReveal variant="slide-left">
@@ -519,8 +490,8 @@ function HomePage() {
       <section id="contact" className="py-20 bg-white dark:bg-slate-950">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionReveal>
-            <h2 className="section-title">{t('home.contactTitle')}</h2>
-            <p className="section-subtitle">{t('home.contactSub')}</p>
+            <h2 className="section-title">{copy.home.contactTitle}</h2>
+            <p className="section-subtitle">{copy.home.contactSub}</p>
           </SectionReveal>
 
           <SectionReveal delay={0.1}>

@@ -2,11 +2,11 @@
 
 ## 1. 网站总体定位
 
-这是一个以个人品牌展示为核心的静态前端网站，技术栈为 React 18、Vite、TypeScript、Tailwind CSS、React Router、Framer Motion 和 i18next。网站部署目标是 GitHub Pages，因此应用使用 `HashRouter` 规避静态托管环境下的刷新 404 问题。
+这是一个以个人品牌展示为核心的静态前端网站，技术栈为 React 18、Vite、TypeScript、Tailwind CSS、React Router 和 Framer Motion。网站部署目标是 GitHub Pages，因此应用使用 `HashRouter` 规避静态托管环境下的刷新 404 问题。
 
-网站内容不只是传统简历页，而是把个人主页、项目集、博客、专题、近况、装备清单、友链、追星专题和 AI 助手组合成一个完整的个人数字空间。整体叙事采用“主城、角色档案、任务中心、游戏攻略”等游戏化语言，让技术内容和个人兴趣形成统一的品牌表达。
+网站内容不只是传统简历页，而是把个人主页、项目集、博客、专题、近况、装备清单、友链、追星专题和 AI 助手组合成一个完整的个人数字空间。整体叙事采用"主城、角色档案、任务中心、游戏攻略"等游戏化语言，让技术内容和个人兴趣形成统一的品牌表达。
 
-核心设计思路是“静态数据驱动 + 组件化页面 + Markdown 内容系统 + 全局体验增强”。大部分业务内容保存在 `src/data` 和 `src/posts` 中，页面负责组织信息结构，组件负责复用交互和视觉表现。
+核心设计思路是"静态数据驱动 + 组件化页面 + Markdown 内容系统 + 全局体验增强"。大部分业务内容保存在 `src/data` 和 `src/posts` 中，页面负责组织信息结构，组件负责复用交互和视觉表现。
 
 ## 2. 技术栈与工程结构
 
@@ -17,7 +17,7 @@
 - React 生态：`react`、`react-dom`、`react-router-dom`
 - 动效与图标：`framer-motion`、`lucide-react`、`react-type-animation`
 - 内容渲染：`react-markdown`、`remark-gfm`、`remark-math`、`rehype-*`、`katex`、`mermaid`
-- 搜索与国际化：`fuse.js`、`i18next`、`react-i18next`
+- 搜索：`fuse.js`
 - 评论与 PWA：`@giscus/react`、`vite-plugin-pwa`
 
 目录分层清晰：
@@ -35,7 +35,7 @@
 
 ## 3. 应用启动与全局架构
 
-启动链路从 `index.html` 到 `src/main.tsx`，再进入 `src/app/App.tsx`。`main.tsx` 负责加载全局样式和 i18n，初始化 GoatCounter 统计，并在开发环境输出 Web Vitals 日志。
+启动链路从 `index.html` 到 `src/main.tsx`，再进入 `src/app/App.tsx`。`main.tsx` 负责加载全局样式、固定 `<html lang="zh-CN">`、初始化 GoatCounter 统计，并在开发环境输出 Web Vitals 日志。
 
 `app/App.tsx` 是全局应用壳层；Provider 位于 `app/AppProviders.tsx`，路由表位于 `app/routes.tsx`，结构如下：
 
@@ -66,7 +66,7 @@ flowchart TD
 - `/fandom`：秘密花园
 - `*`：404 页面
 
-`/projects` 没有单独页面，而是通过首页 `#projects` 区块承载，导航里使用锚点滚动处理。这能减少页面数量，也让首页保持“作品入口”的中心地位。
+`/projects` 没有单独页面，而是通过首页 `#projects` 区块承载，导航里使用锚点滚动处理。这能减少页面数量，也让首页保持"作品入口"的中心地位。
 
 ## 4. 构建、PWA 与性能策略
 
@@ -88,13 +88,13 @@ flowchart TD
 
 首页是整个网站的信息中枢，聚合 `profile`、`techStack`、`projects`、`awards` 和 `blogData`。页面分为 Hero、技能、GitHub 实时数据、项目、博客预览、奖项、更多探索和联系区。
 
-Hero 区使用渐变背景、`HeroBackground`、头像状态徽章和 `react-type-animation` 打字动画。语言切换时通过 `key={t('home.status')}` 让打字动画重新挂载，从而同步中英文内容。
+Hero 区使用渐变背景、`HeroBackground`、头像状态徽章和 `react-type-animation` 打字动画。
 
-项目区通过 `SmartImage` 展示封面图，缺图时自动降级为渐变色块。点击“在线演示”时会判断链接是外链还是站内路由，点击“项目详情”则跳转到 `/projects/:id`。
+项目区通过 `SmartImage` 展示封面图，缺图时自动降级为渐变色块。点击"在线演示"时会判断链接是外链还是站内路由，点击"项目详情"则跳转到 `/projects/:id`。
 
 奖项区支持按级别筛选，并只展示前 6 项精选荣誉。联系区支持邮箱复制，复制状态通过本地 `emailCopied` 状态做短暂反馈。
 
-亮点：首页承担“第一印象 + 内容入口 + 个人可信度”的复合职责，GitHub 卡片和热力图增强了技术背书，项目和博客预览把用户导向深层内容。
+亮点：首页承担"第一印象 + 内容入口 + 个人可信度"的复合职责，GitHub 卡片和热力图增强了技术背书，项目和博客预览把用户导向深层内容。
 
 ### 5.2 角色档案页 `ProfilePage.tsx`
 
@@ -102,7 +102,7 @@ Hero 区使用渐变背景、`HeroBackground`、头像状态徽章和 `react-typ
 
 技能 Tab 支持列表视图和雷达图视图。列表视图展示技能等级、星级、说明和证据链接；雷达图从技能数据中抽取前若干项生成 `SkillRadar`。奖项 Tab 支持卡片视图和时间线视图，时间线按年份倒序分组。
 
-页面大量复用 `profile`、`awards`、`skillsDetail`、`courses`、`experiences`、`studentWork`、`research` 等数据文件。它的实现方式偏“数据展示容器”，组件内部定义了 `InfoItem`、`SectionHeading`、`TimelineCard` 等局部小组件，降低了页面模板重复。
+页面大量复用 `profile`、`awards`、`skillsDetail`、`courses`、`experiences`、`studentWork`、`research` 等数据文件。它的实现方式偏"数据展示容器"，组件内部定义了 `InfoItem`、`SectionHeading`、`TimelineCard` 等局部小组件，降低了页面模板重复。
 
 亮点：同一份个人数据以多种视图呈现，既适合快速浏览，也适合深入查看履历细节。
 
@@ -114,7 +114,7 @@ Hero 区使用渐变背景、`HeroBackground`、头像状态徽章和 `react-typ
 
 项目头图使用 `SmartImage`，有真实图片时可以打开 `Lightbox` 放大查看。页面还通过 `usePageMeta` 设置项目级标题和描述。
 
-亮点：项目详情采用“案例研究”结构，不只是列技术栈，而是把背景、问题、方案、结果和经验组织成完整叙事，适合求职和作品集场景。
+亮点：项目详情采用"案例研究"结构，不只是列技术栈，而是把背景、问题、方案、结果和经验组织成完整叙事，适合求职和作品集场景。
 
 ### 5.4 博客列表页 `BlogPage.tsx`
 
@@ -162,7 +162,7 @@ Fandom 页是相对私密的兴趣专题页。它读取 `fandomConfig` 判断是
 
 ### 6.1 全局布局与导航组件
 
-`Navigation.tsx` 负责桌面端导航、移动端菜单、“更多”下拉、滚动隐藏、锚点跳转、主题切换、语言切换和全局搜索入口。它监听滚动方向来决定导航栏是否隐藏，并在点击外部、按 Esc、路由变化时自动关闭菜单。
+`Navigation.tsx` 负责桌面端导航、移动端菜单、"更多"下拉、滚动隐藏、锚点跳转、主题切换和全局搜索入口。它监听滚动方向来决定导航栏是否隐藏，并在点击外部、按 Esc、路由变化时自动关闭菜单。
 
 `Footer.tsx` 提供站点底部导航、联系方式和构建说明，是全局壳层的一部分。
 
@@ -177,8 +177,6 @@ Fandom 页是相对私密的兴趣专题页。它读取 `fandomConfig` 判断是
 ### 6.2 主题、语言与搜索组件
 
 `ThemeToggle.tsx` 控制明暗主题切换，并结合 View Transition 实现圆形擦除动画。主题值由 `ThemeContext` 统一管理，并持久化到 localStorage。
-
-`LanguageToggle.tsx` 切换 i18next 语言。`main.tsx` 监听语言变化并同步 `<html lang>`，有利于可访问性和搜索引擎理解。
 
 `SearchTrigger.tsx` 是全局搜索入口，`SearchPalette.tsx` 是命令面板式搜索弹窗。搜索语料来自 `searchCorpus`，覆盖静态页面、项目、博客、奖项和技能。Fuse.js 负责模糊匹配，结果通过 `href` 跳转到 HashRouter 地址。
 
@@ -266,7 +264,7 @@ flowchart LR
 
 `knowledgeBase.ts` 是 AI 助手的数据基础。它把个人信息、项目、奖项、技能、课程、实习、学生工作、博客和近况组织成 `KBChunk`，再用简单 token 检索给用户问题打分。检索结果可用于构建系统提示词，也可在无 API Key 时生成本地 fallback 回复。
 
-`i18n/index.ts` 采用渐进式国际化策略：导航、按钮、首页标题、通用 UI、Now、Uses、Friends、Series、Profile 等关键界面文案支持中英文；大段项目描述、博客正文等内容仍保留中文，后续可按需扩展。
+`src/copy.ts` 是全站中文文案的集中管理层：导航、按钮、首页标题、通用 UI、Friends、Profile 视图切换等界面文案统一在此维护，组件直接引用；大段项目描述、博客正文等内容在 `src/data/*` 中按中文维护。本站仅中文，已移除 i18next / react-i18next 与语言切换能力。
 
 `types/index.ts` 定义项目、博客、奖项、技能、经历、课程、科研等共享类型，是数据层和页面层的类型契约。
 
@@ -290,7 +288,7 @@ Markdown 渲染能力包括：
 
 ## 10. 搜索系统与 AI 助手
 
-全局搜索和 AI 助手共享“站内知识可检索”的设计思想，但实现侧重点不同。
+全局搜索和 AI 助手共享"站内知识可检索"的设计思想，但实现侧重点不同。
 
 全局搜索面向快速跳转。`searchIndex.ts` 把静态页面、项目、博客、奖项和技能转为 `SearchItem`，`SearchPalette` 使用 Fuse.js 做模糊搜索，结果直接跳转到对应页面。
 
@@ -318,7 +316,7 @@ SEO 层面，`index.html` 提供基础 meta 和 OG 信息，页面内通过 `use
 
 统计层面，GoatCounter 是隐私友好的轻量统计方案。项目针对 HashRouter 做了 `hashchange` 上报兼容，否则 SPA 路由变化可能不会被正确记录。
 
-可发现性层面，站内搜索、专题聚合、相关文章、相关链接和同专题上下篇导航共同组成内容网络，能显著减少“用户只看一页就离开”的情况。
+可发现性层面，站内搜索、专题聚合、相关文章、相关链接和同专题上下篇导航共同组成内容网络，能显著减少"用户只看一页就离开"的情况。
 
 ## 13. 维护与扩展建议
 
@@ -356,4 +354,4 @@ SEO 层面，`index.html` 提供基础 meta 和 OG 信息，页面内通过 `use
 
 工程上，它适合 GitHub Pages 静态部署，却具备接近动态网站的体验：PWA、搜索、评论、RSS、Sitemap、GitHub 实时数据和本地 RAG AI 助手都已经集成。设计上，它使用现代极简 UI 和游戏化叙事建立辨识度，既能展示技术能力，也能表达个人性格。
 
-从维护角度看，当前架构的最大亮点是“内容与展示分离”。多数更新只需要改数据文件或 Markdown，不需要动页面逻辑。这让网站可以长期演进，而不会因为内容增长迅速变得难维护。
+从维护角度看，当前架构的最大亮点是"内容与展示分离"。多数更新只需要改数据文件或 Markdown，不需要动页面逻辑。这让网站可以长期演进，而不会因为内容增长迅速变得难维护。

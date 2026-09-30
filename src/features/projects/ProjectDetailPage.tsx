@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { projectsDetail } from '../../data/projects';
+import { gradient } from '../../utils/gradients';
 import { SmartImage } from '../../shared/components/ui/SmartImage';
 import { usePageMeta } from '../../hooks/usePageMeta';
 import Lightbox from '../../shared/components/ui/Lightbox';
@@ -127,7 +128,7 @@ const ProjectDetail = () => {
                       src={projectData.image}
                       alt={projectData.title}
                       fallbackTitle={projectData.title}
-                      fallbackGradient={projectData.imageGradient}
+                      fallbackGradient={gradient(projectData.imageTone)}
                       className="w-full h-44 object-cover rounded-lg"
                     />
                     {projectData.image && (

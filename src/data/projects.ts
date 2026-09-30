@@ -14,7 +14,7 @@ export const projects: Project[] = [
     description:
       '面向中学生议论文写作的 AI 教学平台，对接团队训练的 LLM 实现自动批改、逻辑/语言/素材多维度评价。校赛第一名推荐至省赛，获软件著作权登记证书。',
     image: '/static/img/projects/ink-ruler-cover.jpg', // TODO: 替换真实截图
-    imageGradient: 'from-emerald-500 via-teal-500 to-cyan-600',
+    imageTone: 'cardEmerald',
     tags: ['Vue3', 'TypeScript', 'Go', 'LLM', 'AI 教育'],
     link: 'https://www.inkruler.cn/',
     github: 'https://github.com/BobHuang666/ink-ruler',
@@ -29,7 +29,7 @@ export const projects: Project[] = [
     description:
       '面向大学生的 AI 简历优化平台，实习期间上线获 1000+ 用户。参与简历上传/编辑/优化流程、面试题集、用户中心、会员充值等核心模块，完成 40+ 功能点。',
     image: '/static/img/projects/aicv-cover.jpg', // TODO: 替换真实截图
-    imageGradient: 'from-indigo-500 via-purple-500 to-pink-500',
+    imageTone: 'cardIndigo',
     tags: ['Vue3', 'uni-app', 'uView', 'SCSS', '小程序'],
     link: '', // TODO: 补小程序码或体验地址
     timeline: '2025.07 - 2025.10',
@@ -43,7 +43,7 @@ export const projects: Project[] = [
     description:
       '国际基因工程机器大赛 Wiki 前端设计开发，使用 HTML+CSS+JS 实现响应式布局，设计 10+ 动态模块，处理 50MB+ 科研资料可视化，获最佳 Wiki 提名 + 团队 TOP10。',
     image: '/static/img/projects/igem-cover.jpg', // TODO: 替换真实截图
-    imageGradient: 'from-amber-500 via-orange-500 to-rose-500',
+    imageTone: 'cardAmber',
     tags: ['HTML', 'CSS', 'JavaScript', '响应式设计', 'iGEM'],
     link: 'https://2024.igem.wiki/bnuzh-china/',
     timeline: '2024.03 - 2024.10',
@@ -57,7 +57,7 @@ export const projects: Project[] = [
     description:
       '用于管理、搜索、统计与可视化汕头存心善堂二十世纪四十年代收客记录的数据系统，收录 8005 条历史记录、17 个字段，已在线部署可访问。',
     image: '', // TODO: 替换真实截图
-    imageGradient: 'from-sky-500 via-blue-500 to-indigo-600',
+    imageTone: 'cardSky',
     tags: ['React 19', 'TypeScript', 'FastAPI', 'Pandas', 'ECharts', '数据可视化'],
     link: 'https://bobhuang.cn/ledger/',
     github: 'https://github.com/BobHuang666/ledger/',

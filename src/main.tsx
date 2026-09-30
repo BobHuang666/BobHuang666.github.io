@@ -3,8 +3,6 @@ import { createRoot } from 'react-dom/client'
 import { registerSW } from 'virtual:pwa-register'
 import App from './app/App.tsx'
 import './index.css'
-import './i18n'
-import i18n from './i18n'
 import { initAnalytics, logWebVitals } from './utils/analytics'
 
 window.addEventListener('vite:preloadError', (event) => {
@@ -33,12 +31,7 @@ function registerServiceWorker(attempt = 0) {
 }
 registerServiceWorker();
 
-// 让 <html lang> 跟随语言变化
-const updateLang = (lng: string) => {
-  document.documentElement.lang = lng.startsWith('zh') ? 'zh-CN' : 'en';
-};
-updateLang(i18n.resolvedLanguage ?? 'zh');
-i18n.on('languageChanged', updateLang);
+document.documentElement.lang = 'zh-CN';
 
 // 访问统计 + Web Vitals
 initAnalytics();

@@ -1,6 +1,6 @@
 import type { SkillCategory, SkillDetailCategory, Course, Experience, Research } from '../types';
 
-// icon 使用字符串 key，组件层通过 SKILL_ICON_MAP 解析
+// icon 使用字符串 key，组件层通过 resolveIcon() 解析
 // 首页用：简略技能栈
 export const techStack: SkillCategory[] = [
   {
@@ -33,26 +33,26 @@ export const skillsDetail: SkillDetailCategory[] = [
     icon: 'Code2',
     skills: [
       {
-        name: 'C/C++', level: 95, stars: 5, note: '算法竞赛核心语言', color: 'from-blue-500 to-blue-600',
+        name: 'C/C++', level: 95, stars: 5, note: '算法竞赛核心语言', tone: 'blueBold',
         evidence: [
           { label: 'ICPC 全国铜', href: '#/profile' },
           { label: '蓝桥杯总决赛', href: '#/profile' },
         ],
       },
       {
-        name: 'Python', level: 90, stars: 5, note: '数据处理 & 后端 & AI', color: 'from-yellow-500 to-yellow-600',
+        name: 'Python', level: 90, stars: 5, note: '数据处理 & 后端 & AI', tone: 'yellowBold',
         evidence: [{ label: '大数据课程 90+', href: '#/profile' }],
       },
       {
-        name: 'TypeScript', level: 85, stars: 4, note: '前端项目主力', color: 'from-blue-400 to-blue-500',
+        name: 'TypeScript', level: 85, stars: 4, note: '前端项目主力', tone: 'blueSoft',
         evidence: [
           { label: 'AiCV 简历王', href: '#/projects/aicv-resume' },
           { label: '本网站', href: 'https://github.com/BobHuang666' },
         ],
       },
-      { name: 'JavaScript', level: 85, stars: 4, note: '基础扎实', color: 'from-yellow-400 to-yellow-500' },
+      { name: 'JavaScript', level: 85, stars: 4, note: '基础扎实', tone: 'yellowSoft' },
       {
-        name: 'Go', level: 70, stars: 3, note: '墨尺平台后端', color: 'from-cyan-500 to-cyan-600',
+        name: 'Go', level: 70, stars: 3, note: '墨尺平台后端', tone: 'cyanBold',
         evidence: [{ label: '墨尺智慧作文', href: '#/projects/ink-ruler' }],
       },
     ],
@@ -62,25 +62,25 @@ export const skillsDetail: SkillDetailCategory[] = [
     icon: 'Globe',
     skills: [
       {
-        name: 'Vue 3', level: 90, stars: 5, note: '实习 + 挑战杯', color: 'from-green-500 to-emerald-600',
+        name: 'Vue 3', level: 90, stars: 5, note: '实习 + 挑战杯', tone: 'greenEmerald',
         evidence: [
           { label: 'AiCV 简历王', href: '#/projects/aicv-resume' },
           { label: '墨尺平台', href: '#/projects/ink-ruler' },
         ],
       },
       {
-        name: 'uni-app', level: 85, stars: 4, note: '小程序上线项目', color: 'from-teal-500 to-cyan-600',
+        name: 'uni-app', level: 85, stars: 4, note: '小程序上线项目', tone: 'tealCyanBold',
         evidence: [{ label: 'AiCV 简历王', href: '#/projects/aicv-resume' }],
       },
       {
-        name: 'React', level: 75, stars: 4, note: '本网站使用', color: 'from-cyan-500 to-cyan-600',
+        name: 'React', level: 75, stars: 4, note: '本网站使用', tone: 'cyanBold',
         evidence: [{ label: '本网站源码', href: 'https://github.com/BobHuang666' }],
       },
       {
-        name: 'HTML/CSS/SCSS', level: 90, stars: 5, note: 'iGEM 大量实践', color: 'from-orange-500 to-orange-600',
+        name: 'HTML/CSS/SCSS', level: 90, stars: 5, note: 'iGEM 大量实践', tone: 'orangeBold',
         evidence: [{ label: 'iGEM Wiki', href: '#/projects/igem-wiki' }],
       },
-      { name: '响应式设计', level: 88, stars: 4, note: '多端适配经验', color: 'from-purple-500 to-purple-600' },
+      { name: '响应式设计', level: 88, stars: 4, note: '多端适配经验', tone: 'purpleBold' },
     ],
   },
   {
@@ -88,27 +88,27 @@ export const skillsDetail: SkillDetailCategory[] = [
     icon: 'Database',
     skills: [
       {
-        name: 'Go (Gin)', level: 70, stars: 3, note: '了解 + 实战', color: 'from-cyan-500 to-cyan-600',
+        name: 'Go (Gin)', level: 70, stars: 3, note: '了解 + 实战', tone: 'cyanBold',
         evidence: [{ label: '墨尺后端', href: '#/projects/ink-ruler' }],
       },
-      { name: 'Python 后端', level: 80, stars: 4, note: 'Flask / FastAPI', color: 'from-gray-500 to-gray-600' },
-      { name: 'MySQL', level: 75, stars: 4, note: '设计 + 优化', color: 'from-blue-500 to-blue-600' },
-      { name: '大数据分析', level: 80, stars: 4, note: '专业方向', color: 'from-indigo-500 to-indigo-600' },
-      { name: 'API 设计', level: 85, stars: 4, note: 'RESTful 规范', color: 'from-green-500 to-green-600' },
+      { name: 'Python 后端', level: 80, stars: 4, note: 'Flask / FastAPI', tone: 'gray' },
+      { name: 'MySQL', level: 75, stars: 4, note: '设计 + 优化', tone: 'blueBold' },
+      { name: '大数据分析', level: 80, stars: 4, note: '专业方向', tone: 'indigoBold' },
+      { name: 'API 设计', level: 85, stars: 4, note: 'RESTful 规范', tone: 'greenBold' },
     ],
   },
   {
     category: '工具 & 工程化',
     icon: 'Shield',
     skills: [
-      { name: 'Git / GitHub', level: 90, stars: 5, note: '熟练协作', color: 'from-orange-500 to-orange-600' },
-      { name: 'Linux', level: 80, stars: 4, note: '日常开发环境', color: 'from-yellow-500 to-yellow-600' },
+      { name: 'Git / GitHub', level: 90, stars: 5, note: '熟练协作', tone: 'orangeBold' },
+      { name: 'Linux', level: 80, stars: 4, note: '日常开发环境', tone: 'yellowBold' },
       {
-        name: '算法 & 数据结构', level: 95, stars: 5, note: 'ICPC / 蓝桥杯', color: 'from-purple-500 to-purple-600',
+        name: '算法 & 数据结构', level: 95, stars: 5, note: 'ICPC / 蓝桥杯', tone: 'purpleBold',
         evidence: [{ label: '15+ 项算法荣誉', href: '#/profile' }],
       },
-      { name: 'AI 工具链', level: 90, stars: 5, note: '快速落地项目', color: 'from-pink-500 to-rose-600' },
-      { name: '英语 (CET-6)', level: 80, stars: 4, note: '听说读写', color: 'from-emerald-500 to-teal-600' },
+      { name: 'AI 工具链', level: 90, stars: 5, note: '快速落地项目', tone: 'pinkRose' },
+      { name: '英语 (CET-6)', level: 80, stars: 4, note: '听说读写', tone: 'emeraldTealBold' },
     ],
   },
 ];

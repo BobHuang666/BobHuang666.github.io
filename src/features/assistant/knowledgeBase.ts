@@ -30,7 +30,6 @@ export function buildKB(): KBChunk[] {
       `在读时间：${profile.education.map((e) => e.period).join('、')}`,
       `政治面貌：${profile.politicalStatus}`,
       `职务：${studentWork.map((w) => `${w.org} ${w.role}`).join('；')}`,
-      `状态：${profile.status}`,
       `GitHub：${profile.github}`,
     ].join('\n'),
     keywords: ['bob', 'huang', '个人', '基本', '信息', '学校', '专业', '大学', 'gpa', '学生', '是谁', '介绍', '北师大', '北京师范大学'],

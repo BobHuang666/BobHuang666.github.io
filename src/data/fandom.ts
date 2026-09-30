@@ -1,3 +1,5 @@
+import type { GradientTone } from '../utils/gradients';
+
 /**
  * 追星专题数据 —— 隐私可控
  *
@@ -23,7 +25,7 @@ export interface Idol {
   /** 主推程度 */
   level: 'main' | 'sub' | 'casual';
   /** 头像渐变色 fallback */
-  color: string;
+  tone: GradientTone;
 }
 
 /** 演唱会 / 线下行程 */
@@ -47,7 +49,7 @@ export interface Concert {
   /** 一句话期待或回忆 */
   highlight?: string;
   /** 卡片渐变色 */
-  color: string;
+  tone: GradientTone;
 }
 
 export type SupportType =
@@ -97,7 +99,7 @@ export interface Collection {
   /** 珍藏度 */
   rarity: Rarity;
   /** 卡片渐变色 */
-  color: string;
+  tone: GradientTone;
   /** 备注 / 小故事 */
   note?: string;
 }
@@ -126,7 +128,7 @@ export const idols: Idol[] = [
     reason:
       '为什么喜欢 ta —— 比如「舞台表现力惊艳，每次看 live 都能被治愈」',
     level: 'main',
-    color: 'from-pink-500 via-rose-500 to-amber-400',
+    tone: 'sunsetPink',
   },
   {
     name: '主推二号',
@@ -135,7 +137,7 @@ export const idols: Idol[] = [
     since: '202X 年',
     reason: '理由占位 —— 等你填上自己喜欢的明星',
     level: 'main',
-    color: 'from-indigo-500 via-purple-500 to-pink-500',
+    tone: 'cardIndigo',
   },
   {
     name: '副推',
@@ -143,7 +145,7 @@ export const idols: Idol[] = [
     group: '（团体）',
     reason: '次要喜欢的明星，可以多列几个',
     level: 'sub',
-    color: 'from-emerald-500 to-cyan-500',
+    tone: 'mintCyan',
   },
 ];
 
@@ -162,7 +164,7 @@ export const concerts: Concert[] = [
     status: 'upcoming',
     seat: '内场 A 区',
     highlight: '期待了一整年的约定，终于要见面了',
-    color: 'from-rose-500 via-pink-500 to-fuchsia-500',
+    tone: 'fuchsiaRose',
   },
   {
     id: 'c-2',
@@ -174,7 +176,7 @@ export const concerts: Concert[] = [
     status: 'attended',
     seat: '看台 2 层',
     highlight: '全场合唱的那一刻，鸡皮疙瘩都起来了',
-    color: 'from-amber-500 via-orange-500 to-rose-500',
+    tone: 'cardAmber',
   },
   {
     id: 'c-3',
@@ -186,7 +188,7 @@ export const concerts: Concert[] = [
     status: 'attended',
     seat: '内场 B 区',
     highlight: '第一次看现场，原来心动可以这么具体',
-    color: 'from-indigo-500 via-violet-500 to-purple-500',
+    tone: 'indigoViolet',
   },
 ];
 
@@ -241,7 +243,7 @@ export const collections: Collection[] = [
     category: 'sign',
     date: '2024',
     rarity: 'legend',
-    color: 'from-amber-400 via-yellow-500 to-orange-500',
+    tone: 'sunsetAmber',
     note: '抽中的幸运签售，本命的亲签',
   },
   {
@@ -251,7 +253,7 @@ export const collections: Collection[] = [
     category: 'lightstick',
     date: '2023',
     rarity: 'epic',
-    color: 'from-fuchsia-500 via-pink-500 to-rose-500',
+    tone: 'fuchsiaRoseBold',
   },
   {
     id: 'm-3',
@@ -260,7 +262,7 @@ export const collections: Collection[] = [
     category: 'photocard',
     date: '2024',
     rarity: 'rare',
-    color: 'from-sky-500 via-cyan-500 to-teal-500',
+    tone: 'skyTeal',
   },
   {
     id: 'm-4',
@@ -269,7 +271,7 @@ export const collections: Collection[] = [
     category: 'album',
     date: '2022',
     rarity: 'common',
-    color: 'from-indigo-500 to-violet-500',
+    tone: 'indigoVioletBold',
   },
   {
     id: 'm-5',
@@ -278,7 +280,7 @@ export const collections: Collection[] = [
     category: 'ticket',
     date: '2023',
     rarity: 'rare',
-    color: 'from-emerald-500 to-green-500',
+    tone: 'mintGreen',
   },
   {
     id: 'm-6',
@@ -287,63 +289,9 @@ export const collections: Collection[] = [
     category: 'goods',
     date: '2024',
     rarity: 'common',
-    color: 'from-slate-500 to-slate-600',
+    tone: 'slate',
   },
 ];
-
-/** 应援类型展示元数据（文案 + 主题色） */
-export const supportTypeMeta: Record<
-  SupportType,
-  { label: string; tone: string }
-> = {
-  vote: { label: '打榜', tone: 'text-rose-600 dark:text-rose-400 bg-rose-100/70 dark:bg-rose-950/40' },
-  fund: { label: '集资', tone: 'text-amber-600 dark:text-amber-400 bg-amber-100/70 dark:bg-amber-950/40' },
-  lightstick: { label: '灯牌应援', tone: 'text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-100/70 dark:bg-fuchsia-950/40' },
-  banner: { label: '手幅应援', tone: 'text-indigo-600 dark:text-indigo-400 bg-indigo-100/70 dark:bg-indigo-950/40' },
-  birthday: { label: '生日应援', tone: 'text-pink-600 dark:text-pink-400 bg-pink-100/70 dark:bg-pink-950/40' },
-  stream: { label: '打卡刷量', tone: 'text-cyan-600 dark:text-cyan-400 bg-cyan-100/70 dark:bg-cyan-950/40' },
-};
-
-/** 收藏类别展示元数据 */
-export const collectionCategoryMeta: Record<CollectionCategory, string> = {
-  album: '专辑',
-  photocard: '小卡',
-  lightstick: '应援棒',
-  goods: '周边',
-  sign: '签名',
-  ticket: '票根',
-};
-
-/** 珍藏度展示元数据（文案 + 边框光效类） */
-export const rarityMeta: Record<
-  Rarity,
-  { label: string; ring: string; glow: string; badge: string }
-> = {
-  common: {
-    label: '普通',
-    ring: 'ring-slate-200 dark:ring-slate-700',
-    glow: '',
-    badge: 'text-slate-500 bg-slate-100 dark:bg-slate-800 dark:text-slate-400',
-  },
-  rare: {
-    label: '稀有',
-    ring: 'ring-sky-300 dark:ring-sky-500/60',
-    glow: 'shadow-[0_0_24px_-6px] shadow-sky-400/40',
-    badge: 'text-sky-600 bg-sky-100 dark:bg-sky-950/50 dark:text-sky-400',
-  },
-  epic: {
-    label: '史诗',
-    ring: 'ring-fuchsia-300 dark:ring-fuchsia-500/60',
-    glow: 'shadow-[0_0_28px_-4px] shadow-fuchsia-400/50',
-    badge: 'text-fuchsia-600 bg-fuchsia-100 dark:bg-fuchsia-950/50 dark:text-fuchsia-400',
-  },
-  legend: {
-    label: '传说',
-    ring: 'ring-amber-300 dark:ring-amber-400/70',
-    glow: 'shadow-[0_0_32px_-2px] shadow-amber-400/60',
-    badge: 'text-amber-600 bg-amber-100 dark:bg-amber-950/50 dark:text-amber-400',
-  },
-};
 
 /**
  * "我从他们身上学到的"

@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Tag as TagIcon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { copy } from '../../copy';
 import { getPost, blogData } from '../../data/blog';
 import MarkdownRenderer from './MarkdownRenderer';
 import TableOfContents from './TableOfContents';
@@ -12,11 +12,10 @@ import { usePageMeta } from '../../hooks/usePageMeta';
 const BlogDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const post = id ? getPost(id) : undefined;
 
   usePageMeta(
-    post ? post.title : t('misc.notFound', '文章不存在'),
+    post ? post.title : copy.misc.notFound,
     post?.excerpt,
   );
 
@@ -90,7 +89,7 @@ const BlogDetailPage = () => {
                 )}
                 <span className="flex items-center gap-1.5">
                   <Clock className="h-4 w-4" />
-                  {t('misc.readingMin', { n: post.readTime })}
+                  {copy.misc.readingMin(post.readTime)}
                 </span>
                 <span>{post.author}</span>
               </div>

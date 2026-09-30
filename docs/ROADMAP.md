@@ -61,14 +61,13 @@
 - [x] 搜索覆盖博客 / 项目 / 奖项 / 技能 / 页面，键盘上下选择
 - [x] **全局回到顶部按钮**（环形进度 + 玻璃拟态 + tooltip）
 
-### 国际化
+### 中文文案层
 
-- [x] react-i18next 中英双语
-- [x] LanguageDetector 自动识别
-- [x] `<html lang>` 联动
-- [x] 导航 / Footer / Hero / Section 标题 / 按钮全部 i18n
-- [x] Now / Uses / Friends / Series / Profile Tab 全部 i18n
-- [x] Hero 打字机中英双轨
+- [x] 集中文案层 `src/copy.ts`，组件直接引用
+- [x] `<html lang="zh-CN">` 固定中文
+- [x] 导航 / Footer / Hero / Section 标题 / 按钮全部接入
+- [x] Friends / Profile 视图切换全部接入
+- [x] 移除 i18next / react-i18next 与语言切换（本站仅中文，不做多语言）
 
 ### 视觉与动画
 
@@ -145,7 +144,7 @@
 - [x] **check-bundle-size.js**：完善 lazy 模式识别（覆盖 mermaid 子 chunk / 页面 chunk / 浮层组件）
 - [x] highlight.js CSS 移入 `MarkdownRenderer`（仅博客详情加载，首屏 CSS 减少 ~3 KB）
 - [x] `ScrollToTopButton` 移除 framer-motion，改为纯 CSS transition
-- [x] **数据层 icon 解耦**：`awards.ts` / `skills.ts` icon 字段改为字符串 key，组件层通过 `ICON_MAP` 解析
+- [x] **数据层 icon 解耦**：`awards.ts` / `skills.ts` icon 字段改为字符串 key，映射表收敛到 `src/utils/iconMap.ts`，组件层统一 `resolveIcon()` 解析
 - [x] `src/types/index.ts` 新增 `IconName` 类型，统一数据层图标约定
 - [x] Dependabot 周度升级
 
@@ -333,9 +332,9 @@
 
 | 项 | 说明 |
 |---|---|
-| 改动 | `awards.ts` / `skills.ts` 的 `icon` 字段从 `LucideIcon` 组件改为字符串名称；组件层各自声明 `ICON_MAP` 解析 |
+| 改动 | `awards.ts` / `skills.ts` 的 `icon` 字段从 `LucideIcon` 组件改为字符串名称；映射表收敛到 `src/utils/iconMap.ts`，组件层统一调用 `resolveIcon()` |
 | 原问题 | 数据文件直接 import lucide 组件，导致数据层与 UI 层强耦合；任何 import 了数据的模块都会引入对应图标 |
-| 影响范围 | `types/index.ts` 新增 `IconName = string`，`Award`/`SkillCategory`/`SkillDetailCategory` icon 字段改为 `IconName`；`HomePage` / `ProfilePage` 各增 `ICON_MAP` |
+| 影响范围 | `types/index.ts` 新增 `IconName = string`，`Award`/`SkillCategory`/`SkillDetailCategory` icon 字段改为 `IconName`；`src/utils/iconMap.ts` 提供 `resolveIcon(name, fallback)`，`HomePage` / `ProfilePage` 改为调用它 |
 | 收益 | 数据层彻底脱离 UI 依赖；未来 AI 检索、PDF 导出等无需渲染图标的消费者不会引入 lucide；可扩展性更强 |
 
 ---
@@ -361,7 +360,7 @@
 - **类型驱动**：`src/types/` 是数据契约，新字段先加类型
 - **可访问性优先**：所有交互必须键盘可达 + ARIA 标注
 - **暗色优先级**：每个 `bg-*` / `text-*` 都要考虑 `dark:` 变体
-- **i18n 优先**：新加 UI 文案先看 `src/i18n/index.ts` 有没有合适 key
+- **文案集中优先**：新加 UI 文案优先放进 `src/copy.ts`，渲染层不写死字符串
 - **响应式断点**：移动端先行（`sm:` `md:` `lg:`）
 - **动画克制**：尊重 `prefers-reduced-motion`，避免眩晕
 - **组件懒加载**：大依赖（giscus、Fuse、Markdown）始终 `React.lazy`

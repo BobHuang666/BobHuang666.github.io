@@ -4,17 +4,14 @@ import {
   Heart, Plane, Music, Gamepad2, Brain, Users,
   Github, Star, Clock, Briefcase, FlaskConical, CreditCard,
   LayoutGrid, AlignLeft,
-  Trophy, Medal, Globe, Database, Shield,
+  Trophy, Shield,
   type LucideIcon,
 } from 'lucide-react';
 
-/** awards.ts / skills.ts icon 字符串 → lucide 组件映射 */
-const ICON_MAP: Record<string, LucideIcon> = {
-  Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal,
-  Globe, Database, Shield,
-};
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+import { copy } from '../../copy';
+import { resolveIcon } from '../../utils/iconMap';
+import { gradient } from '../../utils/gradients';
 import { profile } from '../../data/profile';
 import { awards } from '../../data/awards';
 import { skillsDetail, courses, experiences, studentWork, research } from '../../data/skills';
@@ -30,16 +27,6 @@ interface TabDef {
   icon: LucideIcon;
 }
 
-const TAB_KEYS: Record<TabId, string> = {
-  basic: 'profile.tabEducation',
-  skills: 'profile.tabSkills',
-  awards: 'profile.tabAwards',
-  experience: 'profile.tabExp',
-  research: 'profile.tabResearch',
-  courses: 'profile.tabCourses',
-  interests: 'profile.tabInterests',
-};
-
 const TABS: TabDef[] = [
   { id: 'basic', name: '教育背景', icon: CreditCard },
   { id: 'skills', name: '技能专长', icon: Code2 },
@@ -52,7 +39,6 @@ const TABS: TabDef[] = [
 
 function ProfilePage() {
   const [activeTab, setActiveTab] = useState<TabId>('basic');
-  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
@@ -103,7 +89,7 @@ function ProfilePage() {
                   }`}
               >
                 <tab.icon className="h-4 w-4" />
-                {t(TAB_KEYS[tab.id], tab.name)}
+                {tab.name}
               </button>
             ))}
           </div>
@@ -186,7 +172,6 @@ const InfoLine = ({ label, value }: { label: string; value: string }) => (
 
 // ============ Skills ============
 function SkillsTab() {
-  const { t } = useTranslation();
   const [view, setView] = useState<'list' | 'radar'>('list');
 
   // 雷达图数据：从每个类别里选最高分技能，最多 8 个
@@ -206,7 +191,7 @@ function SkillsTab() {
               }`}
           >
             <AlignLeft className="h-3.5 w-3.5" />
-            {t('profile.listView')}
+            {copy.profile.listView}
           </button>
           <button
             onClick={() => setView('radar')}
@@ -216,7 +201,7 @@ function SkillsTab() {
               }`}
           >
             <LayoutGrid className="h-3.5 w-3.5" />
-            {t('profile.radarView')}
+            {copy.profile.radarView}
           </button>
         </div>
       </div>
@@ -233,7 +218,7 @@ function SkillsTab() {
         <div className="space-y-8">
           {skillsDetail.map((cat) => (
             <div key={cat.category}>
-              <SectionHeading icon={ICON_MAP[cat.icon] ?? Code2} title={cat.category} />
+              <SectionHeading icon={resolveIcon(cat.icon)} title={cat.category} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {cat.skills.map((skill) => (
                   <div
@@ -250,7 +235,7 @@ function SkillsTab() {
                         whileInView={{ width: `${skill.level}%` }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: 'easeOut' }}
-                        className={`h-1.5 rounded-full bg-gradient-to-r ${skill.color}`}
+                        className={`h-1.5 rounded-full bg-gradient-to-r ${gradient(skill.tone)}`}
                       />
                     </div>
                     {skill.note && (
@@ -298,7 +283,6 @@ const Stars = ({ count }: { count: number }) => {
 
 // ============ Awards ============
 function AwardsTab() {
-  const { t } = useTranslation();
   const [view, setView] = useState<'card' | 'timeline'>('card');
 
   // 按年份倒序分组
@@ -323,7 +307,7 @@ function AwardsTab() {
               }`}
           >
             <LayoutGrid className="h-3.5 w-3.5" />
-            {t('profile.cardView')}
+            {copy.profile.cardView}
           </button>
           <button
             onClick={() => setView('timeline')}
@@ -333,7 +317,7 @@ function AwardsTab() {
               }`}
           >
             <AlignLeft className="h-3.5 w-3.5" />
-            {t('profile.timelineView')}
+            {copy.profile.timelineView}
           </button>
         </div>
       </div>
@@ -348,8 +332,8 @@ function AwardsTab() {
               className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
             >
               <div className="flex items-start mb-3">
-                <div className={`shrink-0 w-11 h-11 rounded-lg bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'} flex items-center justify-center mr-3 shadow`}>
-                  {(() => { const Icon = ICON_MAP[award.icon] ?? Trophy; return <Icon className="h-5 w-5 text-white" />; })()}
+                <div className={`shrink-0 w-11 h-11 rounded-lg bg-gradient-to-br ${gradient(award.tone)} flex items-center justify-center mr-3 shadow`}>
+                  {(() => { const Icon = resolveIcon(award.icon, Trophy); return <Icon className="h-5 w-5 text-white" />; })()}
                 </div>
                 <div className="min-w-0">
                   <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">
@@ -395,11 +379,11 @@ function AwardsTab() {
               <div className="relative pl-5 space-y-4 before:absolute before:left-1.5 before:top-0 before:bottom-0 before:w-px before:bg-slate-200 dark:before:bg-slate-700">
                 {byYear[year].map((award) => (
                   <div key={award.title} className="relative">
-                    <div className={`absolute -left-5 top-3 w-3 h-3 rounded-full bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'} shadow`} />
+                    <div className={`absolute -left-5 top-3 w-3 h-3 rounded-full bg-gradient-to-br ${gradient(award.tone)} shadow`} />
                     <div className="ml-2 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
                       <div className="flex items-start gap-3">
-                        <div className={`shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br ${award.color ?? 'from-indigo-500 to-purple-500'} flex items-center justify-center shadow`}>
-                          {(() => { const Icon = ICON_MAP[award.icon] ?? Trophy; return <Icon className="h-4 w-4 text-white" />; })()}
+                        <div className={`shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br ${gradient(award.tone)} flex items-center justify-center shadow`}>
+                          {(() => { const Icon = resolveIcon(award.icon, Trophy); return <Icon className="h-4 w-4 text-white" />; })()}
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">

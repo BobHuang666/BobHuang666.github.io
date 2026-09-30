@@ -6,41 +6,37 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+import { copy } from '../../../copy';
 import { ThemeToggle } from '../controls/ThemeToggle';
-import { LanguageToggle } from '../controls/LanguageToggle';
 import { SearchTrigger } from '../../../features/search/SearchTrigger';
 
 interface MainItem {
   to: string;
-  i18nKey: string;
+  label: string;
   end?: boolean;
   anchor?: string;
 }
 
 interface MoreItem {
   to: string;
-  i18nKey: string;
+  label: string;
   icon: LucideIcon;
   description: string;
-  descEn: string;
 }
 
 const MAIN_ITEMS: MainItem[] = [
-  { to: '/', i18nKey: 'nav.home', end: true },
-  { to: '/profile', i18nKey: 'nav.profile' },
-  { to: '/?section=projects', i18nKey: 'nav.projects', anchor: 'projects' },
-  { to: '/blog', i18nKey: 'nav.blog' },
+  { to: '/', label: copy.nav.home, end: true },
+  { to: '/profile', label: copy.nav.profile },
+  { to: '/?section=projects', label: copy.nav.projects, anchor: 'projects' },
+  { to: '/blog', label: copy.nav.blog },
 ];
 
 const MORE_ITEMS: MoreItem[] = [
-  { to: '/friends', i18nKey: 'nav.friends', icon: UsersRound, description: '友情链接', descEn: 'Friend links' },
-  { to: '/fandom', i18nKey: 'nav.fandom', icon: Heart, description: '追星专题', descEn: 'Fandom (private)' },
+  { to: '/friends', label: copy.nav.friends, icon: UsersRound, description: '友情链接' },
+  { to: '/fandom', label: copy.nav.fandom, icon: Heart, description: '追星专题' },
 ];
 
 const Navigation = () => {
-  const { t, i18n } = useTranslation();
-  const isEn = i18n.resolvedLanguage?.startsWith('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -192,10 +188,10 @@ const Navigation = () => {
           <div className="hidden md:flex items-center space-x-6 lg:space-x-7">
             {MAIN_ITEMS.map((item) => (
               <AnimatedNavLink
-                key={item.i18nKey}
+                key={item.label}
                 to={item.to}
                 end={item.end}
-                label={t(item.i18nKey)}
+                label={item.label}
                 anchor={item.anchor}
               />
             ))}
@@ -212,7 +208,7 @@ const Navigation = () => {
                   : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
                   }`}
               >
-                {t('nav.more')}
+                {copy.nav.more}
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
                 {isMoreActive && (
                   <motion.span
@@ -242,9 +238,9 @@ const Navigation = () => {
                     >
                       <item.icon className="h-4 w-4 mt-0.5 shrink-0 text-indigo-500 dark:text-indigo-400" />
                       <div className="min-w-0">
-                        <div className="text-sm font-medium">{t(item.i18nKey)}</div>
+                        <div className="text-sm font-medium">{item.label}</div>
                         <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                          {isEn ? item.descEn : item.description}
+                          {item.description}
                         </div>
                       </div>
                     </NavLink>
@@ -254,14 +250,12 @@ const Navigation = () => {
             </div>
 
             <SearchTrigger />
-            <LanguageToggle />
             <ThemeToggle />
           </div>
 
           {/* Mobile */}
           <div className="md:hidden flex items-center gap-1 shrink-0">
             <SearchTrigger />
-            <LanguageToggle />
             <ThemeToggle />
             <button
               ref={buttonRef}
@@ -289,17 +283,17 @@ const Navigation = () => {
             {MAIN_ITEMS.map((item) =>
               item.anchor ? (
                 <a
-                  key={item.i18nKey}
+                  key={item.label}
                   href="#/"
                   onClick={(e) => handleAnchorClick(e, item.anchor)}
                   className="block px-3 py-2 rounded-md text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
                   role="menuitem"
                 >
-                  {t(item.i18nKey)}
+                  {item.label}
                 </a>
               ) : (
                 <NavLink
-                  key={item.i18nKey}
+                  key={item.label}
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
@@ -310,7 +304,7 @@ const Navigation = () => {
                   }
                   role="menuitem"
                 >
-                  {t(item.i18nKey)}
+                  {item.label}
                 </NavLink>
               ),
             )}
@@ -318,7 +312,7 @@ const Navigation = () => {
             {/* 移动端 "更多" 直接展开 */}
             <div className="pt-2 mt-2 border-t border-slate-200 dark:border-slate-800">
               <div className="px-3 mb-1 text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold">
-                {t('nav.more')}
+                {copy.nav.more}
               </div>
               {MORE_ITEMS.map((item) => (
                 <NavLink
@@ -333,7 +327,7 @@ const Navigation = () => {
                   role="menuitem"
                 >
                   <item.icon className="h-4 w-4 shrink-0" />
-                  <span>{t(item.i18nKey)}</span>
+                  <span>{item.label}</span>
                 </NavLink>
               ))}
             </div>
