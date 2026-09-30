@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  Mail, MapPin, Calendar, GraduationCap, Code2, Award, BookOpen,
+  Mail, MapPin, GraduationCap, Code2, Award, BookOpen,
   Heart, Plane, Music, Gamepad2, Brain, Users,
   Github, Star, Clock, Briefcase, FlaskConical, CreditCard,
   LayoutGrid, AlignLeft,
@@ -31,7 +31,7 @@ interface TabDef {
 }
 
 const TAB_KEYS: Record<TabId, string> = {
-  basic: 'profile.tabBasic',
+  basic: 'profile.tabEducation',
   skills: 'profile.tabSkills',
   awards: 'profile.tabAwards',
   experience: 'profile.tabExp',
@@ -41,7 +41,7 @@ const TAB_KEYS: Record<TabId, string> = {
 };
 
 const TABS: TabDef[] = [
-  { id: 'basic', name: '基本信息', icon: CreditCard },
+  { id: 'basic', name: '教育背景', icon: CreditCard },
   { id: 'skills', name: '技能专长', icon: Code2 },
   { id: 'awards', name: '获奖经历', icon: Award },
   { id: 'experience', name: '实习/学生工作', icon: Briefcase },
@@ -73,7 +73,7 @@ function ProfilePage() {
             />
             <div className="flex-1 text-center md:text-left">
               <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">
-                {profile.name} <span className="text-slate-500 dark:text-slate-400 font-medium">/ {profile.nameZh}</span>
+                {profile.name}
               </h1>
               <p className="text-base md:text-lg text-indigo-600 dark:text-indigo-400 mb-3">
                 {profile.title}
@@ -84,7 +84,7 @@ function ProfilePage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <InfoItem icon={Mail} text={profile.email || '邮箱待补充'} />
                 <InfoItem icon={MapPin} text={profile.location} />
-                <InfoItem icon={Calendar} text={profile.education.period} />
+                <InfoItem icon={Shield} text={profile.politicalStatus} />
               </div>
             </div>
           </div>
@@ -157,22 +157,20 @@ function BasicInfoTab() {
     <div className="space-y-8">
       <div>
         <SectionHeading icon={GraduationCap} title="教育背景" />
-        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/40 rounded-xl p-6 border border-indigo-100 dark:border-indigo-900/50">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <InfoLine label="学校" value={`${profile.education.school}（${profile.education.level}）`} />
-            <InfoLine label="专业" value={profile.education.major} />
-            <InfoLine label="学历层次" value={`${profile.education.degree} · ${profile.education.grade}`} />
-            <InfoLine label="在读时间" value={profile.education.period} />
-            <InfoLine label="政治面貌" value={profile.education.politicalStatus} />
-            <InfoLine label="GPA / 排名" value={profile.education.gpa || '待补充'} />
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <SectionHeading icon={Briefcase} title="当前职务" />
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-xl p-6 border border-amber-100 dark:border-amber-900/40">
-          <p className="text-slate-800 dark:text-slate-200 font-medium">{profile.currentRole}</p>
+        <div className="space-y-4">
+          {profile.education.map((edu, i) => (
+            <div
+              key={i}
+              className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/40 rounded-xl p-6 border border-indigo-100 dark:border-indigo-900/50"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <InfoLine label="学校" value={edu.school} />
+                <InfoLine label="专业" value={edu.major} />
+                <InfoLine label="学历层次" value={`${edu.degree} · ${edu.grade}`} />
+                <InfoLine label="在读时间" value={edu.period} />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

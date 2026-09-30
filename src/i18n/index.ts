@@ -90,7 +90,7 @@ const resources = {
       },
       // profile 页面
       profile: {
-        tabBasic: '基本信息',
+        tabEducation: '教育背景',
         tabSkills: '技能专长',
         tabAwards: '获奖经历',
         tabExp: '实习/学生工作',
@@ -179,7 +179,7 @@ const resources = {
         issueBtn: 'Open Issue',
       },
       profile: {
-        tabBasic: 'Basic Info',
+        tabEducation: 'Education',
         tabSkills: 'Skills',
         tabAwards: 'Awards',
         tabExp: 'Experience',

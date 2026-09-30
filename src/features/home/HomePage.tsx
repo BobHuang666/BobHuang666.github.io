@@ -183,7 +183,7 @@ function HomePage() {
           >
             {profile.name}
             <span className="block text-lg md:text-2xl font-medium text-white/85 mt-2">
-              {profile.nameZh} · {profile.education.major}
+              {profile.education[0].major} · {profile.education[0].degree}
             </span>
           </motion.h1>
 
@@ -251,62 +251,6 @@ function HomePage() {
           </motion.div>
         </div>
       </section>
-
-      {/* ============ Skills ============ */}
-      <section id="skills" className="py-20 bg-white dark:bg-slate-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <h2 className="section-title">{t('home.skillsTitle')}</h2>
-            <p className="section-subtitle">{t('home.skillsSub')}</p>
-          </SectionReveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {techStack.map((category, index) => (
-              <SectionReveal key={category.name} delay={index * 0.08}>
-                <div className="card-base p-6 h-full">
-                  <div className="flex items-center mb-4">
-                    <div className="w-11 h-11 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 flex items-center justify-center mr-3">
-                      {(() => { const Icon = ICON_MAP[category.icon] ?? Code2; return <Icon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />; })()}
-                    </div>
-                    <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                      {category.name}
-                    </h3>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {category.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-2.5 py-1 rounded-md text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </SectionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ GitHub 实时数据 ============ */}
-      {ghUsername && (
-        <section id="github" className="py-20 bg-white dark:bg-slate-950">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionReveal>
-              <h2 className="section-title">{t('home.githubTitle')}</h2>
-              <p className="section-subtitle">{t('home.githubSub')}</p>
-            </SectionReveal>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <SectionReveal variant="slide-left">
-                <GitHubCard username={ghUsername} />
-              </SectionReveal>
-              <SectionReveal variant="slide-right" delay={0.08}>
-                <GitHubHeatmap username={ghUsername} />
-              </SectionReveal>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ============ Projects ============ */}
       <section id="projects" className="py-20 bg-slate-50 dark:bg-slate-900/40 scroll-mt-20">
@@ -500,6 +444,62 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ============ Skills ============ */}
+      <section id="skills" className="py-20 bg-slate-50 dark:bg-slate-900/40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <h2 className="section-title">{t('home.skillsTitle')}</h2>
+            <p className="section-subtitle">{t('home.skillsSub')}</p>
+          </SectionReveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {techStack.map((category, index) => (
+              <SectionReveal key={category.name} delay={index * 0.08}>
+                <div className="card-base p-6 h-full">
+                  <div className="flex items-center mb-4">
+                    <div className="w-11 h-11 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 flex items-center justify-center mr-3">
+                      {(() => { const Icon = ICON_MAP[category.icon] ?? Code2; return <Icon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />; })()}
+                    </div>
+                    <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                      {category.name}
+                    </h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {category.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-2.5 py-1 rounded-md text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </SectionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ GitHub 实时数据 ============ */}
+      {ghUsername && (
+        <section id="github" className="py-20 bg-white dark:bg-slate-950">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionReveal>
+              <h2 className="section-title">{t('home.githubTitle')}</h2>
+              <p className="section-subtitle">{t('home.githubSub')}</p>
+            </SectionReveal>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SectionReveal variant="slide-left">
+                <GitHubCard username={ghUsername} />
+              </SectionReveal>
+              <SectionReveal variant="slide-right" delay={0.08}>
+                <GitHubHeatmap username={ghUsername} />
+              </SectionReveal>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ============ 更多探索 ============ */}
       <section id="more" className="py-20 bg-white dark:bg-slate-950">

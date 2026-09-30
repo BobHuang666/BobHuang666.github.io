@@ -16,9 +16,9 @@ export const projects: Project[] = [
     image: '/static/img/projects/ink-ruler-cover.jpg', // TODO: 替换真实截图
     imageGradient: 'from-emerald-500 via-teal-500 to-cyan-600',
     tags: ['Vue3', 'TypeScript', 'Go', 'LLM', 'AI 教育'],
-    link: 'https://bobhuang666.github.io/ink-ruler-public/',
-    github: '', // TODO: 如有可补充
-    timeline: '2024 - 至今',
+    link: 'https://www.inkruler.cn/',
+    github: 'https://github.com/BobHuang666/ink-ruler',
+    timeline: '2026.01 - 2026.03',
     role: '技术负责人 / 全栈开发',
     highlight: '校赛第一 · 软件著作权',
   },
@@ -49,6 +49,21 @@ export const projects: Project[] = [
     timeline: '2024.03 - 2024.10',
     role: '前端开发 & 编程比赛策划',
     highlight: '全球 TOP10 · 最佳 Wiki 提名',
+  },
+  {
+    id: 'ledger',
+    title: '汕头存心善堂收客记录系统',
+    subtitle: '历史数据管理系统 · 全栈独立开发',
+    description:
+      '用于管理、搜索、统计与可视化汕头存心善堂二十世纪四十年代收客记录的数据系统，收录 8005 条历史记录、17 个字段，已在线部署可访问。',
+    image: '', // TODO: 替换真实截图
+    imageGradient: 'from-sky-500 via-blue-500 to-indigo-600',
+    tags: ['React 19', 'TypeScript', 'FastAPI', 'Pandas', 'ECharts', '数据可视化'],
+    link: 'https://bobhuang.cn/ledger/',
+    github: 'https://github.com/BobHuang666/ledger/',
+    timeline: '2025.05',
+    role: '全栈独立开发',
+    highlight: '8005 条记录 · 可视化分析',
   },
 ];
 
@@ -194,5 +209,50 @@ export const projectsDetail: Record<string, ProjectDetailData> = {
       ],
     },
     team: ['BobHuang（前端开发）', 'BNUZH-China 团队'],
+  },
+  'ledger': {
+    ...projects[3],
+    content: {
+      overview: `汕头存心善堂二十世纪四十年代收客记录系统，用于管理、搜索、统计与可视化 8005 条收客记录（含 17 个字段）。后端基于 FastAPI 托管前端并暴露数据接口，前端基于 React 19 + ECharts 提供搜索、统计与可视化界面，已通过 Docker 单容器部署上线。`,
+      features: [
+        '高级搜索：多字段组合（AND/OR）、模糊/精确匹配、分页、结果导出 Excel',
+        '多条件统计：字段组合统计，数量与占比进度条，支持 Excel 导出',
+        '数据可视化：KPI 概览、性别饼图、年龄段柱状图、死亡月份折线、籍贯→住址桑基图',
+        '后端 API：搜索 / 统计 / 概览 / 字段 / 健康检查端点，概览数据首次计算后缓存',
+      ],
+      techStack: {
+        frontend: ['React 19', 'TypeScript', 'Vite', 'React Router DOM', 'Axios', 'ECharts'],
+        backend: ['FastAPI', 'Pandas', 'OpenPyXL', 'CORS 中间件'],
+        database: ['CSV 数据文件（people.csv，8005 条）'],
+        tools: ['Docker', 'Nginx', 'GitHub Actions', '腾讯云轻量 + 域名备案 + HTTPS'],
+      },
+      challenges: [
+        '8005 条历史记录的存储与高效检索（CSV + Pandas）',
+        '多字段组合搜索与统计的灵活查询设计',
+        '历史数据可视化：桑基图、趋势曲线等复杂图表',
+        '国内服务器上线所需的域名备案与 HTTPS 配置',
+        '单容器内前后端构建与同源托管',
+      ],
+      solutions: [
+        'FastAPI + Pandas 内存聚合，概览数据首次计算后缓存',
+        '统一 /ledger 前缀的 REST 接口，字段列表由后端动态下发',
+        'ECharts 实现饼图 / 柱状 / 折线 / 桑基图，前端组件化拆分',
+        'deploy 脚本一键部署 + Nginx 反代 + certbot HTTPS',
+        'Dockerfile 多阶段构建，前端 dist 由 FastAPI 同源托管，免跨域',
+      ],
+      results: [
+        '收录并管理 8005 条收客记录，17 个字段',
+        '上线访问：https://bobhuang.cn/ledger/',
+        'Docker 单容器部署，内存占用约 200-300MB',
+        'push 后 5 分钟自动更新（cron + autoupdate.sh）',
+      ],
+      lessons: [
+        '历史 / 纸质数据的结构化与数字化价值',
+        '前后端同源托管简化部署与跨域',
+        '面向真实业务的检索与统计接口设计',
+        '国内上线备案与运维的实操经验',
+      ],
+    },
+    team: ['BobHuang（全栈独立开发）'],
   },
 };

@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div className="md:col-span-2">
-            <h3 className="text-lg font-bold text-white mb-3">{profile.name} · {profile.nameZh}</h3>
+            <h3 className="text-lg font-bold text-white mb-3">{profile.name}</h3>
             <p className="text-sm text-slate-400 leading-relaxed max-w-md mb-4">
               {profile.tagline}
             </p>
