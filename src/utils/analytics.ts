@@ -41,8 +41,7 @@ export function initAnalytics() {
 }
 
 /**
- * 轻量 Web Vitals 上报：仅在 console 打印，便于本地开发观察。
- * 后续可改造为 sendBeacon 发送到自有服务。
+ * 轻量 Web Vitals：仅在开发环境 console 打印，不向任何服务端上报。
  */
 export function logWebVitals() {
   if (typeof window === 'undefined' || !('PerformanceObserver' in window)) return;

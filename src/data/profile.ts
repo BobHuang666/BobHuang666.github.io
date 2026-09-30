@@ -5,7 +5,6 @@ export const profile = {
   tagline: '热爱编程的算法竞赛选手，专注于全栈开发与 AI 应用落地',
   avatar: '/static/img/avatar.jpg',
   email: '2295672887@qq.com',
-  // 出于隐私公开站点不展示手机号，保留为占位
   location: '北京师范大学',
   politicalStatus: '中共预备党员',
   // 社交链接

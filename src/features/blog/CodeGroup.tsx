@@ -14,7 +14,7 @@ interface CodeGroupProps {
 }
 
 /**
- * 多语言代码块切换组件
+ * 代码块分组切换组件：同一段功能给出多种编程语言的示例时按 Tab 切换。
  * 在 Markdown 中通过 :::code-group ... ::: 语法使用
  */
 const CodeGroup = ({ tabs }: CodeGroupProps) => {

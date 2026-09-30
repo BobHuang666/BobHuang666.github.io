@@ -65,7 +65,7 @@ data / types / utils 之间只允许单向：types ← utils ← data
 - 同一视觉只保留一个实现：筛选胶囊 `Chip`、空态 `EmptyState`、错误页 `ErrorState`、图片放大 `SmartImage zoomable`、滚动 `scrollToId`。
 - 页面不改数据：项目详情由 `getProjectDetail(id)` 按 id 关联简版数据，不依赖数组下标。
 - 目录与正文共用一份 section 声明（项目详情 `SECTIONS`），避免滚动高亮因两处顺序不一致而错位。
-- 未被引用的导出一律删除（`CodeBlock`、`LightboxImage`、多余骨架屏变体）。
+- 未被任何地方引用的导出一律删除；新增导出前先确认有真实消费方。
 
 ## 修改时的检查清单
 
@@ -77,4 +77,4 @@ data / types / utils 之间只允许单向：types ← utils ← data
 
 ## 结构完成状态
 
-所有路由页面已归入对应 feature，所有 React 组件已归入 feature 或 `shared/components`。后续不得重新创建 `src/pages`、`src/components`、`src/lib` 或 `src/i18n` 作为兜底目录；新代码必须按上述规则归属。
+所有路由页面已归入对应 feature，所有 React 组件已归入 feature 或 `shared/components`。后续不得重新创建 `src/pages`、`src/components` 或 `src/lib` 作为兜底目录；新代码必须按上述规则归属。

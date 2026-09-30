@@ -21,11 +21,6 @@ updates:
       # React Router 7 是大版本变更
       - dependency-name: 'react-router-dom'
         update-types: ['version-update:semver-major']
-      # i18next 大版本经常重命名 API
-      - dependency-name: 'i18next'
-        update-types: ['version-update:semver-major']
-      - dependency-name: 'react-i18next'
-        update-types: ['version-update:semver-major']
       # Tailwind 4 是大重写
       - dependency-name: 'tailwindcss'
         update-types: ['version-update:semver-major']
@@ -42,10 +37,8 @@ updates:
           - '@types/react-dom'
           - 'lucide-react'
           - 'framer-motion'
-          - 'react-i18next'
           - 'react-markdown'
           - 'react-router-dom'
-          - 'react-type-animation'
           - '@giscus/react'
       # 构建工具链
       build-tools:
@@ -69,7 +62,6 @@ updates:
         patterns:
           - 'remark-*'
           - 'rehype-*'
-          - 'gray-matter'
           - 'mermaid'
           - 'katex'
 

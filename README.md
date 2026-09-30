@@ -18,9 +18,9 @@
 | 路由 | 页面 | 说明 |
 |---|---|---|
 | `/` | **主城** | 首页 · Hero / 技能 / GitHub / 项目 / 博客 / 奖项 / 更多探索 / 联系 |
-| `/profile` | **角色档案** | 6 Tab 简历：基本信息 / 技能 / 奖项 / 实习 / 科研 / 课程 / 兴趣 |
-| `/#projects` | **任务中心** | 锚点跳转 |
-| `/blog` | **游戏攻略** | 博客列表 + 分类标签筛选 + 草稿开关 |
+| `/profile` | **角色档案** | 7 Tab 简历：教育背景 / 技能 / 奖项 / 实习与学生工作 / 科研 / 课程 / 兴趣 |
+| `/#projects` | **任务中心** | 首页项目区锚点跳转 |
+| `/blog` | **游戏攻略** | 博客列表 + 关键词搜索 + 分类 / 标签筛选 |
 
 ### 探索（导航栏「更多」下拉）
 | 路由 | 页面 | 说明 |
@@ -33,7 +33,8 @@
 |---|---|
 | `/projects/:id` | 项目详情页（目录 + 概述 / 功能 / 技术栈 / 挑战 / 方案 / 成果 / 总结） |
 | `/blog/:id` | 博客详情（Markdown + TOC + 代码高亮 + 复制 + 阅读进度 + 推荐 + 评论） |
-| `*` | 404 NotFound |
+| `/500` | 服务端 / 资源异常兜底页 |
+| `*` | 404 NotFound（内置弹弹球小游戏） |
 
 ---
 
@@ -99,7 +100,7 @@ src/
 |---|---|
 | **路由** | HashRouter（规避 GH Pages 刷新 404）+ 路由懒加载 + Suspense |
 | **暗色模式** | `prefers-color-scheme` + localStorage 持久化 + 防闪烁脚本 |
-| **中文文案层** | `src/data/copy.ts` 集中管理 UI 文案，无 i18n 运行时 |
+| **中文文案层** | `src/data/copy.ts` 集中管理 UI 文案，渲染层不写死字符串 |
 | **博客** | Markdown 文件自动加载，含 Front-Matter / GFM / 代码高亮 / 复制 / TOC / 阅读进度 |
 | **搜索** | Fuse.js 命令面板，⌘K / Ctrl+K / `/` 触发 |
 | **评论** | giscus 集成（GitHub Discussions） |
@@ -107,9 +108,9 @@ src/
 | **PWA** | vite-plugin-pwa 自动生成 SW + Manifest + 离线缓存 |
 | **动画** | framer-motion + `prefers-reduced-motion` 兼容 |
 | **设计 token** | Tailwind 扩展 brand/gold 色阶 + Inter/Noto Sans SC |
-| **可访问性** | aria-label / focus ring / 键盘可达 / 跳过链接 |
-| **SEO** | title / description / OG / Twitter Card / theme-color |
-| **代码分割** | react-vendor / motion / markdown / giscus / SearchPalette 多 chunk |
+| **可访问性** | aria-label / focus ring / 键盘可达 / `prefers-reduced-motion` |
+| **SEO** | 动态 title / description / OG + Twitter Card + sitemap + RSS |
+| **代码分割** | react-vendor / motion / markdown / katex 固定分包 + 路由与浮层组件懒加载 |
 
 ---
 
@@ -183,10 +184,10 @@ PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节
 
 | 维度 | 阈值（gzip） | 当前 |
 |---|---|---|
-| 单个 JS chunk | ≤ 250 KB | ✅ 最大 markdown 182 KB（按需） |
-| 首屏关键 JS 总和 | ≤ 250 KB | ✅ 238 KB |
-| 全部 JS 总和 | ≤ 1500 KB | ✅ 1265 KB |
-| 单个 CSS | ≤ 50 KB | ✅ 最大 12.67 KB |
+| 单个 JS chunk | ≤ 250 KB | ✅ 最大 markdown 187 KB（按需） |
+| 首屏关键 JS 总和 | ≤ 250 KB | ✅ 167 KB |
+| 全部 JS 总和 | ≤ 1500 KB | ✅ 1266 KB |
+| 单个 CSS | ≤ 50 KB | ✅ 最大 15.0 KB |
 
 > mermaid 各 diagram、katex、cytoscape、wardley、markdown、giscus 等被识别为按需加载，**不计入首屏关键体积**。如需调整阈值或新增懒加载模式，编辑脚本顶部的 `LIMITS` / `LAZY_PATTERNS`。
 
