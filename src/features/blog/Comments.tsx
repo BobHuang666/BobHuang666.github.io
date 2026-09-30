@@ -1,6 +1,6 @@
 import Giscus from '@giscus/react';
 import { MessageSquare } from 'lucide-react';
-import { copy } from '../../copy';
+import { copy } from '../../data/copy';
 import { useTheme } from '../../hooks/useTheme';
 import { giscusConfig, isGiscusEnabled } from '../../data/giscus';
 

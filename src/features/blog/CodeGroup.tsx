@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Check, Copy } from 'lucide-react';
-import { getLangMeta } from './CodeBlock';
+import { getLangMeta } from './codeLanguage';
 
 export interface CodeTab {
   lang: string;

@@ -1,0 +1,16 @@
+import { copy } from '../../../data/copy';
+import { RelatedLink } from '../../../shared/components/ui/RelatedLink';
+import { SectionHeader } from './SectionHeader';
+
+/** 其它站内入口 */
+export const MoreSection = () => (
+  <section id="more" className="py-20 bg-white dark:bg-slate-950">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader title={copy.home.moreTitle} subtitle={copy.home.moreSub} />
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <RelatedLink to="/friends" emoji="🤝" title={copy.nav.friends} desc="友情链接" />
+        <RelatedLink to="/fandom" emoji="💕" title={copy.nav.fandom} desc="追星专题" />
+      </div>
+    </div>
+  </section>
+);

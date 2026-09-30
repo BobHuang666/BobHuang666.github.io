@@ -197,6 +197,35 @@ export const studentWork: Experience[] = [
   },
 ];
 
+/** 兴趣爱好分组（profile 页「兴趣爱好」Tab 用） */
+export interface InterestGroup {
+  category: string;
+  /** lucide 图标名，组件层通过 resolveIcon() 解析 */
+  icon: string;
+  items: { name: string; description: string; icon: string }[];
+}
+
+export const interests: InterestGroup[] = [
+  {
+    category: '技术爱好',
+    icon: 'Code2',
+    items: [
+      { name: '算法竞赛', description: '热爱解决算法问题，参与各类编程竞赛', icon: 'Brain' },
+      { name: '开源项目', description: '积极参与开源社区，贡献代码', icon: 'Github' },
+      { name: '技术博客', description: '分享技术心得，记录学习历程', icon: 'BookOpen' },
+    ],
+  },
+  {
+    category: '生活爱好',
+    icon: 'Heart',
+    items: [
+      { name: '追星', description: '韩娱 & 内娱', icon: 'Music' },
+      { name: '旅行', description: '走过西安、荆州、杭州、瑞金等城市', icon: 'Plane' },
+      { name: '游戏', description: '游戏爱好者，享受思考的乐趣', icon: 'Gamepad2' },
+    ],
+  },
+];
+
 // 课题 / 科研项目
 export const research: Research[] = [
   {

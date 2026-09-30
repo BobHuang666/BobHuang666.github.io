@@ -1,32 +1,56 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
-  Code2, Globe, Database, Shield, Zap, Users, Calendar, ArrowLeft, ExternalLink, Github, ZoomIn,
+  Code2, Globe, Database, Shield, Zap, Users, Calendar, ArrowLeft, ExternalLink, Github,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { projectsDetail } from '../../data/projects';
+import { getProjectDetail, projectsDetail } from '../../data/projects';
+import { copy } from '../../data/copy';
 import { gradient } from '../../utils/gradients';
 import { SmartImage } from '../../shared/components/ui/SmartImage';
 import { usePageMeta } from '../../hooks/usePageMeta';
-import Lightbox from '../../shared/components/ui/Lightbox';
 
-const SECTIONS = [
-  { id: 'overview', title: '项目概述', icon: Globe },
-  { id: 'features', title: '主要功能', icon: Code2 },
-  { id: 'techStack', title: '技术栈', icon: Database },
-  { id: 'challenges', title: '挑战与困难', icon: Shield },
-  { id: 'solutions', title: '解决方案', icon: Zap },
-  { id: 'results', title: '项目成果', icon: Users },
-  { id: 'lessons', title: '经验总结', icon: Calendar },
+type BulletField = 'features' | 'challenges' | 'solutions' | 'results' | 'lessons';
+
+interface SectionDef {
+  id: string;
+  title: string;
+  icon: LucideIcon;
+  /** 正文渲染形态：段落 / 要点列表 / 技术栈四列 */
+  kind: 'overview' | 'bullets' | 'tech';
+  field?: BulletField;
+  dot?: string;
+  twoCols?: boolean;
+}
+
+/**
+ * section 的唯一声明处：侧边目录与正文共用，
+ * 顺序即 DOM 顺序，保证滚动高亮不会因为两处不一致而错位。
+ */
+const SECTIONS: SectionDef[] = [
+  { id: 'overview', title: '项目概述', icon: Globe, kind: 'overview' },
+  { id: 'features', title: '主要功能', icon: Code2, kind: 'bullets', field: 'features', dot: 'bg-indigo-500', twoCols: true },
+  { id: 'techStack', title: '技术栈', icon: Database, kind: 'tech' },
+  { id: 'challenges', title: '挑战与困难', icon: Shield, kind: 'bullets', field: 'challenges', dot: 'bg-red-500' },
+  { id: 'solutions', title: '解决方案', icon: Zap, kind: 'bullets', field: 'solutions', dot: 'bg-green-500' },
+  { id: 'results', title: '项目成果', icon: Users, kind: 'bullets', field: 'results', dot: 'bg-blue-500' },
+  { id: 'lessons', title: '经验总结', icon: Calendar, kind: 'bullets', field: 'lessons', dot: 'bg-purple-500' },
+];
+
+const TECH_COLUMNS = [
+  { title: '前端', icon: Globe, key: 'frontend' },
+  { title: '后端', icon: Database, key: 'backend' },
+  { title: '数据库', icon: Shield, key: 'database' },
+  { title: '工具', icon: Zap, key: 'tools' },
 ] as const;
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState<string>('overview');
-  const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const projectData = id ? projectsDetail[id] : undefined;
+  const projectData = getProjectDetail(id);
 
   usePageMeta(
     projectData ? projectData.title : '项目不存在',
@@ -71,6 +95,8 @@ const ProjectDetail = () => {
     );
   }
 
+  const { content } = projectData;
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -79,7 +105,7 @@ const ProjectDetail = () => {
           className="inline-flex items-center text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-5 transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          返回
+          {copy.btn.back}
         </button>
 
         <div className="flex flex-col lg:flex-row gap-6">
@@ -87,7 +113,7 @@ const ProjectDetail = () => {
           <aside className="lg:w-60 flex-shrink-0">
             <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 lg:sticky lg:top-24">
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3 uppercase tracking-wide">
-                目录
+                {copy.misc.toc}
               </h3>
               <nav className="space-y-1">
                 {SECTIONS.map((s) => (
@@ -119,32 +145,14 @@ const ProjectDetail = () => {
             >
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="lg:w-1/3">
-                  <div
-                    className="relative group cursor-zoom-in"
-                    onClick={() => projectData.image && setLightboxOpen(true)}
-                    title={projectData.image ? '点击放大' : undefined}
-                  >
-                    <SmartImage
-                      src={projectData.image}
-                      alt={projectData.title}
-                      fallbackTitle={projectData.title}
-                      fallbackGradient={gradient(projectData.imageTone)}
-                      className="w-full h-44 object-cover rounded-lg"
-                    />
-                    {projectData.image && (
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 rounded-lg">
-                        <ZoomIn className="h-8 w-8 text-white drop-shadow" />
-                      </div>
-                    )}
-                  </div>
-                  {projectData.image && (
-                    <Lightbox
-                      src={projectData.image}
-                      alt={projectData.title}
-                      open={lightboxOpen}
-                      onClose={() => setLightboxOpen(false)}
-                    />
-                  )}
+                  <SmartImage
+                    src={projectData.image}
+                    alt={projectData.title}
+                    fallbackTitle={projectData.title}
+                    fallbackGradient={gradient(projectData.imageTone)}
+                    zoomable
+                    className="w-full h-44 object-cover rounded-lg"
+                  />
                 </div>
                 <div className="lg:w-2/3">
                   <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
@@ -210,61 +218,36 @@ const ProjectDetail = () => {
               </div>
             </motion.div>
 
-            {/* Sections */}
-            <SectionCard id="overview" icon={Globe} title="项目概述">
-              <p className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
-                {projectData.content.overview}
-              </p>
-            </SectionCard>
+            {SECTIONS.map((s) => (
+              <SectionCard key={s.id} id={s.id} icon={s.icon} title={s.title}>
+                {s.kind === 'overview' && (
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+                    {content.overview}
+                  </p>
+                )}
 
-            <SectionCard id="features" icon={Code2} title="主要功能">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {projectData.content.features.map((f) => (
-                  <Bullet key={f} text={f} dotClass="bg-indigo-500" />
-                ))}
-              </div>
-            </SectionCard>
+                {s.kind === 'bullets' && s.field && (
+                  <div className={s.twoCols ? 'grid grid-cols-1 md:grid-cols-2 gap-3' : 'space-y-3'}>
+                    {content[s.field].map((item) => (
+                      <Bullet key={item} text={item} dotClass={s.dot ?? 'bg-indigo-500'} />
+                    ))}
+                  </div>
+                )}
 
-            <SectionCard id="techStack" icon={Database} title="技术栈">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                <TechCol icon={Globe} title="前端" items={projectData.content.techStack.frontend} />
-                <TechCol icon={Database} title="后端" items={projectData.content.techStack.backend} />
-                <TechCol icon={Shield} title="数据库" items={projectData.content.techStack.database} />
-                <TechCol icon={Zap} title="工具" items={projectData.content.techStack.tools} />
-              </div>
-            </SectionCard>
-
-            <SectionCard id="challenges" icon={Shield} title="挑战与困难">
-              <div className="space-y-3">
-                {projectData.content.challenges.map((c) => (
-                  <Bullet key={c} text={c} dotClass="bg-red-500" />
-                ))}
-              </div>
-            </SectionCard>
-
-            <SectionCard id="solutions" icon={Zap} title="解决方案">
-              <div className="space-y-3">
-                {projectData.content.solutions.map((s) => (
-                  <Bullet key={s} text={s} dotClass="bg-green-500" />
-                ))}
-              </div>
-            </SectionCard>
-
-            <SectionCard id="results" icon={Users} title="项目成果">
-              <div className="space-y-3">
-                {projectData.content.results.map((r) => (
-                  <Bullet key={r} text={r} dotClass="bg-blue-500" />
-                ))}
-              </div>
-            </SectionCard>
-
-            <SectionCard id="lessons" icon={Calendar} title="经验总结">
-              <div className="space-y-3">
-                {projectData.content.lessons.map((l) => (
-                  <Bullet key={l} text={l} dotClass="bg-purple-500" />
-                ))}
-              </div>
-            </SectionCard>
+                {s.kind === 'tech' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    {TECH_COLUMNS.map((col) => (
+                      <TechCol
+                        key={col.key}
+                        icon={col.icon}
+                        title={col.title}
+                        items={content.techStack[col.key]}
+                      />
+                    ))}
+                  </div>
+                )}
+              </SectionCard>
+            ))}
           </div>
         </div>
       </div>
@@ -280,7 +263,7 @@ const SectionCard = ({
   children,
 }: {
   id: string;
-  icon: typeof Globe;
+  icon: LucideIcon;
   title: string;
   children: React.ReactNode;
 }) => (
@@ -312,7 +295,7 @@ const TechCol = ({
   title,
   items,
 }: {
-  icon: typeof Globe;
+  icon: LucideIcon;
   title: string;
   items: string[];
 }) => (

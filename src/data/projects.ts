@@ -68,9 +68,16 @@ export const projects: Project[] = [
 ];
 
 // 详细版（详情页用）
+// 通过 id 关联简版数据，避免依赖数组下标（调整顺序不会串数据）
+const base = (id: string): Project => {
+  const found = projects.find((p) => p.id === id);
+  if (!found) throw new Error(`[data/projects] 详情缺少对应的项目简版数据：${id}`);
+  return found;
+};
+
 export const projectsDetail: Record<string, ProjectDetailData> = {
   'ink-ruler': {
-    ...projects[0],
+    ...base('ink-ruler'),
     content: {
       overview: `墨尺智慧作文教学平台是面向中学生议论文写作的 AI 教学解决方案，作为「挑战杯」项目立项。我作为技术负责人，独立完成前后端架构设计与核心功能开发。
 
@@ -119,7 +126,7 @@ export const projectsDetail: Record<string, ProjectDetailData> = {
     team: ['BobHuang（技术负责人）', '团队 LLM 训练成员'],
   },
   'aicv-resume': {
-    ...projects[1],
+    ...base('aicv-resume'),
     content: {
       overview: `AiCV 简历王是一款面向大学生的 AI 简历优化微信小程序，在实习期间完成开发并上线，获得 1000+ 用户关注。
 
@@ -164,7 +171,7 @@ export const projectsDetail: Record<string, ProjectDetailData> = {
     },
   },
   'igem-wiki': {
-    ...projects[2],
+    ...base('igem-wiki'),
     content: {
       overview: `iGEM（国际基因工程机器大赛）是全球顶级合成生物学竞赛，每年吸引来自 40+ 国家的 400+ 支队伍参赛。作为 BNUZH-China 团队的 Wiki 组核心成员，我负责团队 Wiki 页面的前端设计与开发。
 
@@ -211,7 +218,7 @@ export const projectsDetail: Record<string, ProjectDetailData> = {
     team: ['BobHuang（前端开发）', 'BNUZH-China 团队'],
   },
   'ledger': {
-    ...projects[3],
+    ...base('ledger'),
     content: {
       overview: `汕头存心善堂二十世纪四十年代收客记录系统，用于管理、搜索、统计与可视化 8005 条收客记录（含 17 个字段）。后端基于 FastAPI 托管前端并暴露数据接口，前端基于 React 19 + ECharts 提供搜索、统计与可视化界面，已通过 Docker 单容器部署上线。`,
       features: [
@@ -256,3 +263,8 @@ export const projectsDetail: Record<string, ProjectDetailData> = {
     team: ['BobHuang（全栈独立开发）'],
   },
 };
+
+/** 详情页按 id 取详情；id 不存在时返回 undefined，由页面渲染「项目不存在」 */
+export function getProjectDetail(id: string | undefined): ProjectDetailData | undefined {
+  return id ? projectsDetail[id] : undefined;
+}

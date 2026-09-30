@@ -193,10 +193,11 @@ const BallGame = () => {
       s.raf = requestAnimationFrame(tick);
     };
 
-    stRef.current.raf = requestAnimationFrame(tick);
+    const st = stRef.current;
+    st.raf = requestAnimationFrame(tick);
 
     return () => {
-      cancelAnimationFrame(stRef.current.raf);
+      cancelAnimationFrame(st.raf);
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('keyup', onKeyUp);
       canvas.removeEventListener('mousemove', onMouseMove);

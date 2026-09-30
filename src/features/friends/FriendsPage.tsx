@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Mail, Link2, Copy, Check, Github } from 'lucide-react';
-import { copy } from '../../copy';
+import { copy } from '../../data/copy';
 import { friends, myLinkCard } from '../../data/friends';
 import { profile } from '../../data/profile';
 import { RelatedLink } from '../../shared/components/ui/RelatedLink';

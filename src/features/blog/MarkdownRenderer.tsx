@@ -8,7 +8,7 @@ import 'highlight.js/styles/github-dark.css'; // 代码高亮主题，仅博客�
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import { Check, Copy } from 'lucide-react';
-import { getLangMeta } from './CodeBlock';
+import { getLangMeta } from './codeLanguage';
 import CodeGroup from './CodeGroup';
 import type { CodeTab } from './CodeGroup';
 

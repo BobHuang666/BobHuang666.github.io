@@ -2,6 +2,8 @@
  * 全站中文文案集中管理。
  * 组件统一从这里取文案，渲染层不写死字符串。
  * 本站仅中文，已移除多语言能力（无 i18n 运行时、无语言切换）。
+ *
+ * 归属：文案是内容，因此与数据同处 `data/`，由视图层单向消费。
  */
 
 export const copy = {
@@ -21,6 +23,10 @@ export const copy = {
     viewProjects: '查看项目',
     aboutMe: '个人介绍',
     contactMe: '联系我',
+    demo: '在线演示',
+    detail: '项目详情',
+    back: '返回',
+    backToList: '返回博客列表',
   },
 
   /** 首页各 section */
@@ -30,20 +36,38 @@ export const copy = {
     projectsSub: '精选代表性项目，每个都从立项打通到上线/获奖',
     blogTitle: '游戏攻略',
     blogSub: '算法题解 / 项目复盘 / 学习笔记 —— 正在持续更新',
+    viewAllPosts: '查看全部文章',
     awardsTitle: '历史荣誉',
     /** 带数量的副标题 */
     awardsSub: (count: number) => `累计 ${count} 项荣誉 · 按级别筛选查看精选 6 项`,
+    /** 带数量的「查看全部」 */
+    viewAllAwards: (count: number) => `查看全部 ${count} 项荣誉`,
     skillsTitle: '技能点',
     skillsSub: '在校期间持续点亮的技能树 —— 涵盖语言、前端、后端与工程化',
     githubTitle: 'GitHub 战绩',
     githubSub: '来自 GitHub API 的实时数据 —— 仓库、热门项目、社交统计',
+    moreTitle: '更多探索',
+    moreSub: '除了主线任务，还有这些副本可以探索',
     contactTitle: '联系我',
     contactSub: '对算法竞赛、全栈开发、AI 应用感兴趣？欢迎交流，一起进步。',
+    emailCopied: '邮箱已复制到剪贴板 ✓',
+    /** 打字机轮播的标语序列：字符串后跟停留毫秒 */
+    taglines: [
+      '热爱编程的算法竞赛选手，专注于全栈开发与 AI 应用落地',
+      2500,
+      '算法竞赛选手 · ICPC / 蓝桥杯 / CCF 多项荣誉',
+      2200,
+      '全栈开发者 · Vue / React / Go / Python',
+      2200,
+      '正在腾讯 CDG 担任前端实习生',
+      2500,
+    ] as (string | number)[],
   },
 
   /** 奖项级别（其余级别直接用数据里的中文字面量，只有“全部”需要文案） */
   level: {
     all: '全部',
+    summary: (count: number) => `累计 ${count} 项荣誉 · 涵盖国际级、国家级、省级与校院级`,
   },
 
   /** 通用 */
@@ -59,6 +83,22 @@ export const copy = {
   footer: {
     nav: '导航',
     builtWith: '本站使用 React + Vite + Tailwind 构建',
+  },
+
+  /** /blog 列表页 */
+  blog: {
+    title: '游戏攻略',
+    subtitle: '技术笔记、项目复盘、学习记录 —— 慢慢写，慢慢更新',
+    rss: 'RSS 订阅',
+    searchLabel: '搜索',
+    searchPlaceholder: '标题、标签…',
+    categoryLabel: '分类',
+    tagsLabel: '标签',
+    clearFilters: '清空筛选',
+    /** 带数量的结果统计 */
+    found: (n: number) => `找到 ${n} 篇文章`,
+    emptyTitle: '没有找到相关文章',
+    emptyDesc: '尝试调整搜索条件或清空筛选',
   },
 
   /** /friends 页面 */

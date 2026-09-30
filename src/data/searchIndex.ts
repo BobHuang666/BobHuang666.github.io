@@ -2,7 +2,7 @@ import { blogData } from './blog';
 import { projects } from './projects';
 import { awards } from './awards';
 import { skillsDetail } from './skills';
-import { copy } from '../copy';
+import { copy } from './copy';
 
 export type SearchResultKind = 'blog' | 'project' | 'award' | 'skill' | 'page';
 

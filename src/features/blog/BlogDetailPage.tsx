@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Tag as TagIcon } from 'lucide-react';
-import { copy } from '../../copy';
-import { getPost, blogData } from '../../data/blog';
+import { copy } from '../../data/copy';
+import { getPost, getRelatedPosts, blogMeta } from '../../data/blog';
 import MarkdownRenderer from './MarkdownRenderer';
 import TableOfContents from './TableOfContents';
 import ReadingProgress from '../../shared/components/effects/ReadingProgress';
@@ -19,17 +19,8 @@ const BlogDetailPage = () => {
     post?.excerpt,
   );
 
-  // 推荐阅读：放在 useParams 后，无 post 时 short-circuit
-  const related = post
-    ? blogData
-        .filter(
-          (p) =>
-            p.id !== post.id &&
-            !p.isDraft &&
-            (p.category === post.category || p.tags.some((t) => post.tags.includes(t))),
-        )
-        .slice(0, 2)
-    : [];
+  // 推荐阅读：相关度计算在 data/blog.ts，页面只消费结果
+  const related = post ? getRelatedPosts(post.id) : [];
 
   if (!post) {
     return (
@@ -41,10 +32,10 @@ const BlogDetailPage = () => {
           这篇文章可能已下架或链接错误
         </p>
         <p className="text-xs text-slate-400 mb-6">
-          可用文章：{blogData.map((p) => p.id).join(' / ')}
+          可用文章：{blogMeta.map((p) => p.id).join(' / ')}
         </p>
         <Link to="/blog" className="btn-primary">
-          返回博客列表
+          {copy.btn.backToList}
         </Link>
       </div>
     );
@@ -59,7 +50,7 @@ const BlogDetailPage = () => {
           className="inline-flex items-center text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-6 transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          返回
+          {copy.btn.back}
         </button>
 
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_220px] gap-10">
@@ -138,7 +129,7 @@ const BlogDetailPage = () => {
                 读到这里啦，谢谢你的耐心 🙇
               </p>
               <Link to="/blog" className="btn-primary">
-                返回博客列表
+                {copy.btn.backToList}
               </Link>
             </div>
           </article>

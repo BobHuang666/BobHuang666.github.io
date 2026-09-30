@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { List } from 'lucide-react';
-import { copy } from '../../copy';
+import { copy } from '../../data/copy';
 
 interface Heading {
   id: string;

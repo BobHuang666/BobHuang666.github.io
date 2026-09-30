@@ -6,9 +6,9 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { copy } from '../../../copy';
+import { copy } from '../../../data/copy';
 import { ThemeToggle } from '../controls/ThemeToggle';
-import { SearchTrigger } from '../../../features/search/SearchTrigger';
+import { SearchTrigger } from '../../../features/search';
 
 interface MainItem {
   to: string;

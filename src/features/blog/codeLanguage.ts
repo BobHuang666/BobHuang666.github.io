@@ -1,13 +1,11 @@
-import { useState } from 'react';
-import { Check, Copy } from 'lucide-react';
+/**
+ * 代码块的「语言 → 展示元数据」映射。
+ *
+ * 只被 Markdown 渲染链路（MarkdownRenderer / CodeGroup）消费，
+ * 与数据层、共享组件层无关，因此放在 blog feature 内而不是 utils。
+ */
 
-interface CodeBlockProps {
-  code: string;
-  className?: string;
-  language?: string;
-}
-
-// 语言展示名映射
+/** 语言展示名映射 */
 const LANG_DISPLAY: Record<string, string> = {
   js: 'JavaScript', javascript: 'JavaScript',
   ts: 'TypeScript', typescript: 'TypeScript',
@@ -33,7 +31,7 @@ const LANG_DISPLAY: Record<string, string> = {
   text: 'Text', txt: 'Text',
 };
 
-// 语言对应的颜色主题
+/** 语言对应的徽章配色 */
 const LANG_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
   js: { bg: 'rgba(234,179,8,0.18)', text: '#fde68a', dot: '#f59e0b' },
   javascript: { bg: 'rgba(234,179,8,0.18)', text: '#fde68a', dot: '#f59e0b' },
@@ -63,62 +61,13 @@ const LANG_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
   diff: { bg: 'rgba(148,163,184,0.15)', text: '#cbd5e1', dot: '#94a3b8' },
 };
 
-function getLangMeta(lang?: string) {
+const FALLBACK_COLOR = { bg: 'rgba(148,163,184,0.15)', text: '#94a3b8', dot: '#64748b' };
+
+/** 取语言展示名与徽章配色；未知语言回落到大写原名 + 中性灰 */
+export function getLangMeta(lang?: string) {
   const key = (lang ?? '').toLowerCase();
   return {
     display: LANG_DISPLAY[key] ?? key.toUpperCase(),
-    color: LANG_COLORS[key] ?? { bg: 'rgba(148,163,184,0.15)', text: '#94a3b8', dot: '#64748b' },
+    color: LANG_COLORS[key] ?? FALLBACK_COLOR,
   };
 }
-
-export const CodeBlock = ({ code, className = '', language }: CodeBlockProps) => {
-  const [copied, setCopied] = useState(false);
-  const { display, color } = getLangMeta(language);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch { /* ignore */ }
-  };
-
-  return (
-    <div className="relative group not-prose my-4">
-      {/* 语言标签栏 */}
-      <div className="flex items-center justify-between px-3 py-1.5 rounded-t-lg bg-slate-800 dark:bg-slate-950 border-b border-white/5">
-        {language ? (
-          <span
-            className="flex items-center gap-1.5 text-[11px] font-semibold font-mono tracking-wide rounded px-2 py-0.5"
-            style={{ background: color.bg, color: color.text }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: color.dot }} />
-            {display}
-          </span>
-        ) : (
-          <span />
-        )}
-        {/* 复制按钮 */}
-        <button
-          type="button"
-          onClick={handleCopy}
-          aria-label={copied ? '已复制' : '复制代码'}
-          className="flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono text-slate-400 hover:text-slate-200 hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
-        >
-          {copied
-            ? <><Check className="h-3 w-3 text-emerald-400" /><span className="text-emerald-400">已复制</span></>
-            : <><Copy className="h-3 w-3" /><span>复制</span></>
-          }
-        </button>
-      </div>
-
-      <pre
-        className={`${className} !bg-slate-900 dark:!bg-slate-950 !rounded-t-none text-slate-100 rounded-b-lg p-4 overflow-x-auto text-sm leading-relaxed !mt-0`}
-      >
-        <code className={className}>{code}</code>
-      </pre>
-    </div>
-  );
-};
-
-export { getLangMeta };

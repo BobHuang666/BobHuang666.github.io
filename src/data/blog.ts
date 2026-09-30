@@ -33,6 +33,10 @@ function estimateReadTime(raw: string): number {
 // 自动加载 src/posts 下所有 .md 文件
 const modules = import.meta.glob('../posts/*.md', { query: '?raw', import: 'default', eager: true });
 
+/**
+ * 全站博客正文的唯一来源（已按发布日期倒序、已剔除草稿）。
+ * 详情页需要正文时用它；只需要卡片/列表信息时用 blogMeta。
+ */
 const posts: BlogPost[] = Object.entries(modules)
   .map(([path, raw]) => {
     const fileName = path.split('/').pop()!.replace(/\.md$/, '');
@@ -60,10 +64,44 @@ const posts: BlogPost[] = Object.entries(modules)
 
 export const blogData: BlogPost[] = posts;
 
-/** 不含正文的轻量元数据，供首页/列表页使用 */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const blogMeta: BlogMeta[] = posts.map(({ content: _content, ...rest }) => rest);
+/** 不含正文的轻量元数据，供首页/列表页/搜索索引使用 */
+export const blogMeta: BlogMeta[] = posts.map(({ content, ...rest }) => rest);
+
+/** 分类及其文章数，由数据派生，新增文章无需改动页面 */
+export const blogCategories: { id: string; name: string; count: number }[] = (() => {
+  const counts = new Map<string, number>();
+  for (const post of posts) counts.set(post.category, (counts.get(post.category) ?? 0) + 1);
+  return [
+    { id: 'all', name: '全部', count: posts.length },
+    ...[...counts.entries()].map(([name, count]) => ({ id: name, name, count })),
+  ];
+})();
+
+/** 全站标签去重，供列表页筛选 */
+export const blogTags: string[] = [...new Set(posts.flatMap((p) => p.tags))];
 
 export function getPost(id: string): BlogPost | undefined {
   return posts.find((p) => p.id === id);
+}
+
+/**
+ * 推荐阅读：同分类优先，其次标签交集，最后按时间兜底。
+ * 相关度计算属于数据派生，不放进页面组件。
+ */
+export function getRelatedPosts(id: string, limit = 2): BlogMeta[] {
+  const current = getPost(id);
+  if (!current) return [];
+
+  const score = (p: BlogPost) => {
+    if (p.id === current.id) return -1;
+    const sharedTags = p.tags.filter((t) => current.tags.includes(t)).length;
+    return (p.category === current.category ? 2 : 0) + sharedTags;
+  };
+
+  return posts
+    .map((p) => ({ post: p, relevance: score(p) }))
+    .filter(({ relevance }) => relevance > 0)
+    .sort((a, b) => b.relevance - a.relevance || (a.post.publishDate < b.post.publishDate ? 1 : -1))
+    .slice(0, limit)
+    .map(({ post: { content, ...rest } }) => rest);
 }

@@ -73,13 +73,18 @@ npm run size
 ```
 src/
 ├── app/                     # 根壳层、Provider 与路由定义
-├── features/
-│   └── assistant/           # AI 助手的视图、API、配置、类型和知识库
+├── features/                # 业务功能：页面只做编排，区块/Tab 下沉为子组件
+│   ├── home/                # HomePage + sections/
+│   ├── profile/             # ProfilePage + tabs/
+│   ├── fandom/              # FandomPage + tabs/ + meta.ts
+│   ├── projects/ blog/ friends/ errors/
+│   └── search/ github/ assistant/   # 跨页面能力，index.ts 暴露公共入口
 ├── shared/components/       # 跨业务复用的布局、控件、UI 与视觉效果
 ├── contexts/                # 全局 React Context
 ├── hooks/                   # 跨功能复用 Hook
-├── data/                    # 内容单一事实来源及轻量派生索引
+├── data/                    # 内容单一事实来源（含 copy.ts）及轻量派生索引
 ├── posts/                   # Markdown 博客正文
+├── drafts/                  # 未发布草稿，不参与构建
 ├── types/                   # 跨领域数据模型
 ├── utils/                   # 无 React 状态的工具
 ├── main.tsx                 # 浏览器入口
@@ -94,7 +99,7 @@ src/
 |---|---|
 | **路由** | HashRouter（规避 GH Pages 刷新 404）+ 路由懒加载 + Suspense |
 | **暗色模式** | `prefers-color-scheme` + localStorage 持久化 + 防闪烁脚本 |
-| **中文文案层** | `src/copy.ts` 集中管理 UI 文案，无 i18n 运行时 |
+| **中文文案层** | `src/data/copy.ts` 集中管理 UI 文案，无 i18n 运行时 |
 | **博客** | Markdown 文件自动加载，含 Front-Matter / GFM / 代码高亮 / 复制 / TOC / 阅读进度 |
 | **搜索** | Fuse.js 命令面板，⌘K / Ctrl+K / `/` 触发 |
 | **评论** | giscus 集成（GitHub Discussions） |
@@ -121,7 +126,7 @@ src/
 | 友链 | `src/data/friends.ts` |
 | 追星 | `src/data/fandom.ts`（可设密码） |
 | 主题色 / 字体 | `tailwind.config.js` |
-| 中文文案 | `src/copy.ts` |
+| 中文文案 | `src/data/copy.ts` |
 
 ### 启用评论（giscus）
 1. 仓库改为 public

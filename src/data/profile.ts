@@ -29,3 +29,6 @@ export const profile = {
     },
   ],
 } as const;
+
+/** GitHub 用户名，由主页链接派生，供 GitHub 数据组件使用 */
+export const githubUsername = profile.github.match(/github\.com\/([^/]+)/)?.[1] ?? '';

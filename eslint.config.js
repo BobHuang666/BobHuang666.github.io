@@ -23,6 +23,12 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      // `const { content, ...rest } = post` 这类「只为剔除字段」的解构不应报错；
+      // 下划线前缀统一表示「故意未使用」
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { ignoreRestSiblings: true, argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   },
   // Node 端构建/配置脚本：允许 require、Node 全局

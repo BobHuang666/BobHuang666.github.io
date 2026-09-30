@@ -1,6 +1,6 @@
 import {
   Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal,
-  Globe, Database, Shield,
+  Globe, Database, Shield, Heart, Github, Music, Plane, Gamepad2,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -11,7 +11,7 @@ import {
  */
 const ICON_MAP: Record<string, LucideIcon> = {
   Trophy, Award, BookOpen, Brain, Code2, Users, Star, Medal,
-  Globe, Database, Shield,
+  Globe, Database, Shield, Heart, Github, Music, Plane, Gamepad2,
 };
 
 /** 解析数据层的图标名称，找不到时用 fallback（默认 Code2） */

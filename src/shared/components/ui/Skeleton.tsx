@@ -13,11 +13,6 @@ export const SkeletonRect = ({ className = '' }: { className?: string }) => (
   <div className={`rounded-xl bg-slate-200 dark:bg-slate-700 animate-pulse ${className}`} />
 );
 
-/** 圆形骨架 */
-export const SkeletonCircle = ({ size = 'h-10 w-10' }: { size?: string }) => (
-  <div className={`${size} rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse`} />
-);
-
 /** 博客/项目卡片骨架 */
 export const CardSkeleton = () => (
   <div className="card-base p-6 space-y-4">
@@ -37,21 +32,7 @@ export const CardSkeleton = () => (
   </div>
 );
 
-/** 列表行骨架（博客列表页用） */
-export const ListItemSkeleton = () => (
-  <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3">
-    <div className="flex gap-2 items-center">
-      <SkeletonLine className="w-20 h-5 rounded-full" />
-      <SkeletonLine className="w-16" />
-      <SkeletonLine className="w-12 ml-auto" />
-    </div>
-    <SkeletonLine className="w-2/3 h-4" />
-    <SkeletonLine className="w-full" />
-    <SkeletonLine className="w-4/5" />
-  </div>
-);
-
-/** 页面全屏加载态（替换 App.tsx 的旋转圈） */
+/** 页面全屏加载态（路由懒加载时的 Suspense fallback） */
 export const PageSkeleton = () => (
   <div className="min-h-[60vh] px-4 sm:px-6 lg:px-8 py-12 max-w-7xl mx-auto">
     {/* 标题骨架 */}

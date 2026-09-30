@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { X, ZoomIn } from 'lucide-react';
+import { useEffect } from 'react';
+import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface LightboxProps {
@@ -9,6 +9,7 @@ interface LightboxProps {
   onClose: () => void;
 }
 
+/** 全屏图片浮层：Esc 关闭、锁滚动、点击遮罩关闭 */
 const Lightbox = ({ src, alt, open, onClose }: LightboxProps) => {
   useEffect(() => {
     if (!open) return;
@@ -56,31 +57,6 @@ const Lightbox = ({ src, alt, open, onClose }: LightboxProps) => {
         </motion.div>
       )}
     </AnimatePresence>
-  );
-};
-
-/** 可点击放大的图片包装器 */
-export const LightboxImage = ({
-  src,
-  alt,
-  className,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-      <div className="relative group cursor-zoom-in" onClick={() => setIsOpen(true)}>
-        <img src={src} alt={alt} className={className} />
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 rounded-lg">
-          <ZoomIn className="h-8 w-8 text-white drop-shadow" />
-        </div>
-      </div>
-      <Lightbox src={src} alt={alt} open={isOpen} onClose={() => setIsOpen(false)} />
-    </>
   );
 };
 

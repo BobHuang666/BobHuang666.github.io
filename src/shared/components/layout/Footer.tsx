@@ -1,6 +1,7 @@
 import { Github, Mail, Heart, Rss } from 'lucide-react';
-import { copy } from '../../../copy';
+import { copy } from '../../../data/copy';
 import { profile } from '../../../data/profile';
+import { scrollToId } from '../../../utils/scroll';
 
 const Footer = () => {
   return (
@@ -58,7 +59,7 @@ const Footer = () => {
                   onClick={(e) => {
                     if (window.location.hash.replace(/^#/, '') === '/') {
                       e.preventDefault();
-                      document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+                      scrollToId('projects');
                     }
                   }}
                   className="hover:text-indigo-400 transition-colors"
