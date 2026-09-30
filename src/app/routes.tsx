@@ -1,16 +1,17 @@
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { PageSkeleton } from '../shared/components/ui/Skeleton';
 import HomePage from '../features/home/HomePage';
+import { lazyWithRetry } from '../utils/lazyWithRetry';
 
-const ProjectDetail = lazy(() => import('../features/projects/ProjectDetailPage'));
-const ProfilePage = lazy(() => import('../features/profile/ProfilePage'));
-const BlogPage = lazy(() => import('../features/blog/BlogPage'));
-const BlogDetailPage = lazy(() => import('../features/blog/BlogDetailPage'));
-const FriendsPage = lazy(() => import('../features/friends/FriendsPage'));
-const FandomPage = lazy(() => import('../features/fandom/FandomPage'));
-const NotFoundPage = lazy(() => import('../features/errors/NotFoundPage'));
-const ServerErrorPage = lazy(() => import('../features/errors/ServerErrorPage'));
+const ProjectDetail = lazyWithRetry(() => import('../features/projects/ProjectDetailPage'), 'ProjectDetailPage');
+const ProfilePage = lazyWithRetry(() => import('../features/profile/ProfilePage'), 'ProfilePage');
+const BlogPage = lazyWithRetry(() => import('../features/blog/BlogPage'), 'BlogPage');
+const BlogDetailPage = lazyWithRetry(() => import('../features/blog/BlogDetailPage'), 'BlogDetailPage');
+const FriendsPage = lazyWithRetry(() => import('../features/friends/FriendsPage'), 'FriendsPage');
+const FandomPage = lazyWithRetry(() => import('../features/fandom/FandomPage'), 'FandomPage');
+const NotFoundPage = lazyWithRetry(() => import('../features/errors/NotFoundPage'), 'NotFoundPage');
+const ServerErrorPage = lazyWithRetry(() => import('../features/errors/ServerErrorPage'), 'ServerErrorPage');
 
 /** Route declarations only. Keep route-level lazy loading here. */
 export function AppRoutes() {

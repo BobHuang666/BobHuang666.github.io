@@ -96,7 +96,7 @@ export default defineConfig({
             handler: 'NetworkFirst',
             options: {
               cacheName: 'pages-cache',
-              networkTimeoutSeconds: 5,
+              networkTimeoutSeconds: 10,
               expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -133,7 +133,16 @@ export default defineConfig({
               cacheableResponse: { statuses: [0, 200] },
             },
           },
-          // ⑤ 本站静态图片（/static/img/）：CacheFirst，30 天
+          {
+            urlPattern: /\/assets\/.*\.(js|css)$/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'assets-cache',
+              expiration: { maxEntries: 150, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // ⑥ 本站静态图片（/static/img/）：CacheFirst，30 天
           {
             urlPattern: /\/static\/img\/.*/i,
             handler: 'CacheFirst',

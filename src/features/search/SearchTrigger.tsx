@@ -1,9 +1,11 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import { Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { ErrorBoundary } from '../../shared/components/ui/ErrorBoundary';
+import { lazyWithRetry } from '../../utils/lazyWithRetry';
 
-const SearchPalette = lazy(() => import('./SearchPalette'));
+const SearchPalette = lazyWithRetry(() => import('./SearchPalette'), 'SearchPalette');
 
 /** 全局搜索触发器：按钮 + 全局 ⌘K / Ctrl+K 快捷键 */
 export const SearchTrigger = ({ className = '' }: { className?: string }) => {
@@ -44,9 +46,12 @@ export const SearchTrigger = ({ className = '' }: { className?: string }) => {
 
       {/* Portal 挂载到 body，脱离 nav transform 的 stacking context，确保 fixed 蒙层全屏覆盖 */}
       {createPortal(
-        <Suspense fallback={null}>
-          <SearchPalette open={open} onClose={() => setOpen(false)} />
-        </Suspense>,
+        // 搜索是增强能力：加载失败静默降级，不影响整站
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={null}>
+            <SearchPalette open={open} onClose={() => setOpen(false)} />
+          </Suspense>
+        </ErrorBoundary>,
         document.body,
       )}
     </>

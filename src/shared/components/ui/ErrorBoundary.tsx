@@ -20,7 +20,18 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error('[ErrorBoundary]', error, info);
+    // HashRouter 下切路由即可恢复，避免一次失败把整站永久锁死在错误页
+    window.addEventListener('hashchange', this.reset);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('hashchange', this.reset);
+  }
+
+  reset = () => {
+    window.removeEventListener('hashchange', this.reset);
+    this.setState({ hasError: false, error: undefined });
+  };
 
   render() {
     if (this.state.hasError) {
@@ -38,12 +49,18 @@ export class ErrorBoundary extends Component<Props, State> {
             <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-md">
               这个页面遇到了意外问题。请按 Ctrl+Shift+R / Cmd+Shift+R 强制刷新重试。
             </p>
+            {this.state.error?.message && (
+              <p className="text-xs text-slate-400 dark:text-slate-500 mb-6 max-w-md break-words">
+                {this.state.error.message}
+              </p>
+            )}
             <div className="flex flex-wrap gap-3 justify-center">
               <button type="button" onClick={() => window.location.reload()} className="btn-primary">
                 <RotateCcw className="h-4 w-4 mr-2" /> 刷新重试
               </button>
               <a
                 href="#/"
+                onClick={this.reset}
                 className="btn-outline text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950"
               >
                 <Home className="h-4 w-4 mr-2" /> 返回主页
