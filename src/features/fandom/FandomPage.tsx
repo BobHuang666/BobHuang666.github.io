@@ -5,7 +5,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { concerts, supportRecords, collections, fandomConfig, lessons } from '../../data/fandom';
-import { copy } from '../../data/copy';
+import { uiText } from '../../data/uiText';
 import { RelatedLink } from '../../shared/components/ui/RelatedLink';
 import { usePageMeta } from '../../hooks/usePageMeta';
 import { StatPill } from './components';
@@ -31,7 +31,7 @@ const TABS: { id: TabId; label: string; icon: LucideIcon }[] = [
  * 隐私可控：fandomConfig.password 非空时需要输入密码（仅本地校验，非加密）
  */
 const FandomPage = () => {
-  usePageMeta(copy.nav.fandom, fandomConfig.intro);
+  usePageMeta(uiText.nav.fandom, fandomConfig.intro);
   const needsAuth = Boolean(fandomConfig.password);
   const [authorized, setAuthorized] = useState(!needsAuth);
   const [pwd, setPwd] = useState('');
@@ -77,7 +77,7 @@ const FandomPage = () => {
             <Lock className="h-5 w-5" />
             <span className="text-sm font-medium">私密页面</span>
           </div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">{copy.nav.fandom}</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">{uiText.nav.fandom}</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mb-5">
             这是相对私密的内容，需要密码访问。如果你是朋友，问我一下吧 😊
           </p>
@@ -115,7 +115,7 @@ const FandomPage = () => {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2 text-sm text-rose-500">
               <Heart className="h-4 w-4 fill-rose-500" />
-              Fandom · {copy.nav.fandom}
+              Fandom · {uiText.nav.fandom}
             </div>
             <button
               onClick={() => setShowRealName((v) => !v)}
@@ -209,7 +209,7 @@ const FandomPage = () => {
         )}
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <RelatedLink to="/blog" emoji="📝" title={copy.nav.blog} desc="看看其他文章" />
+          <RelatedLink to="/blog" emoji="📝" title={uiText.related.blog.title} desc={uiText.related.blog.desc} />
         </div>
 
         <p className="mt-8 text-center text-xs text-slate-400 dark:text-slate-500">

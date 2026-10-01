@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { projects } from '../../../data/projects';
 import { gradient } from '../../../utils/gradients';
 import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
@@ -35,7 +35,7 @@ export const ProjectsSection = () => {
   return (
     <section id="projects" className="py-20 bg-slate-50 dark:bg-slate-900/40 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader title={copy.home.projectsTitle} subtitle={copy.home.projectsSub} />
+        <SectionHeader title={uiText.home.projectsTitle} subtitle={uiText.home.projectsSub} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <SectionReveal key={project.id} variant="scale" delay={index * 0.1}>
@@ -81,13 +81,13 @@ export const ProjectsSection = () => {
                       onClick={(e) => handleProjectClick(e, project, 'demo')}
                       className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-sm bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
                     >
-                      {copy.btn.demo} <ExternalLink className="h-3.5 w-3.5" />
+                      {uiText.common.demo} <ExternalLink className="h-3.5 w-3.5" />
                     </button>
                     <button
                       onClick={(e) => handleProjectClick(e, project, 'detail')}
                       className="flex-1 px-3 py-2 rounded-lg text-sm border border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-colors"
                     >
-                      {copy.btn.detail}
+                      {uiText.common.detail}
                     </button>
                   </div>
                 </div>

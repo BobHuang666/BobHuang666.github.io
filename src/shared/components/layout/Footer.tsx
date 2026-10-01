@@ -1,5 +1,5 @@
 import { Github, Mail, Heart, Rss } from 'lucide-react';
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { profile } from '../../../data/profile';
 import { scrollToId } from '../../../utils/scroll';
 
@@ -49,10 +49,10 @@ const Footer = () => {
 
           {/* 主导航 */}
           <div>
-            <h4 className="text-sm font-semibold text-white mb-3">{copy.footer.nav}</h4>
+            <h4 className="text-sm font-semibold text-white mb-3">{uiText.footer.navTitle}</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#/" className="hover:text-indigo-400 transition-colors">{copy.nav.home}</a></li>
-              <li><a href="#/profile" className="hover:text-indigo-400 transition-colors">{copy.nav.profile}</a></li>
+              <li><a href="#/" className="hover:text-indigo-400 transition-colors">{uiText.nav.home}</a></li>
+              <li><a href="#/profile" className="hover:text-indigo-400 transition-colors">{uiText.nav.profile}</a></li>
               <li>
                 <a
                   href="#/"
@@ -64,20 +64,20 @@ const Footer = () => {
                   }}
                   className="hover:text-indigo-400 transition-colors"
                 >
-                  {copy.nav.projects}
+                  {uiText.nav.projects}
                 </a>
               </li>
-              <li><a href="#/blog" className="hover:text-indigo-400 transition-colors">{copy.nav.blog}</a></li>
+              <li><a href="#/blog" className="hover:text-indigo-400 transition-colors">{uiText.nav.blog}</a></li>
             </ul>
           </div>
 
           {/* 探索 */}
           <div>
-            <h4 className="text-sm font-semibold text-white mb-3">{copy.nav.more}</h4>
+            <h4 className="text-sm font-semibold text-white mb-3">{uiText.nav.more}</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#/friends" className="hover:text-indigo-400 transition-colors">{copy.nav.friends}</a></li>
+              <li><a href="#/friends" className="hover:text-indigo-400 transition-colors">{uiText.nav.friends}</a></li>
               <li><a href="#/fandom" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
-                {copy.nav.fandom}
+                {uiText.nav.fandom}
                 <Heart className="h-3 w-3 text-rose-400" />
               </a></li>
             </ul>
@@ -86,7 +86,7 @@ const Footer = () => {
 
         <div className="mt-8 pt-6 border-t border-slate-800 flex flex-col sm:flex-row gap-2 items-center justify-between text-xs text-slate-500">
           <span>© {new Date().getFullYear()} {profile.name}. All rights reserved.</span>
-          <span>{copy.footer.builtWith}</span>
+          <span>{uiText.footer.builtWith}</span>
         </div>
       </div>
     </footer>

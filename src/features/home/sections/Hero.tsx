@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, ArrowRight, Sparkles } from 'lucide-react';
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { profile } from '../../../data/profile';
 import { scrollToId } from '../../../utils/scroll';
 import { HeroBackground } from '../../../shared/components/effects/HeroBackground';
@@ -26,7 +26,7 @@ export const Hero = () => (
 
         {/* 状态文案 —— 紧贴头像下方 */}
         <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 backdrop-blur text-white/95 text-xs border border-white/20">
-          {copy.home.status}
+          {uiText.home.status}
         </div>
       </motion.div>
 
@@ -48,7 +48,7 @@ export const Hero = () => (
         transition={{ duration: 0.6, delay: 0.2 }}
         className="text-base md:text-lg text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed min-h-[3.5rem]"
       >
-        <TypeWriter sequences={copy.home.taglines} />
+        <TypeWriter sequences={uiText.home.taglines} />
       </motion.div>
 
       <motion.div
@@ -63,20 +63,20 @@ export const Hero = () => (
           className="inline-flex items-center px-6 py-3 rounded-lg font-medium bg-white text-indigo-600 hover:bg-slate-50 transition-colors shadow-lg"
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          {copy.btn.viewProjects}
+          {uiText.common.viewProjects}
         </button>
         <Link
           to="/profile"
           className="inline-flex items-center px-6 py-3 rounded-lg font-medium border-2 border-white/70 text-white hover:bg-white hover:text-indigo-600 transition-colors"
         >
-          {copy.btn.aboutMe} <ArrowRight className="h-4 w-4 ml-2" />
+          {uiText.common.aboutMe} <ArrowRight className="h-4 w-4 ml-2" />
         </Link>
         <button
           type="button"
           onClick={() => scrollToId('contact')}
           className="inline-flex items-center px-6 py-3 rounded-lg font-medium border-2 border-white/70 text-white hover:bg-white hover:text-indigo-600 transition-colors"
         >
-          <Mail className="h-4 w-4 mr-2" /> {copy.btn.contactMe}
+          <Mail className="h-4 w-4 mr-2" /> {uiText.common.contactMe}
         </button>
       </motion.div>
     </div>

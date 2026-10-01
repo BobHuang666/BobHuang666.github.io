@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Mail, Link2, Copy, Check, Github } from 'lucide-react';
-import { copy } from '../../data/copy';
+import { uiText } from '../../data/uiText';
 import { friends, myLinkCard } from '../../data/friends';
 import { profile } from '../../data/profile';
 import { RelatedLink } from '../../shared/components/ui/RelatedLink';
@@ -9,7 +9,7 @@ import { usePageMeta } from '../../hooks/usePageMeta';
 
 const FriendsPage = () => {
   const [copied, setCopied] = useState(false);
-  usePageMeta(copy.friends.heading);
+  usePageMeta(uiText.friends.heading);
 
   const myCardText = `Name: ${myLinkCard.name}
 URL: ${myLinkCard.url}
@@ -41,13 +41,13 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
         >
           <div className="flex items-center gap-2 mb-3 text-sm text-slate-500 dark:text-slate-400">
             <Link2 className="h-4 w-4" />
-            {copy.friends.subtitle}
+            {uiText.friends.subtitle}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
-            {copy.friends.heading}
+            {uiText.friends.heading}
           </h1>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
-            {copy.friends.desc}
+            {uiText.friends.desc}
           </p>
         </motion.div>
 
@@ -93,10 +93,10 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
         >
           <h2 className="flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
             <Heart className="h-5 w-5 text-rose-500" />
-            {copy.friends.apply}
+            {uiText.friends.apply}
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 mb-5 leading-relaxed">
-            {copy.friends.applyDesc}
+            {uiText.friends.applyDesc}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -104,14 +104,14 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
             <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  {copy.friends.myCard}
+                  {uiText.friends.myCard}
                 </h3>
                 <button
                   onClick={copyCard}
                   className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-900/60 transition-colors"
                 >
                   {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                  {copied ? copy.friends.copied : copy.friends.copy}
+                  {copied ? uiText.friends.copied : uiText.friends.copy}
                 </button>
               </div>
               <pre className="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-wrap break-all font-mono">{myCardText}</pre>
@@ -120,17 +120,17 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
             {/* 申请方式 */}
             <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800">
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
-                {copy.friends.howToApply}
+                {uiText.friends.howToApply}
               </h3>
               <ol className="text-sm text-slate-700 dark:text-slate-300 space-y-2 list-decimal list-inside mb-4">
-                <li>{copy.friends.step1}</li>
-                <li>{copy.friends.step2}</li>
-                <li>{copy.friends.step3}</li>
+                <li>{uiText.friends.step1}</li>
+                <li>{uiText.friends.step2}</li>
+                <li>{uiText.friends.step3}</li>
               </ol>
               <div className="flex flex-wrap gap-2">
                 {mailto && (
                   <a href={mailto} className="btn-primary text-sm py-2 px-3">
-                    <Mail className="h-3.5 w-3.5 mr-1.5" /> {copy.friends.mailBtn}
+                    <Mail className="h-3.5 w-3.5 mr-1.5" /> {uiText.friends.mailBtn}
                   </a>
                 )}
                 {profile.github && (
@@ -140,7 +140,7 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
                     rel="noopener noreferrer"
                     className="inline-flex items-center px-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    <Github className="h-3.5 w-3.5 mr-1.5" /> {copy.friends.issueBtn}
+                    <Github className="h-3.5 w-3.5 mr-1.5" /> {uiText.friends.issueBtn}
                   </a>
                 )}
               </div>
@@ -149,7 +149,7 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
         </motion.section>
 
         <div className="mt-10 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <RelatedLink to="/blog" emoji="📝" title={copy.nav.blog} desc="读读我写的文章" />
+          <RelatedLink to="/blog" emoji="📝" title={uiText.related.blog.title} desc={uiText.related.blog.desc} />
         </div>
       </div>
     </div>

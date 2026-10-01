@@ -1,23 +1,20 @@
 import { useState, type ComponentType } from 'react';
 import {
   Mail, MapPin, Shield,
-  CreditCard, Code2, Award, Briefcase, FlaskConical, BookOpen, Heart,
+  CreditCard, Award, Compass, FlaskConical,
   type LucideIcon,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { copy } from '../../data/copy';
+import { uiText } from '../../data/uiText';
 import { profile } from '../../data/profile';
 import { RelatedLink } from '../../shared/components/ui/RelatedLink';
 import Avatar from '../../shared/components/ui/Avatar';
 import { BasicInfoTab } from './tabs/BasicInfoTab';
-import { SkillsTab } from './tabs/SkillsTab';
 import { AwardsTab } from './tabs/AwardsTab';
 import { ExperienceTab } from './tabs/ExperienceTab';
 import { ResearchTab } from './tabs/ResearchTab';
-import { CoursesTab } from './tabs/CoursesTab';
-import { InterestsTab } from './tabs/InterestsTab';
 
-type TabId = 'basic' | 'skills' | 'awards' | 'experience' | 'research' | 'courses' | 'interests';
+type TabId = 'basic' | 'awards' | 'experience' | 'research';
 
 interface TabDef {
   id: TabId;
@@ -26,23 +23,17 @@ interface TabDef {
 }
 
 const TABS: TabDef[] = [
-  { id: 'basic', name: '教育背景', icon: CreditCard },
-  { id: 'skills', name: '技能专长', icon: Code2 },
+  { id: 'basic', name: '基本信息', icon: CreditCard },
   { id: 'awards', name: '获奖经历', icon: Award },
-  { id: 'experience', name: '实习/学生工作', icon: Briefcase },
+  { id: 'experience', name: '社会实践', icon: Compass },
   { id: 'research', name: '科研课题', icon: FlaskConical },
-  { id: 'courses', name: '课程成绩', icon: BookOpen },
-  { id: 'interests', name: '兴趣爱好', icon: Heart },
 ];
 
 const TAB_CONTENT: Record<TabId, ComponentType> = {
   basic: BasicInfoTab,
-  skills: SkillsTab,
   awards: AwardsTab,
   experience: ExperienceTab,
   research: ResearchTab,
-  courses: CoursesTab,
-  interests: InterestsTab,
 };
 
 /** /profile —— 页面只负责头部信息卡与 Tab 编排，各 Tab 的内容在 ./tabs */
@@ -113,9 +104,9 @@ function ProfilePage() {
 
         {/* 相关跳转 */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          <RelatedLink to="/" emoji="🏰" title="返回主城" desc="查看项目与技能概览" />
-          <RelatedLink to="/blog" emoji="📝" title={copy.nav.blog} desc="读我写的文章" />
-          <RelatedLink to="/friends" emoji="🤝" title={copy.nav.friends} desc="友情链接" />
+          <RelatedLink to="/" emoji="🏰" title={uiText.related.home.title} desc={uiText.related.home.desc} />
+          <RelatedLink to="/blog" emoji="📝" title={uiText.related.blog.title} desc={uiText.related.blog.desc} />
+          <RelatedLink to="/friends" emoji="🤝" title={uiText.related.friends.title} desc={uiText.related.friends.desc} />
         </div>
       </div>
     </div>

@@ -2,15 +2,15 @@ import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import Fuse from 'fuse.js';
 import { Search, X, ArrowRight, CornerDownLeft } from 'lucide-react';
 import { searchCorpus, type SearchItem, type SearchResultKind } from '../../data/searchIndex';
-import { copy } from '../../data/copy';
+import { uiText } from '../../data/uiText';
 
 /** 结果类型徽章的展示样式（只有本组件用，故留在组件层而非数据层） */
 const KIND_META: Record<SearchResultKind, { label: string; color: string }> = {
-  blog: { label: copy.search.kind.blog, color: 'text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/40' },
-  project: { label: copy.search.kind.project, color: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40' },
-  award: { label: copy.search.kind.award, color: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40' },
-  skill: { label: copy.search.kind.skill, color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40' },
-  page: { label: copy.search.kind.page, color: 'text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800' },
+  blog: { label: uiText.search.kind.blog, color: 'text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/40' },
+  project: { label: uiText.search.kind.project, color: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40' },
+  award: { label: uiText.search.kind.award, color: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40' },
+  skill: { label: uiText.search.kind.skill, color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40' },
+  page: { label: uiText.search.kind.page, color: 'text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800' },
 };
 
 interface Props {

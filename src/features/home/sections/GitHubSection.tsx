@@ -1,4 +1,4 @@
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { githubUsername } from '../../../data/profile';
 import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
 import { GitHubCard, GitHubHeatmap } from '../../github';
@@ -11,7 +11,7 @@ export const GitHubSection = () => {
   return (
     <section id="github" className="py-20 bg-white dark:bg-slate-950">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader title={copy.home.githubTitle} subtitle={copy.home.githubSub} />
+        <SectionHeader title={uiText.home.githubTitle} subtitle={uiText.home.githubSub} />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <SectionReveal variant="slide-left">
             <GitHubCard username={githubUsername} />

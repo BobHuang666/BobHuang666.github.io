@@ -1,4 +1,4 @@
-import type { SkillCategory, SkillDetailCategory, Course, Experience, Research } from '../types';
+import type { SkillCategory, SkillDetailCategory, SkillPill, Course, Experience, Research } from '../types';
 
 // icon 使用字符串 key，组件层通过 resolveIcon() 解析
 // 首页用：简略技能栈
@@ -113,6 +113,37 @@ export const skillsDetail: SkillDetailCategory[] = [
   },
 ];
 
+// Profile 页「技能专长」Tab 用：扁平胶囊列表（不分组、不评分、不额外说明）
+// group 只决定胶囊浅色，名称与 skillsDetail 保持一致
+export const skillPills: SkillPill[] = [
+  { name: 'C/C++', group: 'language' },
+  { name: 'Python', group: 'language' },
+  { name: 'TypeScript', group: 'language' },
+  { name: 'JavaScript', group: 'language' },
+  { name: 'Go', group: 'language' },
+
+  { name: 'Vue 3', group: 'frontend' },
+  { name: 'uni-app', group: 'frontend' },
+  { name: 'React', group: 'frontend' },
+  { name: 'HTML/CSS/SCSS', group: 'frontend' },
+  { name: '响应式设计', group: 'frontend' },
+
+  { name: 'Go', group: 'backend' },
+  { name: 'Python 后端', group: 'backend' },
+  { name: 'MySQL', group: 'backend' },
+  { name: '大数据分析', group: 'backend' },
+  { name: 'API 设计', group: 'backend' },
+
+  { name: '算法 & 数据结构', group: 'tool' },
+  { name: 'Git / GitHub', group: 'tool' },
+  { name: 'Linux', group: 'tool' },
+  { name: 'AI 工具链', group: 'tool' },
+  { name: '英语 (CET-6)', group: 'tool' },
+
+  { name: '追星', group: 'hobby' },
+  { name: '旅行', group: 'hobby' },
+];
+
 // 课程成绩（profile.md）
 export const courses: Course[] = [
   { name: '算法专业实训', score: 99, description: '算法设计与实现能力的集中体现' },
@@ -126,57 +157,55 @@ export const courses: Course[] = [
   { name: '大模型技术及应用实践', score: 90, description: 'LLM 原理与落地应用' },
 ];
 
-// 实习实践经历
+// 实习经历（仅企业实习）
 export const experiences: Experience[] = [
   {
-    time: '2026.05 - 至今',
+    time: '2026.05 - 2026.08',
     org: '腾讯集团总部 CDG',
     role: '前端开发实习生',
-    duration: '3 个月',
     description: 'Tencent CDG 前端开发实习。', // TODO: 项目细节脱敏后补充
   },
   {
     time: '2025.07 - 2025.10',
     org: '智悦云创（湖南）科技有限公司',
     role: 'AI 应用工程师（前端）实习生',
-    duration: '3 个月',
     description:
       '负责 AiCV 简历王微信小程序前端开发，参与所有核心业务模块，完成 40+ 功能点 / 150+ 任务项。',
   },
+];
+
+// 社会实践经历（调研 / 队长 / 组长类）
+export const practiceExperiences: Experience[] = [
   {
     time: '2025.07.06 - 2025.07.09',
     org: '江西省赣州市瑞金市',
     role: '学员小组组长',
-    duration: '4 天',
-    description: '社会实践调研',
+    description: '团委研学',
   },
   {
     time: '2024.08.01 - 2024.08.02',
     org: '广东省潮州市、汕头市',
     role: '社会实践队长',
-    duration: '2 天',
     description: '家乡非遗文化调研',
   },
   {
     time: '2024.07.04 - 2024.07.11',
     org: '湖北省荆州市、荆门市',
     role: '后勤组组长',
-    duration: '7 天',
-    description: '教育国情调查',
+    description: '会同书院“走在祖国大地上的思政课”',
   },
   {
     time: '2023.12 - 2024.02',
     org: '广东省潮州市潮安区',
     role: '区县小组组长',
-    duration: '3 个月',
-    description: '寒假社会实践',
+    description: '教育国情调查',
   },
 ];
 
 // 学生工作
 export const studentWork: Experience[] = [
   {
-    time: '2025.09 - 至今',
+    time: '2025.09 - 2026.08',
     org: 'BNUZH 程序设计竞赛社',
     role: '社长',
     description:
@@ -194,35 +223,6 @@ export const studentWork: Experience[] = [
     org: '校团委青年科技创新协会',
     role: '干事',
     description: '学术创新部干事，参与校园学术活动策划与执行',
-  },
-];
-
-/** 兴趣爱好分组（profile 页「兴趣爱好」Tab 用） */
-export interface InterestGroup {
-  category: string;
-  /** lucide 图标名，组件层通过 resolveIcon() 解析 */
-  icon: string;
-  items: { name: string; description: string; icon: string }[];
-}
-
-export const interests: InterestGroup[] = [
-  {
-    category: '技术爱好',
-    icon: 'Code2',
-    items: [
-      { name: '算法竞赛', description: '热爱解决算法问题，参与各类编程竞赛', icon: 'Brain' },
-      { name: '开源项目', description: '积极参与开源社区，贡献代码', icon: 'Github' },
-      { name: '技术博客', description: '分享技术心得，记录学习历程', icon: 'BookOpen' },
-    ],
-  },
-  {
-    category: '生活爱好',
-    icon: 'Heart',
-    items: [
-      { name: '追星', description: '韩娱 & 内娱', icon: 'Music' },
-      { name: '旅行', description: '走过西安、荆州、杭州、瑞金等城市', icon: 'Plane' },
-      { name: '游戏', description: '游戏爱好者，享受思考的乐趣', icon: 'Gamepad2' },
-    ],
   },
 ];
 
@@ -246,7 +246,7 @@ export const research: Research[] = [
   {
     title: '地摊经济现状分析及发展前景研究',
     source: '会同书院"朋辈研学"项目',
-    leader: '',
+    leader: 'ZYZ',
     period: '2023.09 - 2024.03',
     rank: '',
   },

@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Tag as TagIcon } from 'lucide-react';
-import { copy } from '../../data/copy';
+import { uiText } from '../../data/uiText';
 import { getPost, getRelatedPosts, blogMeta } from '../../data/blog';
 import MarkdownRenderer from './MarkdownRenderer';
 import TableOfContents from './TableOfContents';
@@ -15,7 +15,7 @@ const BlogDetailPage = () => {
   const post = id ? getPost(id) : undefined;
 
   usePageMeta(
-    post ? post.title : copy.misc.notFound,
+    post ? post.title : uiText.common.notFound,
     post?.excerpt,
   );
 
@@ -35,7 +35,7 @@ const BlogDetailPage = () => {
           可用文章：{blogMeta.map((p) => p.id).join(' / ')}
         </p>
         <Link to="/blog" className="btn-primary">
-          {copy.btn.backToList}
+          {uiText.common.backToList}
         </Link>
       </div>
     );
@@ -50,7 +50,7 @@ const BlogDetailPage = () => {
           className="inline-flex items-center text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-6 transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          {copy.btn.back}
+          {uiText.common.back}
         </button>
 
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_220px] gap-10">
@@ -80,7 +80,7 @@ const BlogDetailPage = () => {
                 )}
                 <span className="flex items-center gap-1.5">
                   <Clock className="h-4 w-4" />
-                  {copy.misc.readingMin(post.readTime)}
+                  {uiText.common.readingMin(post.readTime)}
                 </span>
                 <span>{post.author}</span>
               </div>
@@ -129,7 +129,7 @@ const BlogDetailPage = () => {
                 读到这里啦，谢谢你的耐心 🙇
               </p>
               <Link to="/blog" className="btn-primary">
-                {copy.btn.backToList}
+                {uiText.common.backToList}
               </Link>
             </div>
           </article>

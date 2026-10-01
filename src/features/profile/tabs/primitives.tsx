@@ -39,22 +39,21 @@ export const TimelineCard = ({
   accent = 'indigo',
 }: {
   item: Experience;
-  accent?: 'indigo' | 'green';
+  accent?: 'indigo' | 'green' | 'amber';
 }) => {
   const color =
     accent === 'green'
       ? 'border-l-green-500 bg-green-50/50 dark:bg-green-950/20'
-      : 'border-l-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/20';
+      : accent === 'amber'
+        ? 'border-l-amber-500 bg-amber-50/50 dark:bg-amber-950/20'
+        : 'border-l-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/20';
   return (
     <div className={`pl-5 pr-4 py-4 border-l-4 ${color} rounded-r-lg`}>
       <div className="flex flex-wrap items-baseline gap-x-3 mb-1">
         <h4 className="font-semibold text-slate-900 dark:text-slate-100">{item.role}</h4>
         <span className="text-xs text-slate-500 dark:text-slate-400">@ {item.org}</span>
       </div>
-      <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
-        {item.time}
-        {item.duration && ` · ${item.duration}`}
-      </p>
+      <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{item.time}</p>
       {item.description && (
         <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
           {item.description}

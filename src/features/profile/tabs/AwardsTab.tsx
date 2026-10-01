@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AlignLeft, LayoutGrid, Star } from 'lucide-react';
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { awards } from '../../../data/awards';
 import { gradient } from '../../../utils/gradients';
 import { resolveIcon } from '../../../utils/iconMap';
@@ -23,14 +23,14 @@ export const AwardsTab = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          {copy.level.summary(awards.length)}
+          {uiText.awards.summary(awards.length)}
         </p>
         <ViewSwitch
           value={view}
           onChange={setView}
           options={[
-            { id: 'card', label: copy.profile.cardView, icon: LayoutGrid },
-            { id: 'timeline', label: copy.profile.timelineView, icon: AlignLeft },
+            { id: 'card', label: uiText.profile.cardView, icon: LayoutGrid },
+            { id: 'timeline', label: uiText.profile.timelineView, icon: AlignLeft },
           ]}
         />
       </div>
@@ -55,9 +55,6 @@ export const AwardsTab = () => {
                   </p>
                 </div>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
-                {award.description}
-              </p>
               <div className="flex items-center justify-between text-xs">
                 <span className="px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
                   {award.year} · {award.level}
@@ -100,9 +97,6 @@ export const AwardsTab = () => {
                           </h4>
                           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                             {award.organization} · <span className="text-indigo-600 dark:text-indigo-400">{award.level}</span>
-                          </p>
-                          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
-                            {award.description}
                           </p>
                         </div>
                       </div>

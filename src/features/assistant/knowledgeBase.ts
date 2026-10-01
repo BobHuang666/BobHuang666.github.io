@@ -1,7 +1,7 @@
 import { profile } from '../../data/profile';
 import { projects } from '../../data/projects';
 import { blogData } from '../../data/blog';
-import { skillsDetail, experiences, studentWork, courses } from '../../data/skills';
+import { skillsDetail, skillPills, experiences, practiceExperiences, studentWork, courses } from '../../data/skills';
 import { awards } from '../../data/awards';
 
 export interface KBChunk {
@@ -30,6 +30,7 @@ export function buildKB(): KBChunk[] {
       `在读时间：${profile.education.map((e) => e.period).join('、')}`,
       `政治面貌：${profile.politicalStatus}`,
       `职务：${studentWork.map((w) => `${w.org} ${w.role}`).join('；')}`,
+      `兴趣爱好：${skillPills.filter((p) => p.group === 'hobby').map((p) => p.name).join('、')}`,
       `GitHub：${profile.github}`,
     ].join('\n'),
     keywords: ['bob', 'huang', '个人', '基本', '信息', '学校', '专业', '大学', 'gpa', '学生', '是谁', '介绍', '北师大', '北京师范大学'],
@@ -106,6 +107,17 @@ export function buildKB(): KBChunk[] {
       `${e.time}｜${e.org}｜${e.role}\n  ${e.description}`
     ).join('\n\n'),
     keywords: ['学生', '社团', '竞赛社', '团委', '社长', '组织', '活动', '干部'],
+  });
+
+  // ── 社会实践 ──────────────────────────────────────────
+  chunks.push({
+    id: 'practice',
+    category: '实践经历',
+    title: '社会实践经历',
+    content: practiceExperiences.map(e =>
+      `${e.time}｜${e.org}｜${e.role}\n  ${e.description}`
+    ).join('\n\n'),
+    keywords: ['社会实践', '实践', '调研', '教育国情', '队长', '组长', '志愿'],
   });
 
   // ── 博客 ────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { techStack } from '../../../data/skills';
 import { resolveIcon } from '../../../utils/iconMap';
 import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
@@ -8,7 +8,7 @@ import { SectionHeader } from './SectionHeader';
 export const SkillsSection = () => (
   <section id="skills" className="py-20 bg-slate-50 dark:bg-slate-900/40">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionHeader title={copy.home.skillsTitle} subtitle={copy.home.skillsSub} />
+      <SectionHeader title={uiText.home.skillsTitle} subtitle={uiText.home.skillsSub} />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {techStack.map((category, index) => {
           const Icon = resolveIcon(category.icon);

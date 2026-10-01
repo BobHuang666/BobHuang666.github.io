@@ -6,7 +6,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getProjectDetail, projectsDetail } from '../../data/projects';
-import { copy } from '../../data/copy';
+import { uiText } from '../../data/uiText';
 import { gradient } from '../../utils/gradients';
 import { SmartImage } from '../../shared/components/ui/SmartImage';
 import { usePageMeta } from '../../hooks/usePageMeta';
@@ -105,7 +105,7 @@ const ProjectDetail = () => {
           className="inline-flex items-center text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-5 transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          {copy.btn.back}
+          {uiText.common.back}
         </button>
 
         <div className="flex flex-col lg:flex-row gap-6">
@@ -113,7 +113,7 @@ const ProjectDetail = () => {
           <aside className="lg:w-60 flex-shrink-0">
             <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 lg:sticky lg:top-24">
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3 uppercase tracking-wide">
-                {copy.misc.toc}
+                {uiText.common.toc}
               </h3>
               <nav className="space-y-1">
                 {SECTIONS.map((s) => (

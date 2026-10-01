@@ -59,6 +59,14 @@ export interface SkillDetailCategory {
   }[];
 }
 
+/** 技能胶囊类别：只决定胶囊浅色调，页面不再分组展示 */
+export type SkillPillGroup = 'language' | 'frontend' | 'backend' | 'tool' | 'hobby';
+
+export interface SkillPill {
+  name: string;
+  group: SkillPillGroup;
+}
+
 /** 奖项级别常量：数据、筛选器、类型共用同一份，避免各处重复声明 */
 export const AWARD_LEVELS = ['国际级', '国家级', '省级', '校级', '院系级'] as const;
 export type AwardLevel = (typeof AWARD_LEVELS)[number];
@@ -93,7 +101,6 @@ export interface Experience {
   time: string;
   org: string;
   role: string;
-  duration?: string;
   description?: string;
 }
 

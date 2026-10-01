@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { ThemeToggle } from '../controls/ThemeToggle';
 import { SearchTrigger } from '../../../features/search';
 
@@ -25,15 +25,15 @@ interface MoreItem {
 }
 
 const MAIN_ITEMS: MainItem[] = [
-  { to: '/', label: copy.nav.home, end: true },
-  { to: '/profile', label: copy.nav.profile },
-  { to: '/?section=projects', label: copy.nav.projects, anchor: 'projects' },
-  { to: '/blog', label: copy.nav.blog },
+  { to: '/', label: uiText.nav.home, end: true },
+  { to: '/profile', label: uiText.nav.profile },
+  { to: '/?section=projects', label: uiText.nav.projects, anchor: 'projects' },
+  { to: '/blog', label: uiText.nav.blog },
 ];
 
 const MORE_ITEMS: MoreItem[] = [
-  { to: '/friends', label: copy.nav.friends, icon: UsersRound, description: '友情链接' },
-  { to: '/fandom', label: copy.nav.fandom, icon: Heart, description: '追星专题' },
+  { to: '/friends', label: uiText.nav.friends, icon: UsersRound, description: uiText.related.friends.desc },
+  { to: '/fandom', label: uiText.nav.fandom, icon: Heart, description: uiText.related.fandom.desc },
 ];
 
 const Navigation = () => {
@@ -208,7 +208,7 @@ const Navigation = () => {
                   : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
                   }`}
               >
-                {copy.nav.more}
+                {uiText.nav.more}
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
                 {isMoreActive && (
                   <motion.span
@@ -312,7 +312,7 @@ const Navigation = () => {
             {/* 移动端 "更多" 直接展开 */}
             <div className="pt-2 mt-2 border-t border-slate-200 dark:border-slate-800">
               <div className="px-3 mb-1 text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold">
-                {copy.nav.more}
+                {uiText.nav.more}
               </div>
               {MORE_ITEMS.map((item) => (
                 <NavLink

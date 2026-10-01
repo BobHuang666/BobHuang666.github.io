@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { blogMeta } from '../../../data/blog';
 import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
 import { SectionHeader } from './SectionHeader';
@@ -13,7 +13,7 @@ export const BlogSection = () => {
   return (
     <section id="blog" className="py-20 bg-white dark:bg-slate-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader title={copy.home.blogTitle} subtitle={copy.home.blogSub} />
+        <SectionHeader title={uiText.home.blogTitle} subtitle={uiText.home.blogSub} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featured.map((post, index) => (
             <SectionReveal key={post.id} variant="scale" delay={index * 0.08}>
@@ -26,7 +26,7 @@ export const BlogSection = () => {
                     {post.category}
                   </span>
                   <span className="text-xs text-slate-500 dark:text-slate-400">
-                    {copy.misc.readingMin(post.readTime)}
+                    {uiText.common.readingMin(post.readTime)}
                   </span>
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
@@ -52,7 +52,7 @@ export const BlogSection = () => {
             to="/blog"
             className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium"
           >
-            {copy.home.viewAllPosts} <ArrowRight className="h-4 w-4 ml-1" />
+            {uiText.home.viewAllPosts} <ArrowRight className="h-4 w-4 ml-1" />
           </Link>
         </div>
       </div>

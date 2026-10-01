@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Trophy } from 'lucide-react';
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { awards } from '../../../data/awards';
 import { AWARD_LEVELS, type AwardLevel } from '../../../types';
 import { resolveIcon } from '../../../utils/iconMap';
@@ -26,8 +26,8 @@ export const AwardsSection = () => {
     <section id="awards" className="py-20 bg-slate-50 dark:bg-slate-900/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          title={copy.home.awardsTitle}
-          subtitle={copy.home.awardsSub(awards.length)}
+          title={uiText.home.awardsTitle}
+          subtitle={uiText.home.awardsSub(awards.length)}
         />
 
         {/* 级别筛选 */}
@@ -39,7 +39,7 @@ export const AwardsSection = () => {
               onClick={() => setAwardFilter(lv)}
               className="px-3 py-1.5"
             >
-              {lv === 'all' ? copy.level.all : lv}
+              {lv === 'all' ? uiText.awards.all : lv}
             </Chip>
           ))}
         </div>
@@ -84,7 +84,7 @@ export const AwardsSection = () => {
             to="/profile"
             className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium"
           >
-            {copy.home.viewAllAwards(awards.length)} <ArrowRight className="h-4 w-4 ml-1" />
+            {uiText.home.viewAllAwards(awards.length)} <ArrowRight className="h-4 w-4 ml-1" />
           </Link>
         </div>
       </div>

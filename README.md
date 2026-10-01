@@ -83,7 +83,7 @@ src/
 ├── shared/components/       # 跨业务复用的布局、控件、UI 与视觉效果
 ├── contexts/                # 全局 React Context
 ├── hooks/                   # 跨功能复用 Hook
-├── data/                    # 内容单一事实来源（含 copy.ts）及轻量派生索引
+├── data/                    # 内容单一事实来源（含 uiText.ts）及轻量派生索引
 ├── posts/                   # Markdown 博客正文
 ├── drafts/                  # 未发布草稿，不参与构建
 ├── types/                   # 跨领域数据模型
@@ -100,7 +100,7 @@ src/
 |---|---|
 | **路由** | HashRouter（规避 GH Pages 刷新 404）+ 路由懒加载 + Suspense |
 | **暗色模式** | `prefers-color-scheme` + localStorage 持久化 + 防闪烁脚本 |
-| **中文文案层** | `src/data/copy.ts` 集中管理 UI 文案，渲染层不写死字符串 |
+| **中文文案层** | `src/data/uiText.ts` 集中管理 UI 文案，渲染层不写死字符串 |
 | **博客** | Markdown 文件自动加载，含 Front-Matter / GFM / 代码高亮 / 复制 / TOC / 阅读进度 |
 | **搜索** | Fuse.js 命令面板，⌘K / Ctrl+K / `/` 触发 |
 | **评论** | giscus 集成（GitHub Discussions） |
@@ -127,7 +127,7 @@ src/
 | 友链 | `src/data/friends.ts` |
 | 追星 | `src/data/fandom.ts`（可设密码） |
 | 主题色 / 字体 | `tailwind.config.js` |
-| 中文文案 | `src/data/copy.ts` |
+| 中文文案 | `src/data/uiText.ts` |
 
 ### 启用评论（giscus）
 1. 仓库改为 public

@@ -1,4 +1,4 @@
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { RelatedLink } from '../../../shared/components/ui/RelatedLink';
 import { SectionHeader } from './SectionHeader';
 
@@ -6,10 +6,10 @@ import { SectionHeader } from './SectionHeader';
 export const MoreSection = () => (
   <section id="more" className="py-20 bg-white dark:bg-slate-950">
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionHeader title={copy.home.moreTitle} subtitle={copy.home.moreSub} />
+      <SectionHeader title={uiText.home.moreTitle} subtitle={uiText.home.moreSub} />
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        <RelatedLink to="/friends" emoji="🤝" title={copy.nav.friends} desc="友情链接" />
-        <RelatedLink to="/fandom" emoji="💕" title={copy.nav.fandom} desc="追星专题" />
+        <RelatedLink to="/friends" emoji="🤝" title={uiText.related.friends.title} desc={uiText.related.friends.desc} />
+        <RelatedLink to="/fandom" emoji="💕" title={uiText.related.fandom.title} desc={uiText.related.fandom.desc} />
       </div>
     </div>
   </section>

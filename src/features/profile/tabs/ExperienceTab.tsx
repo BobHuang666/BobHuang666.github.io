@@ -1,8 +1,8 @@
-import { Briefcase, Users } from 'lucide-react';
-import { experiences, studentWork } from '../../../data/skills';
+import { Briefcase, Compass, Users } from 'lucide-react';
+import { experiences, practiceExperiences, studentWork } from '../../../data/skills';
 import { SectionHeading, TimelineCard } from './primitives';
 
-/** 实习经历 + 学生工作 */
+/** 实习经历 + 学生工作 + 社会实践 */
 export const ExperienceTab = () => (
   <div className="space-y-10">
     <div>
@@ -18,6 +18,14 @@ export const ExperienceTab = () => (
       <div className="space-y-4">
         {studentWork.map((w, i) => (
           <TimelineCard key={i} item={w} accent="green" />
+        ))}
+      </div>
+    </div>
+    <div>
+      <SectionHeading icon={Compass} title="实践经历" />
+      <div className="space-y-4">
+        {practiceExperiences.map((p, i) => (
+          <TimelineCard key={i} item={p} accent="amber" />
         ))}
       </div>
     </div>

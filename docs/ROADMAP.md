@@ -8,7 +8,7 @@
 ## 🎯 当前状态
 
 - **9 个路由**：`/` `/profile` `/projects/:id` `/blog` `/blog/:id` `/friends` `/fandom` `/500` `*`（404）
-- **内容单一数据源**：全部内容在 `src/data/`，文案在 `src/data/copy.ts`
+- **内容单一数据源**：全部内容在 `src/data/`，文案在 `src/data/uiText.ts`
 - **博客**：`src/posts/*.md` 自动加载，Front-Matter / GFM / rehype-highlight / rehype-katex / Mermaid / 复制 / TOC / 阅读进度 / giscus 评论
 - **搜索**：Fuse.js 命令面板（⌘K / Ctrl+K / `/`），覆盖博客 / 项目 / 奖项 / 技能 / 页面
 - **AI 助手**：RAG 知识库检索 + OpenAI 兼容流式对话，无 API Key 时降级为站内检索结果
@@ -79,7 +79,7 @@
 - **单一数据源**：任何内容都先看 `src/data/`，不在组件里硬编码
 - **派生优先于硬编码**：分类、标签、相关阅读、GitHub 用户名等能算出来的，一律在 `data/` 派生
 - **类型驱动**：`src/types/` 是数据契约，新字段先加类型
-- **文案集中**：新 UI 文案优先放进 `src/data/copy.ts`
+- **文案集中**：新 UI 文案优先放进 `src/data/uiText.ts`（只放用户可见中文，不混数值配置）
 - **页面只做编排**：超过约 200 行就拆 `sections/` 或 `tabs/`
 - **可访问性优先**：交互必须键盘可达 + ARIA 标注
 - **暗色优先**：每个 `bg-*` / `text-*` 都要考虑 `dark:` 变体
@@ -105,3 +105,4 @@
 | v3.4.1 架构清理 | 2026-06-30 | highlight.js CSS 移入博客 chunk（首屏 CSS ↓3 KB）/ ScrollToTopButton 移除 framer-motion 依赖 / awards + skills 数据层 icon 字符串化（解耦 lucide）/ `IconName` 类型统一约定 |
 | v4.0 架构重构 | 2026-09-30 | **分层收敛**：文案层 `copy.ts` 迁入 `data/` / 页面只做编排，区块与 Tab 下沉（`home/sections/`、`profile/tabs/`、`fandom/tabs/` + `meta.ts`），Home 566→27 行、Profile 600→132 行、Fandom 617→220 行 / **数据派生下沉**：`blogCategories` · `blogTags` · `getRelatedPosts` · `githubUsername` / `projectsDetail` 改为按 id 关联简版数据 / **共享组件**：新增 `Chip` · `EmptyState` · `ErrorState` · `GradientIcon`，`SmartImage` 支持 `zoomable` / 跨 feature 引用改为 `features/*/index.ts` 公共入口 / 删除死代码（`CodeBlock` · `LightboxImage` · 多余骨架屏变体 · 空 `i18n/` 目录） |
 | v4.0.1 文档校准 | 2026-09-30 | 清理过期表述（移除已下线页面与多语言痕迹）/ 路由表与体积数据按实测更新 / ROADMAP 收敛为「当前状态 + 未来规划」并保留迭代历史 |
+| v4.1 文案层重构 | 2026-10-01 | `copy.ts` → `uiText.ts`（消除「复制」语义歧义，明确不做 i18n）/ 分组改为「页面 / 区块」为主：`btn` + `misc` 并入 `common`、`level` 并入 `awards` / 新增 `related` 组收口 3 处不一致的跳转卡片文案 / `home.taglines` 由 `(string \| number)[]` 改为 `{ text, hold }[]`，`TypeWriter` 同步强类型 / 删除失效文案 `radarView` · `listView` |

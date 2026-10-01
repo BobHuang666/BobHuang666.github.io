@@ -17,7 +17,7 @@ src/
 ├─ shared/components/   # 跨业务复用的 layout、controls、ui、effects
 ├─ contexts/            # 全局 React Context（主题）
 ├─ hooks/               # 跨功能复用的 Hook
-├─ data/                # 内容单一事实来源（含文案 copy.ts）与轻量派生索引
+├─ data/                # 内容单一事实来源（含文案 uiText.ts）与轻量派生索引
 ├─ posts/               # Markdown 博客正文，由 data/blog.ts 自动读取
 ├─ drafts/              # 未发布草稿（不参与构建，不在任何 glob 中）
 ├─ types/               # 跨领域数据模型
@@ -58,7 +58,7 @@ data / types / utils 之间只允许单向：types ← utils ← data
 - `data/` 只保存内容和由内容直接派生的索引；网络请求、浏览器状态和展示状态不应写入其中。
 - **派生优先于硬编码**：分类、标签、相关阅读、GitHub 用户名等能由数据算出的，一律在 `data/` 里派生，页面不重复实现。
 - 共享类型放入 `types/`；仅一个 feature 使用的类型与该 feature 同目录。
-- 全站文案集中在 `data/copy.ts`，渲染层不写死中文字符串。
+- 全站文案集中在 `data/uiText.ts`，渲染层不写死中文字符串。文案只放「用户看得见的中文」（标题 / 按钮 / 空状态 / 提示），图标名、路由、class 与数值配置不进文案层；带变量的文案写成函数，参数名体现单位。
 
 ## 冗余防线（已落地）
 

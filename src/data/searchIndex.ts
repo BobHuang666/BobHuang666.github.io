@@ -2,7 +2,7 @@ import { blogData } from './blog';
 import { projects } from './projects';
 import { awards } from './awards';
 import { skillsDetail } from './skills';
-import { copy } from './copy';
+import { uiText } from './uiText';
 
 export type SearchResultKind = 'blog' | 'project' | 'award' | 'skill' | 'page';
 
@@ -16,7 +16,7 @@ export interface SearchItem {
   href: string;
 }
 
-const { pages } = copy.search;
+const { pages } = uiText.search;
 
 const staticPages: SearchItem[] = [
   { id: 'page-home', kind: 'page', title: pages.home, description: pages.homeDesc, href: '#/' },

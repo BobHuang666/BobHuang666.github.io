@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Search, FileText, Tag as TagIcon, Filter, Rss } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { blogData, blogCategories, blogTags } from '../../data/blog';
-import { copy } from '../../data/copy';
+import { uiText } from '../../data/uiText';
 import { Chip } from '../../shared/components/ui/Chip';
 import { EmptyState } from '../../shared/components/ui/EmptyState';
 
@@ -48,10 +48,10 @@ const BlogPage = () => {
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
-            {copy.blog.title}
+            {uiText.blog.title}
           </h1>
           <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-4">
-            {copy.blog.subtitle}
+            {uiText.blog.subtitle}
           </p>
           <a
             href="/feed.xml"
@@ -60,7 +60,7 @@ const BlogPage = () => {
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/60 transition-colors"
           >
             <Rss className="h-3.5 w-3.5" />
-            {copy.blog.rss}
+            {uiText.blog.rss}
           </a>
         </div>
 
@@ -70,13 +70,13 @@ const BlogPage = () => {
             <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 lg:sticky lg:top-24">
               {/* Search */}
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wide">
-                {copy.blog.searchLabel}
+                {uiText.blog.searchLabel}
               </label>
               <div className="relative mb-5">
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
                 <input
                   type="text"
-                  placeholder={copy.blog.searchPlaceholder}
+                  placeholder={uiText.blog.searchPlaceholder}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
@@ -85,7 +85,7 @@ const BlogPage = () => {
 
               {/* Category —— 分类与计数全部由 data/blog.ts 派生 */}
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wide">
-                {copy.blog.categoryLabel}
+                {uiText.blog.categoryLabel}
               </label>
               <div className="space-y-1 mb-5">
                 {blogCategories.map((c) => (
@@ -108,7 +108,7 @@ const BlogPage = () => {
               {/* Tags */}
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wide">
                 <TagIcon className="inline h-3 w-3 mr-1" />
-                {copy.blog.tagsLabel}
+                {uiText.blog.tagsLabel}
               </label>
               <div className="flex flex-wrap gap-1.5 mb-5">
                 {blogTags.map((tag) => (
@@ -129,7 +129,7 @@ const BlogPage = () => {
                   className="w-full mt-2 text-xs text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center justify-center gap-1"
                 >
                   <Filter className="h-3 w-3" />
-                  {copy.blog.clearFilters}
+                  {uiText.blog.clearFilters}
                 </button>
               )}
             </div>
@@ -138,7 +138,7 @@ const BlogPage = () => {
           {/* List */}
           <div className="lg:col-span-3">
             <div className="mb-4 text-sm text-slate-600 dark:text-slate-400">
-              {copy.blog.found(filtered.length)}
+              {uiText.blog.found(filtered.length)}
               {searchTerm && <> · 搜索 "<span className="font-medium">{searchTerm}</span>"</>}
             </div>
 
@@ -146,8 +146,8 @@ const BlogPage = () => {
               <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-12">
                 <EmptyState
                   icon={FileText}
-                  title={copy.blog.emptyTitle}
-                  description={copy.blog.emptyDesc}
+                  title={uiText.blog.emptyTitle}
+                  description={uiText.blog.emptyDesc}
                   className="py-0"
                 />
               </div>
@@ -171,7 +171,7 @@ const BlogPage = () => {
                         </span>
                         <span className="text-xs text-slate-400">·</span>
                         <span className="text-xs text-slate-500 dark:text-slate-400">
-                          {copy.misc.readingMin(post.readTime)}
+                          {uiText.common.readingMin(post.readTime)}
                         </span>
                       </div>
 

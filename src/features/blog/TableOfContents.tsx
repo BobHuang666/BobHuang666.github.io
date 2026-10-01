@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { List } from 'lucide-react';
-import { copy } from '../../data/copy';
+import { uiText } from '../../data/uiText';
 
 interface Heading {
   id: string;
@@ -82,7 +82,7 @@ const TableOfContents = ({ content, containerSelector }: Props) => {
     <nav className="hidden xl:block sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-thin">
       <div className="flex items-center gap-2 mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
         <List className="h-3.5 w-3.5" />
-        {copy.misc.toc}
+        {uiText.common.toc}
       </div>
       <ul className="space-y-1 text-sm border-l border-slate-200 dark:border-slate-800">
         {headings.map((h) => (

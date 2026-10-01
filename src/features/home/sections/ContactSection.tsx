@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Mail, Copy, Check } from 'lucide-react';
-import { copy } from '../../../data/copy';
+import { uiText } from '../../../data/uiText';
 import { profile } from '../../../data/profile';
 import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
 import { SectionHeader } from './SectionHeader';
@@ -22,7 +22,7 @@ export const ContactSection = () => {
   return (
     <section id="contact" className="py-20 bg-white dark:bg-slate-950">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <SectionHeader title={copy.home.contactTitle} subtitle={copy.home.contactSub} />
+        <SectionHeader title={uiText.home.contactTitle} subtitle={uiText.home.contactSub} />
 
         <SectionReveal delay={0.1}>
           {/* 渐变卡片 */}
@@ -81,7 +81,7 @@ export const ContactSection = () => {
                 transition={{ duration: 0.2 }}
                 className="mt-2 text-xs text-green-600 dark:text-green-400 h-4"
               >
-                {emailCopied ? copy.home.emailCopied : ''}
+                {emailCopied ? uiText.home.emailCopied : ''}
               </motion.p>
             </div>
           </div>
