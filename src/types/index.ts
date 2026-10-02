@@ -118,3 +118,57 @@ export interface Research {
   period: string;
   rank: string;
 }
+
+/** 交通方式：数据层只存 key，图标 / 配色 / 线型由 features/travel/meta.ts 映射 */
+export const TRANSPORT_MODES = ['plane', 'train', 'car', 'bus', 'ship'] as const;
+export type TransportMode = (typeof TRANSPORT_MODES)[number];
+
+/** 足迹状态：住过 / 去过 / 途经 / 想去 */
+export const PLACE_STATUSES = ['lived', 'visited', 'transit', 'wishlist'] as const;
+export type PlaceStatus = (typeof PLACE_STATUSES)[number];
+
+export interface CityVisit {
+  /** ISO 日期，如 '2024-08-10' */
+  date: string;
+  note?: string;
+}
+
+export interface TravelPlace {
+  id: string;
+  /** 与地图数据中的行政区全称一致，如「北京市」「延边朝鲜族自治州」 */
+  name: string;
+  /** 地图名对不上时的备选名，用于兜底匹配 */
+  aliases?: string[];
+  status: PlaceStatus;
+  /** 覆盖地图自带 center；缺省时取地图数据里的 center */
+  lng?: number;
+  lat?: number;
+  /**
+   * 展示用的「次级地名」：国内城市会自动显示所属省级行政区，
+   * 世界国家没有省级概念，想写「济州」「东京」这类具体地方就填这里。
+   */
+  region?: string;
+  visits: CityVisit[];
+}
+
+export interface TravelLeg {
+  id: string;
+  /** TravelPlace.id */
+  from: string;
+  to: string;
+  date: string;
+  transport: TransportMode;
+  note?: string;
+}
+
+export interface TravelTrip {
+  id: string;
+  title: string;
+  dateRange: [string, string];
+  legs: TravelLeg[];
+  tone: GradientTone;
+  /** 归属哪张地图：决定它在哪个 Tab 下绘制、点击后跳到哪个 Tab */
+  scope: 'china' | 'world';
+  /** 关联游记：src/posts 下的文章 id（文件名去掉 .md），跳转 /blog/{postId} */
+  postId?: string;
+}

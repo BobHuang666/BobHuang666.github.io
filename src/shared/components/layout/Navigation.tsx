@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   Code2, Menu, X, ChevronDown,
-  Heart, UsersRound,
+  Heart, UsersRound, MapPinned,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -33,6 +33,7 @@ const MAIN_ITEMS: MainItem[] = [
 
 const MORE_ITEMS: MoreItem[] = [
   { to: '/friends', label: uiText.nav.friends, icon: UsersRound, description: uiText.related.friends.desc },
+  { to: '/travel', label: uiText.nav.travel, icon: MapPinned, description: uiText.related.travel.desc },
   { to: '/fandom', label: uiText.nav.fandom, icon: Heart, description: uiText.related.fandom.desc },
 ];
 

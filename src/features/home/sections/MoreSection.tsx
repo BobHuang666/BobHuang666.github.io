@@ -9,6 +9,7 @@ export const MoreSection = () => (
       <SectionHeader title={uiText.home.moreTitle} subtitle={uiText.home.moreSub} />
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         <RelatedLink to="/friends" emoji="🤝" title={uiText.related.friends.title} desc={uiText.related.friends.desc} />
+        <RelatedLink to="/travel" emoji="🗺️" title={uiText.related.travel.title} desc={uiText.related.travel.desc} />
         <RelatedLink to="/fandom" emoji="💕" title={uiText.related.fandom.title} desc={uiText.related.fandom.desc} />
       </div>
     </div>

@@ -37,6 +37,7 @@ export const uiText = {
     more: '更多',
     friends: '友人帐',
     fandom: '秘密花园',
+    travel: '足迹地图',
   },
 
   /** 页脚 */
@@ -51,6 +52,7 @@ export const uiText = {
     blog: { title: '游戏攻略', desc: '读我写的文章' },
     friends: { title: '友人帐', desc: '友情链接' },
     fandom: { title: '秘密花园', desc: '追星专题' },
+    travel: { title: '足迹地图', desc: '点亮去过的城市与出行路线' },
   },
 
   /** 首页各 section */
@@ -142,6 +144,21 @@ export const uiText = {
       blogDesc: '所有博客文章列表',
       friends: '友人帐 / Friends',
       friendsDesc: '友情链接 & 友链申请',
+      travel: '足迹地图 / Travel',
+      travelDesc: '中国地级行政区足迹地图，含出行路径与交通方式',
     },
+  },
+
+  /** /travel 页面 */
+  travel: {
+    title: '我去过的地方',
+    subtitle: '中国地图&世界地图，把住过的、去过的、路过的地方都点亮。带箭头的是出行路径，图标代表那段路怎么走的。',
+    loading: '地图数据加载中…',
+    errorTitle: '地图数据加载失败',
+    errorDesc: '检查网络后刷新页面重试',
+    tabChina: '中国地图',
+    tabWorld: '世界地图',
+    dataSource:
+      '中国底图来自阿里 DataV.GeoAtlas，世界底图来自 Natural Earth；边界均已简化，仅用于示意、不作测量依据',
   },
 } as const;

@@ -24,6 +24,7 @@ export default defineConfig({
         '/blog',
         '/friends',
         '/fandom',
+        '/travel',
       ],
     }),
     VitePWA({
@@ -149,6 +150,17 @@ export default defineConfig({
             options: {
               cacheName: 'static-images-cache',
               expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // ⑦ 地图底图数据（/static/geo/*.json）：CacheFirst，30 天
+          //    体积约 480KB，不进预缓存清单，只在访问 /travel 后按需缓存
+          {
+            urlPattern: /\/static\/geo\/.*\.json$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'geo-data-cache',
+              expiration: { maxEntries: 5, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },

@@ -75,6 +75,7 @@ const Footer = () => {
           <div>
             <h4 className="text-sm font-semibold text-white mb-3">{uiText.nav.more}</h4>
             <ul className="space-y-2 text-sm">
+              <li><a href="#/travel" className="hover:text-indigo-400 transition-colors">{uiText.nav.travel}</a></li>
               <li><a href="#/friends" className="hover:text-indigo-400 transition-colors">{uiText.nav.friends}</a></li>
               <li><a href="#/fandom" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
                 {uiText.nav.fandom}

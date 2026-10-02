@@ -23,6 +23,7 @@ const staticPages: SearchItem[] = [
   { id: 'page-profile', kind: 'page', title: pages.profile, description: pages.profileDesc, href: '#/profile' },
   { id: 'page-blog', kind: 'page', title: pages.blog, description: pages.blogDesc, href: '#/blog' },
   { id: 'page-friends', kind: 'page', title: pages.friends, description: pages.friendsDesc, href: '#/friends' },
+  { id: 'page-travel', kind: 'page', title: pages.travel, description: pages.travelDesc, href: '#/travel' },
 ];
 
 const projectItems: SearchItem[] = projects.map((p) => ({

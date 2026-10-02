@@ -10,6 +10,7 @@ const BlogPage = lazyWithRetry(() => import('../features/blog/BlogPage'), 'BlogP
 const BlogDetailPage = lazyWithRetry(() => import('../features/blog/BlogDetailPage'), 'BlogDetailPage');
 const FriendsPage = lazyWithRetry(() => import('../features/friends/FriendsPage'), 'FriendsPage');
 const FandomPage = lazyWithRetry(() => import('../features/fandom/FandomPage'), 'FandomPage');
+const TravelPage = lazyWithRetry(() => import('../features/travel/TravelPage'), 'TravelPage');
 const NotFoundPage = lazyWithRetry(() => import('../features/errors/NotFoundPage'), 'NotFoundPage');
 const ServerErrorPage = lazyWithRetry(() => import('../features/errors/ServerErrorPage'), 'ServerErrorPage');
 
@@ -25,6 +26,7 @@ export function AppRoutes() {
         <Route path="/blog/:id" element={<BlogDetailPage />} />
         <Route path="/friends" element={<FriendsPage />} />
         <Route path="/fandom" element={<FandomPage />} />
+        <Route path="/travel" element={<TravelPage />} />
         <Route path="/500" element={<ServerErrorPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
