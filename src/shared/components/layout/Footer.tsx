@@ -1,4 +1,4 @@
-import { Github, Mail, Heart, Rss } from 'lucide-react';
+import { Github, Mail, Rss } from 'lucide-react';
 import { uiText } from '../../../data/uiText';
 import { profile } from '../../../data/profile';
 import { scrollToId } from '../../../utils/scroll';
@@ -77,10 +77,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li><a href="#/travel" className="hover:text-indigo-400 transition-colors">{uiText.nav.travel}</a></li>
               <li><a href="#/friends" className="hover:text-indigo-400 transition-colors">{uiText.nav.friends}</a></li>
-              <li><a href="#/fandom" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
-                {uiText.nav.fandom}
-                <Heart className="h-3 w-3 text-rose-400" />
-              </a></li>
+              <li><a href="#/fandom" className="hover:text-indigo-400 transition-colors">{uiText.nav.fandom}</a></li>
             </ul>
           </div>
         </div>

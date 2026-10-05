@@ -1,18 +1,70 @@
 import { motion } from 'framer-motion';
-import { Calendar, Clock, MapPin, Music, Ticket } from 'lucide-react';
-import { concerts } from '../../../data/fandom';
+import { Calendar, Clock, MapPin, Music, Quote, Ticket } from 'lucide-react';
+import { concerts, type Concert } from '../../../data/fandom';
 import { gradient } from '../../../utils/gradients';
 import { fmtDate, daysUntil } from '../format';
-import { FandomEmptyState, SubHeading } from '../components';
+import { FandomEmptyState } from '../components';
 
-/** 演唱会日历：即将赴约（含倒计时）+ 现场足迹 */
+/** 按年份分组（倒序）；同一年内按日期倒序（最新在前） */
+const groupByYear = (items: { date: string }[]) => {
+  const m = new Map<number, Concert[]>();
+  for (const it of items) {
+    const y = new Date(it.date).getFullYear();
+    if (!m.has(y)) m.set(y, []);
+    m.get(y)!.push(it as Concert);
+  }
+  return [...m.entries()]
+    .sort((a, b) => b[0] - a[0])
+    .map(([y, list]) => [y, list.sort((a, b) => +new Date(b.date) - +new Date(a.date))] as [number, Concert[]]);
+};
+
+/** 单张演唱会卡片（已结束） */
+const ConcertCard = ({ c, idx }: { c: Concert; idx: number }) => (
+  <motion.article
+    initial={{ opacity: 0, y: 12 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.4, delay: idx * 0.05 }}
+    className="relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div className={`h-1.5 w-full bg-gradient-to-r ${gradient(c.tone)}`} />
+    <div className="p-5">
+      <div className="flex items-center justify-between gap-2 mb-3">
+        {/* 艺人：中性浅底胶囊 + 渐变小圆点 */}
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+          <Music className="h-3 w-3 text-slate-400" />
+          {c.idol}
+        </span>
+        <span className="inline-flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
+          <Calendar className="h-3.5 w-3.5" />{fmtDate(c.date)}
+        </span>
+      </div>
+      <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-snug mb-2">{c.tour}</h4>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500 dark:text-slate-400">
+        <span className="inline-flex items-center gap-1">
+          <MapPin className="h-3.5 w-3.5" />{c.city} · {c.venue}
+        </span>
+        {c.seat && (
+          <span className="inline-flex items-center gap-1">
+            <Ticket className="h-3 w-3" />{c.seat}
+          </span>
+        )}
+      </div>
+      {c.highlight && (
+        <p className="text-sm mt-3 text-slate-600 dark:text-slate-300 leading-relaxed border-l-2 border-rose-300 dark:border-rose-800 pl-3">
+          {c.highlight}
+        </p>
+      )}
+    </div>
+  </motion.article>
+);
+
+/** 演唱会日历：待赴约（渐变卡 + 倒计时）置顶 + 按年份分组的「票根」卡片网格 */
 export const ConcertsTab = () => {
   const upcoming = concerts
     .filter((c) => c.status === 'upcoming')
-    .sort((a, b) => +new Date(a.date) - +new Date(b.date));
-  const attended = concerts
-    .filter((c) => c.status === 'attended')
-    .sort((a, b) => +new Date(b.date) - +new Date(a.date));
+    .sort((a, b) => +new Date(a.date) - +new Date(b.date)); // 临近的在前
+  const past = concerts.filter((c) => c.status !== 'upcoming');
 
   if (concerts.length === 0) {
     return <FandomEmptyState icon={Calendar} text="还没有演唱会记录 —— 期待下一场约定" />;
@@ -20,9 +72,14 @@ export const ConcertsTab = () => {
 
   return (
     <div className="space-y-10">
+      {/* 待赴约：恢复成之前的整张渐变填充白字 + 大号倒计时 */}
       {upcoming.length > 0 && (
         <section>
-          <SubHeading icon={Clock} text="即将赴约" />
+          <div className="flex items-end gap-3 mb-5">
+            <Clock className="h-7 w-7 text-rose-500 pb-1" />
+            <span className="text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">即将赴约</span>
+            <span className="pb-1 text-sm text-slate-400 dark:text-slate-500">{upcoming.length} 场</span>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {upcoming.map((c, idx) => {
               const days = daysUntil(c.date);
@@ -58,7 +115,12 @@ export const ConcertsTab = () => {
                         <Ticket className="h-3 w-3" />{c.seat}
                       </span>
                     )}
-                    {c.highlight && <p className="text-sm mt-3 opacity-95 leading-relaxed">"{c.highlight}"</p>}
+                    {c.highlight && (
+                      <div className="mt-3 flex gap-2 rounded-lg bg-white/10 px-3 py-2 backdrop-blur-sm">
+                        <Quote className="h-3.5 w-3.5 shrink-0 mt-0.5 text-white/70" />
+                        <p className="text-sm leading-relaxed text-white/95">{c.highlight}</p>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               );
@@ -67,42 +129,20 @@ export const ConcertsTab = () => {
         </section>
       )}
 
-      {attended.length > 0 && (
-        <section>
-          <SubHeading icon={Ticket} text="现场足迹" count={attended.length} />
-          <div className="relative pl-6">
-            <span className="absolute left-1.5 top-2 bottom-2 w-px bg-gradient-to-b from-rose-300 via-pink-300 to-transparent dark:from-rose-700 dark:via-pink-800" />
-            <div className="space-y-4">
-              {attended.map((c, idx) => (
-                <motion.div
-                  key={c.id}
-                  initial={{ opacity: 0, x: -8 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: idx * 0.05 }}
-                  className="relative"
-                >
-                  <span className={`absolute -left-[18px] top-4 w-3 h-3 rounded-full bg-gradient-to-br ${gradient(c.tone)} ring-4 ring-white dark:ring-slate-950`} />
-                  <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-center justify-between gap-2 mb-1.5">
-                      <h4 className="font-semibold text-slate-900 dark:text-slate-100">{c.tour}</h4>
-                      <span className="shrink-0 text-xs text-slate-400 dark:text-slate-500">{fmtDate(c.date)}</span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
-                      <span className="inline-flex items-center gap-1 text-rose-500"><Music className="h-3 w-3" />{c.idol}</span>
-                      <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" />{c.city} · {c.venue}</span>
-                      {c.seat && <span className="inline-flex items-center gap-1"><Ticket className="h-3 w-3" />{c.seat}</span>}
-                    </div>
-                    {c.highlight && (
-                      <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">"{c.highlight}"</p>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+      {/* 其余：按年份分组倒序 */}
+      {groupByYear(past).map(([year, list]) => (
+        <section key={year}>
+          <div className="flex items-end gap-3 mb-5">
+            <span className="text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">{year}</span>
+            <span className="pb-1 text-sm text-slate-400 dark:text-slate-500">{list.length} 场</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {list.map((c, idx) => (
+              <ConcertCard key={c.id} c={c} idx={idx} />
+            ))}
           </div>
         </section>
-      )}
+      ))}
     </div>
   );
 };

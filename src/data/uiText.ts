@@ -146,6 +146,8 @@ export const uiText = {
       friendsDesc: '友情链接 & 友链申请',
       travel: '足迹地图 / Travel',
       travelDesc: '中国地级行政区足迹地图，含出行路径与交通方式',
+      fandom: '秘密花园 / Fandom',
+      fandomDesc: '追星专题 · 偶像墙、演唱会、线下打卡与周边收藏',
     },
   },
 

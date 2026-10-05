@@ -1,41 +1,21 @@
 import {
-  TrendingUp, PiggyBank, Sparkles, Flag, Cake, Radio,
   Disc3, Image as ImageIcon, Gift, PenLine, Ticket,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import type { SupportType, CollectionCategory, Rarity } from '../../data/fandom';
+import type { CollectionCategory, Rarity } from '../../data/fandom';
 
 /**
  * fandom 的「枚举 → 展示」映射集中在这里。
  * 数据层只存枚举值，视图层统一查这张表，新增枚举只需改一处。
  */
 
-export const supportIcons: Record<SupportType, LucideIcon> = {
-  vote: TrendingUp,
-  fund: PiggyBank,
-  lightstick: Sparkles,
-  banner: Flag,
-  birthday: Cake,
-  stream: Radio,
-};
-
 export const categoryIcons: Record<CollectionCategory, LucideIcon> = {
   album: Disc3,
   photocard: ImageIcon,
-  lightstick: Sparkles,
+  lightstick: Gift,
   goods: Gift,
   sign: PenLine,
   ticket: Ticket,
-};
-
-/** 应援类型：文案 + 徽章色 */
-export const supportTypeMeta: Record<SupportType, { label: string; badgeClass: string }> = {
-  vote: { label: '打榜', badgeClass: 'text-rose-600 dark:text-rose-400 bg-rose-100/70 dark:bg-rose-950/40' },
-  fund: { label: '集资', badgeClass: 'text-amber-600 dark:text-amber-400 bg-amber-100/70 dark:bg-amber-950/40' },
-  lightstick: { label: '灯牌应援', badgeClass: 'text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-100/70 dark:bg-fuchsia-950/40' },
-  banner: { label: '手幅应援', badgeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-100/70 dark:bg-indigo-950/40' },
-  birthday: { label: '生日应援', badgeClass: 'text-pink-600 dark:text-pink-400 bg-pink-100/70 dark:bg-pink-950/40' },
-  stream: { label: '打卡刷量', badgeClass: 'text-cyan-600 dark:text-cyan-400 bg-cyan-100/70 dark:bg-cyan-950/40' },
 };
 
 /** 收藏类别文案 */

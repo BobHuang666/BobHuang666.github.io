@@ -15,22 +15,25 @@
 ## 站点地图
 
 ### 主导航
+
 | 路由 | 页面 | 说明 |
-|---|---|---|
+| --- | --- | --- |
 | `/` | **主城** | 首页 · Hero / 技能 / GitHub / 项目 / 博客 / 奖项 / 更多探索 / 联系 |
 | `/profile` | **角色档案** | 7 Tab 简历：教育背景 / 技能 / 奖项 / 实习与学生工作 / 科研 / 课程 / 兴趣 |
 | `/#projects` | **任务中心** | 首页项目区锚点跳转 |
 | `/blog` | **游戏攻略** | 博客列表 + 关键词搜索 + 分类 / 标签筛选 |
 
 ### 探索（导航栏「更多」下拉）
+
 | 路由 | 页面 | 说明 |
-|---|---|---|
+| --- | --- | --- |
 | `/friends` | **友人帐** | 友情链接 + 申请友链流程 |
-| `/fandom` | **秘密花园** | 追星专题 · 可选密码保护 |
+| `/fandom` | **秘密花园** | 追星专题 · 偶像墙 / 演唱会 / 线下打卡 / 周边收藏 |
 
 ### 其他
+
 | 路由 | 说明 |
-|---|---|
+| --- | --- |
 | `/projects/:id` | 项目详情页（目录 + 概述 / 功能 / 技术栈 / 挑战 / 方案 / 成果 / 总结） |
 | `/blog/:id` | 博客详情（Markdown + TOC + 代码高亮 + 复制 + 阅读进度 + 推荐 + 评论） |
 | `/500` | 服务端 / 资源异常兜底页 |
@@ -97,7 +100,7 @@ src/
 ## 核心特性
 
 | 类别 | 实现 |
-|---|---|
+| --- | --- |
 | **路由** | HashRouter（规避 GH Pages 刷新 404）+ 路由懒加载 + Suspense |
 | **暗色模式** | `prefers-color-scheme` + localStorage 持久化 + 防闪烁脚本 |
 | **中文文案层** | `src/data/uiText.ts` 集中管理 UI 文案，渲染层不写死字符串 |
@@ -117,27 +120,30 @@ src/
 ## 配置指南
 
 ### 编辑内容
+
 | 想改什么 | 改哪里 |
-|---|---|
+| --- | --- |
 | 个人基础信息 / 邮箱 / GitHub | `src/data/profile.ts` |
 | 添加 / 修改项目 | `src/data/projects.ts` |
 | 添加奖项 | `src/data/awards.ts` |
 | 修改技能 / 课程 / 实习 / 科研 | `src/data/skills.ts` |
 | 添加博客 | 在 `src/posts/` 新建 `xxx.md`，自动出现在列表 |
 | 友链 | `src/data/friends.ts` |
-| 追星 | `src/data/fandom.ts`（可设密码） |
+| 追星 | `src/data/fandom.ts` |
 | 主题色 / 字体 | `tailwind.config.js` |
 | 中文文案 | `src/data/uiText.ts` |
 
 ### 启用评论（giscus）
+
 1. 仓库改为 public
 2. 安装 [giscus GitHub App](https://github.com/apps/giscus)
 3. 仓库设置中开启 Discussions
-4. 去 https://giscus.app/zh-CN 生成配置
+4. 去 <https://giscus.app/zh-CN> 生成配置
 5. 把 `repoId` / `categoryId` 填到 `src/data/giscus.ts`
 
 ### 启用访问统计（GoatCounter）
-1. 在 https://www.goatcounter.com/ 注册
+
+1. 在 <https://www.goatcounter.com/> 注册
 2. 把分配的 code 填到 `src/utils/analytics.ts` 的 `goatcounterCode`
 
 ---
@@ -171,7 +177,7 @@ PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节
 ## 自动化质量保障
 
 | 阶段 | 工具 | 触发 | 失败行为 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **本地 commit** | husky + lint-staged | `git commit` | 仅对暂存的 `.ts/.tsx` 跑 `eslint --fix`（毫秒级，仅检查改动） |
 | **本地 push** | husky | `git push` | 全量 `tsc --noEmit` 类型检查，类型错误本地拦截 |
 | **PR / push 到 main** | GitHub Actions `ci.yml` | 远端 | typecheck → lint → build → bundle size，任一失败阻塞 |
@@ -183,7 +189,7 @@ PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节
 智能区分**首屏关键 chunk** 与**按需加载 chunk**：
 
 | 维度 | 阈值（gzip） | 当前 |
-|---|---|---|
+| --- | --- | --- |
 | 单个 JS chunk | ≤ 250 KB | ✅ 最大 markdown 187 KB（按需） |
 | 首屏关键 JS 总和 | ≤ 250 KB | ✅ 167 KB |
 | 全部 JS 总和 | ≤ 1500 KB | ✅ 1266 KB |
