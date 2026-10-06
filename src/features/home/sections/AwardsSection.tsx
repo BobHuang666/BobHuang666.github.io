@@ -5,6 +5,7 @@ import { uiText } from '../../../data/uiText';
 import { awards } from '../../../data/awards';
 import { AWARD_LEVELS, type AwardLevel } from '../../../types';
 import { resolveIcon } from '../../../utils/iconMap';
+import { formatAwardDate } from '../../../utils/awardDate';
 import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
 import { Chip } from '../../../shared/components/ui/Chip';
 import { GradientIcon } from '../../../shared/components/ui/GradientIcon';
@@ -63,12 +64,9 @@ export const AwardsSection = () => {
                     </p>
                   </div>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
-                  {award.description}
-                </p>
                 <div className="flex items-center justify-between">
                   <span className="px-2 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
-                    {award.year}
+                    {formatAwardDate(award.year, award.month, award.day)}
                   </span>
                   <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                     {award.level}

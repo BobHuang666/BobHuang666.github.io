@@ -32,9 +32,9 @@ const MAIN_ITEMS: MainItem[] = [
 ];
 
 const MORE_ITEMS: MoreItem[] = [
-  { to: '/friends', label: uiText.nav.friends, icon: UsersRound, description: uiText.related.friends.desc },
   { to: '/travel', label: uiText.nav.travel, icon: MapPinned, description: uiText.related.travel.desc },
   { to: '/fandom', label: uiText.nav.fandom, icon: Music, description: uiText.related.fandom.desc },
+  { to: '/friends', label: uiText.nav.friends, icon: UsersRound, description: uiText.related.friends.desc },
 ];
 
 const Navigation = () => {

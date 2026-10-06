@@ -1,7 +1,7 @@
 import { useState, type ComponentType } from 'react';
 import {
   Mail, MapPin, Shield,
-  CreditCard, Award, Compass, FlaskConical,
+  CreditCard, Award, Compass, Briefcase, FlaskConical,
   type LucideIcon,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -11,10 +11,11 @@ import { RelatedLink } from '../../shared/components/ui/RelatedLink';
 import Avatar from '../../shared/components/ui/Avatar';
 import { BasicInfoTab } from './tabs/BasicInfoTab';
 import { AwardsTab } from './tabs/AwardsTab';
+import { InternshipTab } from './tabs/InternshipTab';
 import { ExperienceTab } from './tabs/ExperienceTab';
 import { ResearchTab } from './tabs/ResearchTab';
 
-type TabId = 'basic' | 'awards' | 'experience' | 'research';
+type TabId = 'basic' | 'awards' | 'internship' | 'experience' | 'research';
 
 interface TabDef {
   id: TabId;
@@ -25,13 +26,15 @@ interface TabDef {
 const TABS: TabDef[] = [
   { id: 'basic', name: '基本信息', icon: CreditCard },
   { id: 'awards', name: '获奖经历', icon: Award },
-  { id: 'experience', name: '社会实践', icon: Compass },
+  { id: 'internship', name: '实习经历', icon: Briefcase },
+  { id: 'experience', name: '在校经历', icon: Compass },
   { id: 'research', name: '科研课题', icon: FlaskConical },
 ];
 
 const TAB_CONTENT: Record<TabId, ComponentType> = {
   basic: BasicInfoTab,
   awards: AwardsTab,
+  internship: InternshipTab,
   experience: ExperienceTab,
   research: ResearchTab,
 };

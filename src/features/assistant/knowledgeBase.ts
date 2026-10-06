@@ -3,6 +3,7 @@ import { projects } from '../../data/projects';
 import { blogData } from '../../data/blog';
 import { skillsDetail, skillPills, experiences, practiceExperiences, studentWork, courses } from '../../data/skills';
 import { awards } from '../../data/awards';
+import { formatAwardDate } from '../../utils/awardDate';
 
 export interface KBChunk {
   id: string;
@@ -61,7 +62,7 @@ export function buildKB(): KBChunk[] {
     category: '奖项荣誉',
     title: '竞赛奖项与荣誉',
     content: awards
-      .map(a => `${a.year} · ${a.level} · ${a.title}（${a.organization}）\n  ${a.description}`)
+      .map(a => `${formatAwardDate(a.year, a.month, a.day)} · ${a.level} · ${a.title}（${a.organization}）`)
       .join('\n'),
     keywords: ['奖项', '荣誉', '获奖', '竞赛', 'icpc', 'igem', '蓝桥杯', '算法', '数学建模', 'ccf', 'csp', '奖学金'],
   });

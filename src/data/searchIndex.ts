@@ -3,6 +3,7 @@ import { projects } from './projects';
 import { awards } from './awards';
 import { skillsDetail } from './skills';
 import { uiText } from './uiText';
+import { formatAwardDate } from '../utils/awardDate';
 
 export type SearchResultKind = 'blog' | 'project' | 'award' | 'skill' | 'page';
 
@@ -22,9 +23,9 @@ const staticPages: SearchItem[] = [
   { id: 'page-home', kind: 'page', title: pages.home, description: pages.homeDesc, href: '#/' },
   { id: 'page-profile', kind: 'page', title: pages.profile, description: pages.profileDesc, href: '#/profile' },
   { id: 'page-blog', kind: 'page', title: pages.blog, description: pages.blogDesc, href: '#/blog' },
-  { id: 'page-friends', kind: 'page', title: pages.friends, description: pages.friendsDesc, href: '#/friends' },
   { id: 'page-travel', kind: 'page', title: pages.travel, description: pages.travelDesc, href: '#/travel' },
   { id: 'page-fandom', kind: 'page', title: pages.fandom, description: pages.fandomDesc, href: '#/fandom' },
+  { id: 'page-friends', kind: 'page', title: pages.friends, description: pages.friendsDesc, href: '#/friends' },
 ];
 
 const projectItems: SearchItem[] = projects.map((p) => ({
@@ -40,7 +41,7 @@ const awardItems: SearchItem[] = awards.map((a) => ({
   id: `award-${a.title}`,
   kind: 'award',
   title: a.title,
-  description: `${a.organization} · ${a.year} · ${a.level} · ${a.description}`,
+  description: `${a.organization} · ${formatAwardDate(a.year, a.month, a.day)} · ${a.level}`,
   tags: [a.level, a.year],
   href: '#/profile',
 }));

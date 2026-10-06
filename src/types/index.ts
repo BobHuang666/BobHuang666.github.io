@@ -75,8 +75,10 @@ export interface Award {
   title: string;
   organization: string;
   year: string;
+  month?: string;
+  day?: string;
   level: AwardLevel;
-  description: string;
+  description?: string;
   rank?: string;
   icon: IconName;
   tone?: GradientTone;
@@ -114,9 +116,18 @@ export interface Course {
 export interface Research {
   title: string;
   source: string;
-  leader: string;
+  level: string;
+  leader?: string;
   period: string;
+  result: string;
+}
+
+/** 著作成果：发明专利 / 计算机软件著作权等 */
+export interface Work {
+  title: string;
+  type: string;
   rank: string;
+  meta: { label: string; value: string }[];
 }
 
 /** 交通方式：数据层只存 key，图标 / 配色 / 线型由 features/travel/meta.ts 映射 */

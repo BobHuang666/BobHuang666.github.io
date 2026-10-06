@@ -37,9 +37,11 @@ export const Stars = ({ count }: { count: number }) => {
 export const TimelineCard = ({
   item,
   accent = 'indigo',
+  bullets = false,
 }: {
   item: Experience;
   accent?: 'indigo' | 'green' | 'amber';
+  bullets?: boolean;
 }) => {
   const color =
     accent === 'green'
@@ -55,9 +57,20 @@ export const TimelineCard = ({
       </div>
       <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{item.time}</p>
       {item.description && (
-        <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-          {item.description}
-        </p>
+        bullets ? (
+          <ul className="space-y-1.5 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+            {item.description.split('\n').filter(Boolean).map((line, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-500 shrink-0" />
+                <span className="flex-1">{line}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+            {item.description}
+          </p>
+        )
       )}
     </div>
   );
