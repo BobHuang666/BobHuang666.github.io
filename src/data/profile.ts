@@ -29,6 +29,3 @@ export const profile = {
     { name: '业余钢琴十级', date: '2019', issuer: '中国音乐家协会' },
   ],
 } as const;
-
-/** GitHub 用户名，由主页链接派生，供 GitHub 数据组件使用 */
-export const githubUsername = profile.github.match(/github\.com\/([^/]+)/)?.[1] ?? '';

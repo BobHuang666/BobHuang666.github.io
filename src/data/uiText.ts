@@ -77,8 +77,6 @@ export const uiText = {
     viewAllAwards: (count: number) => `查看全部 ${count} 项荣誉`,
     skillsTitle: '技能点',
     skillsSub: '在校期间持续点亮的技能树 —— 涵盖语言、前端、后端与工程化',
-    githubTitle: 'GitHub 战绩',
-    githubSub: '来自 GitHub API 的实时数据 —— 仓库、热门项目、社交统计',
     moreTitle: '更多探索',
     moreSub: '除了主线任务，还有这些副本可以探索',
     contactTitle: '联系我',

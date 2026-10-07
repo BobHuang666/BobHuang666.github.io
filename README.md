@@ -83,7 +83,7 @@ src/
 │   ├── profile/             # ProfilePage + tabs/
 │   ├── fandom/              # FandomPage + tabs/ + meta.ts
 │   ├── projects/ blog/ friends/ errors/
-│   └── search/ github/ assistant/   # 跨页面能力，index.ts 暴露公共入口
+│   └── search/ assistant/   # 跨页面能力，index.ts 暴露公共入口
 ├── shared/components/       # 跨业务复用的布局、控件、UI 与视觉效果
 ├── contexts/                # 全局 React Context
 ├── hooks/                   # 跨功能复用 Hook

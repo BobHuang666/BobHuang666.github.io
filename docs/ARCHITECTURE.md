@@ -12,7 +12,7 @@ src/
 │  ├─ profile/          # ProfilePage + tabs/（每 Tab 一文件）+ tabs/primitives
 │  ├─ fandom/           # FandomPage + tabs/ + meta.ts（枚举→展示）+ components
 │  ├─ projects/ blog/ friends/ errors/
-│  ├─ search/ github/   # 跨页面业务能力，通过 index.ts 暴露公共入口
+│  ├─ search/           # 跨页面业务能力，通过 index.ts 暴露公共入口
 │  └─ assistant/        # AI 助手：视图、请求适配、检索、配置与类型
 ├─ shared/components/   # 跨业务复用的 layout、controls、ui、effects
 ├─ contexts/            # 全局 React Context（主题）
