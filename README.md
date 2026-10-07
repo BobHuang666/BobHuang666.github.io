@@ -109,7 +109,7 @@ src/
 | **搜索** | Fuse.js 命令面板，⌘K / Ctrl+K / `/` 触发 |
 | **评论** | giscus 集成（GitHub Discussions） |
 | **统计** | GoatCounter 隐私友好统计 + Web Vitals 上报 |
-| **PWA** | vite-plugin-pwa 自动生成 SW + Manifest + 离线缓存 |
+| **PWA** | vite-plugin-pwa 生成 SW + Manifest + 离线缓存 |
 | **动画** | framer-motion + `prefers-reduced-motion` 兼容 |
 | **设计 token** | Tailwind 扩展 brand/gold 色阶 + Inter/Noto Sans SC |
 | **可访问性** | aria-label / focus ring / 键盘可达 / `prefers-reduced-motion` |

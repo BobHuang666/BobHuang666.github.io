@@ -59,36 +59,12 @@ export default defineConfig({
         // mode: 'development' 可规避 workbox-build terser 插件在 rollup 环境中的冲突
         mode: 'development',
         disableDevLogs: true,
-        // SW 安装后立即激活，不等待旧 SW 卸载
+        // SW 安装后立即激活并接管
         skipWaiting: true,
         clientsClaim: true,
-        // 预缓存：关键 JS/CSS/HTML + 图片，排除所有大体积按需 chunk
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,avif}'],
-        globIgnores: [
-          '**/workbox-*',
-          // mermaid / 图表类（各自 100~600KB gzip）
-          '**/mermaid*',
-          '**/cytoscape*',
-          '**/katex*',
-          '**/*Diagram*',
-          '**/cose-bilkent*',
-          '**/wardley*',
-          '**/dagre*',
-          '**/mindmap*',
-          '**/kanban*',
-          '**/timeline-definition*',
-          '**/defaultLocale*',
-          // 路由懒加载页面
-          '**/*Page*',
-          '**/ProjectDetail*',
-          // 其他按需组件
-          '**/markdown*',
-          '**/giscus*',
-          '**/AiAssistant*',
-          '**/MouseParticles*',
-          '**/SearchPalette*',
-          '**/chunk-*',
-        ],
+        cleanupOutdatedCaches: true,
+        // 预缓存：只缓存 HTML 与静态图片，排除 js/css。
+        globPatterns: ['**/*.{html,ico,png,svg,jpg,jpeg,webp,avif}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         runtimeCaching: [
           // ① 导航请求（HTML）：NetworkFirst，离线时返回缓存
@@ -136,7 +112,7 @@ export default defineConfig({
           },
           {
             urlPattern: /\/assets\/.*\.(js|css)$/i,
-            handler: 'StaleWhileRevalidate',
+            handler: 'NetworkFirst',
             options: {
               cacheName: 'assets-cache',
               expiration: { maxEntries: 150, maxAgeSeconds: 60 * 60 * 24 * 30 },
@@ -154,7 +130,6 @@ export default defineConfig({
             },
           },
           // ⑦ 地图底图数据（/static/geo/*.json）：CacheFirst，30 天
-          //    体积约 480KB，不进预缓存清单，只在访问 /travel 后按需缓存
           {
             urlPattern: /\/static\/geo\/.*\.json$/i,
             handler: 'CacheFirst',
