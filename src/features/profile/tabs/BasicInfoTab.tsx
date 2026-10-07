@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Code2, GraduationCap, Heart } from 'lucide-react';
+import { Code2, GraduationCap, Heart, Award } from 'lucide-react';
 import { profile } from '../../../data/profile';
 import { skillPills } from '../../../data/skills';
 import type { SkillPillGroup } from '../../../types';
@@ -45,8 +45,8 @@ export const BasicInfoTab = () => (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <InfoLine label="学校" value={edu.school} />
               <InfoLine label="专业" value={edu.major} />
-              <InfoLine label="学历层次" value={`${edu.degree} · ${edu.grade}`} />
-              <InfoLine label="在读时间" value={edu.period} />
+              <InfoLine label="学历层次" value={edu.degree} />
+              <InfoLine label="时间" value={edu.period} />
             </div>
           </div>
         ))}
@@ -54,8 +54,24 @@ export const BasicInfoTab = () => (
     </div>
 
     <div>
-      <SectionHeading icon={Code2} title="技能专长" />
+      <SectionHeading icon={Code2} title="技术栈" />
       <PillCloud pills={skillPills.filter((p) => p.group !== 'hobby')} />
+    </div>
+
+    <div>
+      <SectionHeading icon={Award} title="技能特长" />
+      <div className="space-y-3">
+        {profile.certificates.map((c, i) => (
+          <div
+            key={i}
+            className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3"
+          >
+            <span className="font-medium text-slate-900 dark:text-slate-100">{c.name}</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400 tabular-nums">{c.date}</span>
+            <span className="text-xs text-slate-400 dark:text-slate-500">{c.issuer}</span>
+          </div>
+        ))}
+      </div>
     </div>
 
     <div>

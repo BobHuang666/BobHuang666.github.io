@@ -181,7 +181,7 @@ export const awards: AwardType[] = [
     tone: 'rose',
   },
   {
-    title: '北京师范大学本科生二等助学金',
+    title: '北京师范大学本科生二等奖励性助学金',
     organization: '北京师范大学',
     year: '2025',
     month: '12',

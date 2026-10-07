@@ -86,12 +86,12 @@ export const ViewSwitch = <T extends string>({
   value: T;
   onChange: (id: T) => void;
 }) => (
-  <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
+  <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-slate-800 w-full sm:w-auto">
     {options.map((opt) => (
       <button
         key={opt.id}
         onClick={() => onChange(opt.id)}
-        className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${value === opt.id
+        className={`flex items-center justify-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors flex-1 sm:flex-none ${value === opt.id
           ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
           : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
           }`}

@@ -55,7 +55,7 @@ export const ResearchTab = () => (
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-1.5 gap-x-4 text-xs">
               <p className="text-slate-500 dark:text-slate-400">
-                <span className="text-slate-700 dark:text-slate-300 font-medium">本人排序：</span>第 {w.rank} 完成人
+                <span className="text-slate-700 dark:text-slate-300 font-medium">本人排序：</span>{w.rank}
               </p>
               {w.meta.map((m) => (
                 <p key={m.label} className="text-slate-500 dark:text-slate-400">

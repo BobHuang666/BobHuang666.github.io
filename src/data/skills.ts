@@ -118,27 +118,22 @@ export const skillsDetail: SkillDetailCategory[] = [
 export const skillPills: SkillPill[] = [
   { name: 'C/C++', group: 'language' },
   { name: 'Python', group: 'language' },
-  { name: 'TypeScript', group: 'language' },
-  { name: 'JavaScript', group: 'language' },
+  { name: 'Java', group: 'language' },
   { name: 'Go', group: 'language' },
 
-  { name: 'Vue 3', group: 'frontend' },
-  { name: 'uni-app', group: 'frontend' },
+  { name: 'HTML/CSS/JS', group: 'frontend' },
+  { name: 'Vue', group: 'frontend' },
   { name: 'React', group: 'frontend' },
-  { name: 'HTML/CSS/SCSS', group: 'frontend' },
-  { name: '响应式设计', group: 'frontend' },
+  { name: 'uni-app', group: 'frontend' },
 
-  { name: 'Go', group: 'backend' },
-  { name: 'Python 后端', group: 'backend' },
   { name: 'MySQL', group: 'backend' },
-  { name: '大数据分析', group: 'backend' },
-  { name: 'API 设计', group: 'backend' },
+  { name: 'Hadoop', group: 'backend' },
+  { name: 'Spark', group: 'backend' },
+  { name: 'Flink', group: 'backend' },
 
-  { name: '算法 & 数据结构', group: 'tool' },
-  { name: 'Git / GitHub', group: 'tool' },
+  { name: 'Git', group: 'tool' },
   { name: 'Linux', group: 'tool' },
   { name: 'AI 工具链', group: 'tool' },
-  { name: '英语 (CET-6)', group: 'tool' },
 
   { name: '追星', group: 'hobby' },
   { name: '旅行', group: 'hobby' },
@@ -163,11 +158,11 @@ export const experiences: Experience[] = [
     time: '2026.05 - 2026.08',
     org: '腾讯集团总部 CDG',
     role: '前端开发实习生',
-    description: '负责小秘AI理财管家模块，结合用户资产/行情热点/用户记忆，通过猜你想问/功能卡片/入口投放，升级个性化服务能力，提高月活；同时关注埋点规范上报/灰度控制/代码架构规范。\n使用与优化团队AI工作流，认识「阶段编排约束 + Skill沉淀方法 + 知识库维护」模式，提升开发效率与完成度；编写埋点数据分析Skill，沉淀取数与洞察能力，协助产品分析优化。',
+    description: '负责腾讯理财通小秘AI理财管家模块，结合用户资产/行情热点/用户记忆，通过猜你想问/功能卡片/入口投放，升级个性化服务能力，提高月活；同时关注埋点规范上报/灰度控制/代码架构规范。\n使用与优化团队AI工作流，认识「阶段编排约束 + Skill沉淀方法 + 知识库维护」模式，提升开发效率与完成度；编写埋点数据分析Skill，沉淀取数与洞察能力，协助产品分析优化。',
   },
   {
     time: '2025.07 - 2025.10',
-    org: '智悦云创（湖南）科技有限公司',
+    org: '智悦云创科技有限公司',
     role: 'AI 应用工程师（前端）实习生',
     description:
       '面向大学生的AI简历优化平台，实习期间项目成功上线并获1000+用户关注；参与所有核心业务模块的开发维护，如简历优化流程/用户会员中心，完成40+功能点、150+任务项；\n优化接口调用逻辑与状态管理，修复多类数据异常与渲染问题，提升问题定位与解决能力；\n与后端、产品、测试等团队成员合作，完成功能的联调与优化，提升沟通与协作能力。',
@@ -178,8 +173,8 @@ export const experiences: Experience[] = [
 export const trainingExperiences: Experience[] = [
   {
     time: '2024.12 - 2025.08',
-    org: '北京师范大学 — 百度',
-    role: '松果人才培养菁英班学员',
+    org: '百度 — 北京师范大学',
+    role: '百度松果人才培养菁英班学员',
     description: '完成百度及清华社规定的部分课程及题库练习。',
   },
   {
@@ -329,6 +324,6 @@ export const research: Research[] = [
     level: '院系级',
     source: '会同书院“朋辈研学”项目',
     period: '2023.09 - 2024.03',
-    result: '进行文献调研、问卷调查、实地走访与数据分析，形成调研报告，项目顺利结项。',
+    result: '进行文献调研、问卷调查、实地走访与数据分析，形成调研报告《珠海乐士文化区绘本地摊经济行业分析》，项目顺利结项。',
   },
 ];

@@ -46,7 +46,7 @@ export const AwardsTab = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <p className="text-sm text-slate-500 dark:text-slate-400">
           {uiText.awards.summary(awards.length)}
         </p>

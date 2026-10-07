@@ -89,7 +89,7 @@ export const uiText = {
   /** 奖项筛选器（其余级别直接用数据里的中文字面量，只有“全部”需要文案） */
   awards: {
     all: '全部',
-    summary: (count: number) => `累计 ${count} 项荣誉 · 涵盖国际级、国家级、省级与校院级`,
+    summary: (count: number) => `累计 ${count} 项荣誉`,
   },
 
   /** /profile 页面视图切换 */
