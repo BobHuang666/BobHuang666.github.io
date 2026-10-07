@@ -153,7 +153,7 @@ export const travelPlaces: TravelPlace[] = [
   {
     id: 'guilin',
     name: '桂林市',
-    status: 'visited',
+    status: 'transit',
     visits: [{ date: '2023.07.09' }],
   },
   {
@@ -198,7 +198,7 @@ export const travelPlaces: TravelPlace[] = [
   {
     id: 'jian',
     name: '吉安市',
-    status: 'visited',
+    status: 'transit',
     visits: [{ date: '2015.08.13' }],
   },
   {

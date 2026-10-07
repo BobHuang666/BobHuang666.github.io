@@ -4,6 +4,36 @@ import { checkIns, type CheckIn } from '../../../data/fandom';
 import { fmtDate } from '../format';
 import { FandomEmptyState } from '../components';
 
+/** 明星胶囊渐变配色（已按色相错开排列，相近颜色不相邻） */
+const IDOL_GRADIENTS = [
+  'from-fuchsia-500 to-rose-500',
+  'from-emerald-500 to-teal-500',
+  'from-amber-500 to-orange-500',
+  'from-violet-500 to-purple-500',
+  'from-sky-500 to-indigo-500',
+  'from-lime-500 to-green-500',
+  'from-pink-500 to-rose-400',
+  'from-cyan-500 to-blue-500',
+  'from-red-500 to-rose-500',
+  'from-indigo-500 to-blue-600',
+];
+/**
+ * 为每个不同的明星名分配一个固定且互不相同的颜色：
+ * 按首次出现顺序从调色板取色，避免哈希撞色导致多个明星同色/相近色。
+ */
+const idolColorCache = new Map<string, string>();
+let idolColorCursor = 0;
+const idolColor = (name: string) => {
+  const key = name.trim();
+  let c = idolColorCache.get(key);
+  if (!c) {
+    c = IDOL_GRADIENTS[idolColorCursor % IDOL_GRADIENTS.length];
+    idolColorCache.set(key, c);
+    idolColorCursor++;
+  }
+  return c;
+};
+
 /** 按年份分组（倒序）；同一年内按日期倒序 */
 const groupByYear = (items: { date: string }[]) => {
   const m = new Map<number, CheckIn[]>();
@@ -56,13 +86,15 @@ export const CheckInTab = () => {
                   className="flex-1 pb-4"
                 >
                   <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-center justify-between gap-2 mb-1.5">
-                      <h4 className="font-semibold text-slate-900 dark:text-slate-100">{c.place}</h4>
-                      <span className="shrink-0 text-xs text-slate-400 dark:text-slate-500 inline-flex items-center gap-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <span className={`shrink-0 inline-flex items-center rounded-full bg-gradient-to-r ${idolColor(c.idol)} text-white text-xs font-semibold px-2.5 py-0.5 shadow-sm`}>
+                        {c.idol}
+                      </span>
+                      <span className="shrink-0 ml-auto text-xs text-slate-400 dark:text-slate-500 inline-flex items-center gap-1">
                         <CalendarDays className="h-3.5 w-3.5" />{fmtDate(c.date)}
                       </span>
                     </div>
-                    <p className="text-xs text-fuchsia-500 mb-1.5 font-medium">For {c.idol}</p>
+                    <h4 className="font-semibold text-slate-900 dark:text-slate-100 leading-snug mb-1.5">{c.place}</h4>
                     {c.note && <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{c.note}</p>}
                   </div>
                 </motion.div>

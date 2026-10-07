@@ -1,4 +1,4 @@
-import { useState, type ComponentType } from 'react';
+import { useRef, useState, type ComponentType } from 'react';
 import {
   Mail, MapPin, Shield,
   CreditCard, Award, Compass, Briefcase, FlaskConical,
@@ -39,10 +39,43 @@ const TAB_CONTENT: Record<TabId, ComponentType> = {
   research: ResearchTab,
 };
 
+/** 五个 Tab 的导航条，顶部与底部共用同一份状态，保证两个导航栏同步 */
+const TabNav = ({
+  activeTab,
+  onSelect,
+}: {
+  activeTab: TabId;
+  onSelect: (id: TabId) => void;
+}) => (
+  <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md mb-6 border border-slate-200 dark:border-slate-800">
+    <div className="flex overflow-x-auto scrollbar-none">
+      {TABS.map((tab) => (
+        <button
+          key={tab.id}
+          onClick={() => onSelect(tab.id)}
+          className={`flex items-center gap-2 px-5 py-3.5 whitespace-nowrap transition-colors text-sm font-medium ${activeTab === tab.id
+            ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400 bg-indigo-50/60 dark:bg-indigo-950/30'
+            : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+            }`}
+        >
+          <tab.icon className="h-4 w-4" />
+          {tab.name}
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
 /** /profile —— 页面只负责头部信息卡与 Tab 编排，各 Tab 的内容在 ./tabs */
 function ProfilePage() {
   const [activeTab, setActiveTab] = useState<TabId>('basic');
+  const topTabsRef = useRef<HTMLDivElement>(null);
   const ActiveContent = TAB_CONTENT[activeTab];
+
+  // 切换底部 Tab 时滚动回到主体内容（顶部 Tab）位置
+  const scrollToTop = () => {
+    topTabsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
@@ -75,23 +108,9 @@ function ProfilePage() {
           </div>
         </motion.div>
 
-        {/* Tabs */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md mb-6 border border-slate-200 dark:border-slate-800">
-          <div className="flex overflow-x-auto scrollbar-none">
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-5 py-3.5 whitespace-nowrap transition-colors text-sm font-medium ${activeTab === tab.id
-                  ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400 bg-indigo-50/60 dark:bg-indigo-950/30'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
-                  }`}
-              >
-                <tab.icon className="h-4 w-4" />
-                {tab.name}
-              </button>
-            ))}
-          </div>
+        {/* Tabs（顶部导航） */}
+        <div ref={topTabsRef}>
+          <TabNav activeTab={activeTab} onSelect={setActiveTab} />
         </div>
 
         {/* Content */}
@@ -104,6 +123,17 @@ function ProfilePage() {
         >
           <ActiveContent />
         </motion.div>
+
+        {/* Tabs（底部导航，状态与顶部同步，切换后滚回顶部） */}
+        <div className="mt-6">
+          <TabNav
+            activeTab={activeTab}
+            onSelect={(id) => {
+              setActiveTab(id);
+              scrollToTop();
+            }}
+          />
+        </div>
 
         {/* 相关跳转 */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">

@@ -181,9 +181,6 @@ export const MapSection = ({
             <Globe2 className="h-4 w-4 text-sky-500" />
           )}
           {isChina ? '中国足迹地图' : '世界足迹地图'}
-          <span className="text-xs font-normal text-slate-400 dark:text-slate-500">
-            {isChina ? '地级行政区 · 滚轮缩放 / 拖拽平移' : '国家 / 地区 · 滚轮缩放 / 拖拽平移'}
-          </span>
         </h2>
 
         <div className="flex flex-wrap items-center gap-2">

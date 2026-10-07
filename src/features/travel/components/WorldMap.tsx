@@ -69,6 +69,10 @@ export const WorldMap = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const dragRef = useRef<{ px: number; py: number; vx: number; vy: number } | null>(null);
   const movedRef = useRef(false);
+  /** 当前按下的指针（鼠标/触摸），用于识别双指缩放 */
+  const pointersRef = useRef<Map<number, { x: number; y: number }>>(new Map());
+  /** 双指缩放的起始快照：初始视野、两指初始距离、视野锚点坐标 */
+  const pinchRef = useRef<{ v0: ViewBox; dist0: number; aX: number; aY: number } | null>(null);
   /** 画布高度由数据比例决定：改脚本里的 stretch 重跑即可，无需改组件 */
   const viewH = useMemo(() => Math.round(VIEW_W / (geo.aspect || FALLBACK_ASPECT)), [geo.aspect]);
   const [view, setView] = useState<ViewBox>({ x: 0, y: 0, w: VIEW_W, h: viewH });
@@ -138,14 +142,57 @@ export const WorldMap = ({
 
   const handlePointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const svg = svgRef.current;
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    // 第二根手指按下 → 进入双指缩放模式
+    if (pointersRef.current.size === 2) {
+      const [p1, p2] = [...pointersRef.current.values()];
+      const dist0 = Math.hypot(p1.x - p2.x, p1.y - p2.y) || 1;
+      const midX = (p1.x + p2.x) / 2;
+      const midY = (p1.y + p2.y) / 2;
+      // 两指中点当前对应的视野坐标，缩放时让它稳定停在原地
+      const aX = view.x + ((midX - rect.left) / rect.width) * view.w;
+      const aY = view.y + ((midY - rect.top) / rect.height) * view.h;
+      pinchRef.current = { v0: view, dist0, aX, aY };
+      movedRef.current = true; // 双指手势结束后不应触发点选
+      return;
+    }
+
     movedRef.current = false;
     dragRef.current = { px: e.clientX, py: e.clientY, vx: view.x, vy: view.y };
   };
 
   const handlePointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
-    const drag = dragRef.current;
     const svg = svgRef.current;
-    if (!drag || !svg) return;
+    if (!svg) return;
+    const p = pointersRef.current.get(e.pointerId);
+    if (p) pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    // 双指缩放：以两指中点为锚点，按距离比值缩放，并跟随中点平移
+    const pinch = pinchRef.current;
+    if (pinch && pointersRef.current.size >= 2) {
+      const [p1, p2] = [...pointersRef.current.values()];
+      const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+      const midX = (p1.x + p2.x) / 2;
+      const midY = (p1.y + p2.y) / 2;
+      const rect = svg.getBoundingClientRect();
+      const f = dist / pinch.dist0; // 手指张开 f>1 → 放大
+      const newW = clamp(pinch.v0.w / Math.max(f, 1e-3), MIN_W, VIEW_W);
+      const newH = newW * (pinch.v0.h / pinch.v0.w);
+      setView({
+        w: newW,
+        h: newH,
+        x: clamp(pinch.aX - ((midX - rect.left) / rect.width) * newW, -EDGE, VIEW_W - newW + EDGE),
+        y: clamp(pinch.aY - ((midY - rect.top) / rect.height) * newH, -EDGE, viewH - newH + EDGE),
+      });
+      return;
+    }
+
+    const drag = dragRef.current;
+    if (!drag) return;
     if (Math.hypot(e.clientX - drag.px, e.clientY - drag.py) > 4) movedRef.current = true;
     const rect = svg.getBoundingClientRect();
     const dx = ((e.clientX - drag.px) / rect.width) * view.w;
@@ -155,6 +202,19 @@ export const WorldMap = ({
       x: clamp(drag.vx - dx, -EDGE, VIEW_W - v.w + EDGE),
       y: clamp(drag.vy - dy, -EDGE, viewH - v.h + EDGE),
     }));
+  };
+
+  /** 抬手/取消：清理指针，退出双指模式，若还剩一根手指则把拖拽权交给它 */
+  const endPointer = (e: React.PointerEvent<SVGSVGElement>) => {
+    pointersRef.current.delete(e.pointerId);
+    if (pointersRef.current.size >= 2) return;
+    pinchRef.current = null;
+    if (pointersRef.current.size === 1) {
+      const [, pos] = [...pointersRef.current.entries()][0];
+      dragRef.current = { px: pos.x, py: pos.y, vx: view.x, vy: view.y };
+    } else {
+      dragRef.current = null;
+    }
   };
 
   const select = (id: string | null) => {
@@ -170,14 +230,15 @@ export const WorldMap = ({
       <svg
         ref={svgRef}
         viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
-        className="w-full h-auto touch-pan-y select-none cursor-grab active:cursor-grabbing"
+        className="w-full h-auto touch-none select-none cursor-grab active:cursor-grabbing"
         style={{ aspectRatio: `${VIEW_W} / ${viewH}` }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
-        onPointerUp={() => {
-          dragRef.current = null;
-        }}
+        onPointerUp={endPointer}
+        onPointerCancel={endPointer}
         onPointerLeave={() => {
+          pointersRef.current.clear();
+          pinchRef.current = null;
           dragRef.current = null;
           setHover(null);
         }}

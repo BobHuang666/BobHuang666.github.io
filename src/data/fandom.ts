@@ -333,7 +333,7 @@ export const checkIns: CheckIn[] = [
   {
     id: 'ci-20250912',
     date: '2025-09-12',
-    idol: 'EXO 伯贤 / RIIZE / NCT WISH',
+    idol: 'EXO / RIIZE / NCT WISH',
     place: '韩国济州市、西归浦市',
     note: '实弹射击（伯贤同款）、MEGA COFFEE（RIIZE 代言）、NCT WISH 团综小商店',
   },
@@ -347,7 +347,7 @@ export const checkIns: CheckIn[] = [
   {
     id: 'ci-20241003',
     date: '2024-10-03',
-    idol: 'R.E.D ',
+    idol: 'R.E.D',
     place: '深圳',
     note: '深圳国际交流书院（BETTY）、深圳市艺术高中（QIANA）',
   },
@@ -375,14 +375,14 @@ export const checkIns: CheckIn[] = [
   {
     id: 'ci-20240506',
     date: '2024-05-06',
-    idol: 'EXO 伯贤',
+    idol: 'EXO',
     place: '珠海优特汇',
     note: '伯贤生日大屏',
   },
   {
     id: 'ci-20240331',
     date: '2024-03-31',
-    idol: 'EXO 世勋',
+    idol: 'EXO',
     place: '澳门威尼斯人',
     note: '世勋 ins 同款照片打卡',
   },
