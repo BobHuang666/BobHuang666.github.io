@@ -8,19 +8,19 @@ import { initAnalytics, logWebVitals } from './utils/analytics'
 window.addEventListener('vite:preloadError', (event) => {
   const preloadError = event as Event & { payload?: unknown };
   preloadError.preventDefault();
-  console.warn('[vite:preloadError] 资源预加载失败，已降级忽略', preloadError.payload);
+  const now = Date.now();
+  const raw = sessionStorage.getItem('vite:preloadError:reloads');
+  const [count, ts] = raw ? raw.split(':').map(Number) : [0, 0];
+  if (now - ts > 10_000) sessionStorage.setItem('vite:preloadError:reloads', '1:' + now);
+  else if (count >= 3) return;
+  else sessionStorage.setItem('vite:preloadError:reloads', `${count + 1}:${ts}`);
+  console.warn('[vite:preloadError] 检测到资源版本不一致，正在刷新以获取一致版本', preloadError.payload);
+  window.location.reload();
 });
-
-let reloadingForServiceWorkerUpdate = false;
 
 function registerServiceWorker(attempt = 0) {
   registerSW({
     immediate: true,
-    onNeedReload() {
-      if (reloadingForServiceWorkerUpdate) return;
-      reloadingForServiceWorkerUpdate = true;
-      window.location.reload();
-    },
     onRegisterError(error) {
       console.error('[ServiceWorker] registration failed', error);
       if (attempt < 2) {
