@@ -47,7 +47,7 @@ export const AwardsSection = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredAwards.map((award, index) => (
-            <SectionReveal key={award.title} delay={index * 0.06}>
+            <SectionReveal key={`${award.title}-${index}`} delay={index * 0.06}>
               <div className="card-base p-6 h-full">
                 <div className="flex items-center mb-3">
                   <GradientIcon

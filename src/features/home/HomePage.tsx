@@ -1,4 +1,5 @@
 import { Hero } from './sections/Hero';
+import { AnnouncementBar } from './sections/AnnouncementBar';
 import { ProjectsSection } from './sections/ProjectsSection';
 import { BlogSection } from './sections/BlogSection';
 import { AwardsSection } from './sections/AwardsSection';
@@ -15,6 +16,7 @@ function HomePage() {
   return (
     <div className="bg-slate-50 dark:bg-slate-950">
       <Hero />
+      <AnnouncementBar />
       <ProjectsSection />
       <BlogSection />
       <AwardsSection />

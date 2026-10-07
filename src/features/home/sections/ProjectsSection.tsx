@@ -46,6 +46,7 @@ export const ProjectsSection = () => {
                     alt={project.title}
                     fallbackTitle={project.title}
                     fallbackGradient={gradient(project.imageTone)}
+                    autoModernFormats={false}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   {project.highlight && (

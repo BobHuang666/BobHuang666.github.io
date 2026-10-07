@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInView } from '../../hooks/useInView';
 
 interface DayCell {
@@ -39,6 +39,7 @@ const GitHubHeatmap = ({ username, colorScheme = 'indigo' }: Props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isDark, setIsDark] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains('dark'));
@@ -72,6 +73,13 @@ const GitHubHeatmap = ({ username, colorScheme = 'indigo' }: Props) => {
       });
     return () => { ignore = true; };
   }, [username, inView]);
+
+  // 默认滚动到最右端（最新日期）
+  useEffect(() => {
+    if (!loading && days.length > 0 && scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+    }
+  }, [loading, days]);
 
   if (!inView || loading) {
     return (
@@ -150,7 +158,7 @@ const GitHubHeatmap = ({ username, colorScheme = 'indigo' }: Props) => {
         </a>
       </div>
 
-      <div className="overflow-x-auto scrollbar-thin">
+      <div ref={scrollRef} className="overflow-x-auto scrollbar-thin">
         <svg
           width={width}
           height={height}

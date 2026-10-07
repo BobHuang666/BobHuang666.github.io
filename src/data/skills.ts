@@ -2,26 +2,27 @@ import type { SkillCategory, SkillDetailCategory, SkillPill, Course, Experience,
 
 // icon 使用字符串 key，组件层通过 resolveIcon() 解析
 // 首页用：简略技能栈
+// 首页「技能点」标签与角色档案 / 基本信息 / 技术栈 保持一致（排除兴趣爱好）
 export const techStack: SkillCategory[] = [
   {
     name: '编程语言',
     icon: 'Code2',
-    skills: ['C/C++', 'Python', 'TypeScript', 'JavaScript', 'Go'],
+    skills: ['C/C++', 'Python', 'Java', 'Go'],
   },
   {
     name: '前端开发',
     icon: 'Globe',
-    skills: ['Vue 3', 'React', 'uni-app', 'HTML/CSS', 'SCSS', '响应式'],
+    skills: ['HTML/CSS/JS', 'Vue', 'React', 'uni-app'],
   },
   {
     name: '后端 & 数据',
     icon: 'Database',
-    skills: ['Go', 'Python', 'MySQL', '大数据处理', 'API 设计'],
+    skills: ['MySQL', 'Hadoop', 'Spark', 'Flink'],
   },
   {
     name: '工具 & 工程化',
     icon: 'Shield',
-    skills: ['Git', 'Linux', '敏捷开发', 'AI 工具链', '算法'],
+    skills: ['Git', 'Linux', 'AI 工具链'],
   },
 ];
 

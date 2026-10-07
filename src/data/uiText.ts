@@ -72,7 +72,7 @@ export const uiText = {
     viewAllPosts: '查看全部文章',
     awardsTitle: '历史荣誉',
     /** 带数量的副标题 */
-    awardsSub: (count: number) => `累计 ${count} 项荣誉 · 按级别筛选查看精选 6 项`,
+    awardsSub: (count: number) => `累计 ${count} 项荣誉`,
     /** 带数量的「查看全部」 */
     viewAllAwards: (count: number) => `查看全部 ${count} 项荣誉`,
     skillsTitle: '技能点',
@@ -82,7 +82,7 @@ export const uiText = {
     moreTitle: '更多探索',
     moreSub: '除了主线任务，还有这些副本可以探索',
     contactTitle: '联系我',
-    contactSub: '对算法竞赛、全栈开发、AI 应用感兴趣？欢迎交流，一起进步。',
+    contactSub: '欢迎交流，一起进步',
     emailCopied: '邮箱已复制到剪贴板 ✓',
   },
 

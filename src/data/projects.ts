@@ -13,7 +13,7 @@ export const projects: Project[] = [
     subtitle: '挑战杯项目 · 技术负责人',
     description:
       '面向中学生议论文写作的 AI 教学平台，对接团队训练的 LLM 实现自动批改、逻辑/语言/素材多维度评价。校赛第一名推荐至省赛，获软件著作权登记证书。',
-    image: '/static/img/projects/ink-ruler-cover.jpg', // TODO: 替换真实截图
+    image: '/img/projects/inkruler.png',
     imageTone: 'cardEmerald',
     tags: ['Vue3', 'TypeScript', 'Go', 'LLM', 'AI 教育'],
     link: 'https://www.inkruler.cn/',
@@ -28,7 +28,7 @@ export const projects: Project[] = [
     subtitle: '实习项目 · 已上线',
     description:
       '面向大学生的 AI 简历优化平台，实习期间上线获 1000+ 用户。参与简历上传/编辑/优化流程、面试题集、用户中心、会员充值等核心模块，完成 40+ 功能点。',
-    image: '/static/img/projects/aicv-cover.jpg', // TODO: 替换真实截图
+    image: '/img/projects/aicv.jpg',
     imageTone: 'cardIndigo',
     tags: ['Vue3', 'uni-app', 'uView', 'SCSS', '小程序'],
     link: '', // TODO: 补小程序码或体验地址
@@ -42,7 +42,7 @@ export const projects: Project[] = [
     subtitle: '国际基因工程机器大赛',
     description:
       '国际基因工程机器大赛 Wiki 前端设计开发，使用 HTML+CSS+JS 实现响应式布局，设计 10+ 动态模块，处理 50MB+ 科研资料可视化，获最佳 Wiki 提名 + 团队 TOP10。',
-    image: '/static/img/projects/igem-cover.jpg', // TODO: 替换真实截图
+    image: '/img/projects/igem.png',
     imageTone: 'cardAmber',
     tags: ['HTML', 'CSS', 'JavaScript', '响应式设计', 'iGEM'],
     link: 'https://2024.igem.wiki/bnuzh-china/',
@@ -56,7 +56,7 @@ export const projects: Project[] = [
     subtitle: '历史数据管理系统 · 全栈独立开发',
     description:
       '用于管理、搜索、统计与可视化汕头存心善堂二十世纪四十年代收客记录的数据系统，收录 8005 条历史记录、17 个字段，已在线部署可访问。',
-    image: '', // TODO: 替换真实截图
+    image: '/img/projects/ledger.png',
     imageTone: 'cardSky',
     tags: ['React 19', 'TypeScript', 'FastAPI', 'Pandas', 'ECharts', '数据可视化'],
     link: 'https://bobhuang.cn/ledger/',
