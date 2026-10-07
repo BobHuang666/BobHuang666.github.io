@@ -7,9 +7,9 @@ import type { FootprintStats } from '../utils/footprint';
 export const StatsSection = ({ stats }: { stats: FootprintStats }) => (
   <div className="space-y-3">
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-      <StatPill icon={MapPin} value={stats.cityCount} label="点亮城市" tone="emerald" />
-      <StatPill icon={Compass} value={stats.provinceCount} label="省级行政区" tone="sky" />
-      <StatPill icon={Globe2} value={stats.countryCount} label="到访国家" tone="indigo" />
+      <StatPill icon={MapPin} value={stats.cityCount} label="城市" tone="emerald" />
+      <StatPill icon={Compass} value={stats.provinceCount} label="省" tone="sky" />
+      <StatPill icon={Globe2} value={stats.countryCount} label="国家" tone="indigo" />
       <StatPill icon={Route} value={stats.tripCount} label="出行记录" tone="violet" />
       <StatPill icon={Plane} value={stats.totalKm.toLocaleString()} label="累计里程 (km)" tone="amber" />
     </div>

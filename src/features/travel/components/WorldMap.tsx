@@ -28,6 +28,10 @@ interface Props {
   /** 需要聚焦的经纬度范围（点击行程时定位），null 表示不聚焦 */
   focusBbox?: [number, number, number, number] | null;
   highlightTripId?: string | null;
+  /** 是否显示出行路线（false 时仅显示城市，不画路径） */
+  showRoutes?: boolean;
+  /** 选中某次出行时，只显示该行程的路线 */
+  selectedTripId?: string | null;
 }
 
 interface ViewBox {
@@ -59,6 +63,8 @@ export const WorldMap = ({
   activeYears,
   focusBbox,
   highlightTripId,
+  showRoutes = true,
+  selectedTripId,
 }: Props) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const dragRef = useRef<{ px: number; py: number; vx: number; vy: number } | null>(null);
@@ -212,6 +218,8 @@ export const WorldMap = ({
           activeYears={activeYears}
           scale={scale}
           highlightTripId={highlightTripId}
+          selectedTripId={selectedTripId}
+          visible={showRoutes}
         />
 
         {/* 国家标记 */}

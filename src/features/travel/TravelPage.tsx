@@ -43,6 +43,11 @@ const TravelPage = () => {
     () => buildStats(chinaData.points, travelTrips, worldData.points),
     [chinaData.points, worldData.points],
   );
+  // 行程按出发日降序排，日期为 YYYY.MM.DD 定长零填充，字典序即时间序
+  const trips = useMemo(
+    () => [...travelTrips].sort((a, b) => b.dateRange[0].localeCompare(a.dateRange[0])),
+    [],
+  );
 
   const isChina = mode === 'china';
   const active = isChina ? china : world;
@@ -121,13 +126,13 @@ const TravelPage = () => {
               points={isChina ? chinaData.points : worldData.points}
               segments={segments}
               stats={stats}
-              trips={travelTrips}
+              trips={trips}
               selectedTripId={selectedTripId}
               onSelectTrip={handleSelectTrip}
               highlightTripId={highlightTripId}
             />
             <TimelineSection
-              trips={travelTrips}
+              trips={trips}
               segments={segments}
               highlightTripId={highlightTripId}
               onHighlight={setHighlightTripId}

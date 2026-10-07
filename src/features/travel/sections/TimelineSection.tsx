@@ -82,12 +82,12 @@ export const TimelineSection = ({
                   const Icon = meta.icon;
                   return (
                     <li key={seg.id} className="flex flex-wrap items-center gap-2 text-sm">
-                      <span className="text-slate-700 dark:text-slate-300">{seg.from.place.name}</span>
+                      <span className="text-slate-700 dark:text-slate-300">{seg.from.place.region || seg.from.place.name}</span>
                       <span className="inline-flex items-center gap-1 text-slate-400">
                         <ArrowRight className="h-3 w-3" />
                         <Icon className="h-3.5 w-3.5" color={meta.color} />
                       </span>
-                      <span className="text-slate-700 dark:text-slate-300">{seg.to.place.name}</span>
+                      <span className="text-slate-700 dark:text-slate-300">{seg.to.place.region || seg.to.place.name}</span>
                       <span className="text-xs text-slate-400 dark:text-slate-500">
                         {meta.label} · {seg.km.toLocaleString()} km · {seg.leg.date}
                       </span>

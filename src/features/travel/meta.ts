@@ -1,5 +1,5 @@
 import {
-  Plane, Train, Car, Bus, Ship,
+  Plane, Train, Car, Bus, Ship, Footprints,
   type LucideIcon,
 } from 'lucide-react';
 import type { PlaceStatus, TransportMode } from '../../types';
@@ -23,9 +23,10 @@ export const TRANSPORT_META: Record<
 > = {
   plane: { label: '飞机', icon: Plane, color: '#6366f1', dash: '', curvature: 0.24 },
   train: { label: '火车', icon: Train, color: '#0ea5e9', dash: '', curvature: 0.1 },
-  car: { label: '自驾', icon: Car, color: '#f59e0b', dash: '6 3', curvature: 0.13 },
+  car: { label: '汽车', icon: Car, color: '#f59e0b', dash: '6 3', curvature: 0.13 },
   bus: { label: '大巴', icon: Bus, color: '#10b981', dash: '5 4', curvature: 0.13 },
   ship: { label: '轮渡', icon: Ship, color: '#06b6d4', dash: '2 3', curvature: 0.18 },
+  walk: { label: '步行', icon: Footprints, color: '#a855f7', dash: '1 3', curvature: 0.05 },
 };
 
 /**

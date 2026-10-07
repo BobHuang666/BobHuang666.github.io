@@ -50,12 +50,12 @@ export const TripDetail = ({ trip, segments, onClose }: Props) => {
           return (
             <li key={seg.id} className="text-sm">
               <div className="flex flex-wrap items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                <span>{seg.from.place.name}</span>
+                <span>{seg.from.place.region || seg.from.place.name}</span>
                 <span className="inline-flex items-center gap-1 text-slate-400">
                   <ArrowRight className="h-3 w-3" />
                   <Icon className="h-3.5 w-3.5" color={meta.color} />
                 </span>
-                <span>{seg.to.place.name}</span>
+                <span>{seg.to.place.region || seg.to.place.name}</span>
               </div>
               <div className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">
                 {meta.label} · {seg.km.toLocaleString()} km · {seg.leg.date}

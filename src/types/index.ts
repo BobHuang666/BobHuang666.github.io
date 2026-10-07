@@ -131,7 +131,7 @@ export interface Work {
 }
 
 /** 交通方式：数据层只存 key，图标 / 配色 / 线型由 features/travel/meta.ts 映射 */
-export const TRANSPORT_MODES = ['plane', 'train', 'car', 'bus', 'ship'] as const;
+export const TRANSPORT_MODES = ['plane', 'train', 'car', 'bus', 'ship', 'walk'] as const;
 export type TransportMode = (typeof TRANSPORT_MODES)[number];
 
 /** 足迹状态：住过 / 去过 / 途经 / 想去 */
