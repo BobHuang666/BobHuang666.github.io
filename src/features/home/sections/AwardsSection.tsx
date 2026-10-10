@@ -79,7 +79,7 @@ export const AwardsSection = () => {
 
         <div className="text-center mt-10">
           <Link
-            to="/profile"
+            to="/profile?tab=awards"
             className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium"
           >
             {uiText.home.viewAllAwards(awards.length)} <ArrowRight className="h-4 w-4 ml-1" />

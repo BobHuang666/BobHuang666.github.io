@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, FileText, Tag as TagIcon, Filter, Rss } from 'lucide-react';
+import { Search, FileText, Tag as TagIcon, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { blogData, blogCategories, blogTags } from '../../data/blog';
 import { uiText } from '../../data/uiText';
@@ -53,15 +53,6 @@ const BlogPage = () => {
           <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-4">
             {uiText.blog.subtitle}
           </p>
-          <a
-            href="/feed.xml"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/60 transition-colors"
-          >
-            <Rss className="h-3.5 w-3.5" />
-            {uiText.blog.rss}
-          </a>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

@@ -1,4 +1,5 @@
 import { useRef, useState, type ComponentType } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Mail, MapPin, Shield,
   CreditCard, Award, Compass, Briefcase, FlaskConical,
@@ -68,7 +69,11 @@ const TabNav = ({
 
 /** /profile —— 页面只负责头部信息卡与 Tab 编排，各 Tab 的内容在 ./tabs */
 function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<TabId>('basic');
+  const [searchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const initialTab: TabId =
+    tabParam && TABS.some((t) => t.id === tabParam) ? (tabParam as TabId) : 'basic';
+  const [activeTab, setActiveTab] = useState<TabId>(initialTab);
   const topTabsRef = useRef<HTMLDivElement>(null);
   const ActiveContent = TAB_CONTENT[activeTab];
 

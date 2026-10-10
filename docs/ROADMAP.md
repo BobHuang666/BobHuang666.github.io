@@ -97,7 +97,7 @@
 | v2.0 国际版 | 2026-05-31 | i18n / giscus 评论 / 技能星级 + 证据 / 图片本地化 / 路由懒加载 |
 | v2.5 全功能 | 2026-05-31 | ⌘K 全站搜索 / Hero 视觉特效 / GoatCounter / Web Vitals / 专题 / 友链 / 追星 |
 | v2.6 导航重构 | 2026-05-31 | 页面中文化命名 / 顶部"更多"下拉 / Footer 四栏分组 / 全站 RelatedLink 互相串联 |
-| v3.0 内容增强 | 2026-05-31 | HashRouter 链接修复 / KaTeX 数学 / Mermaid 图表 / GitHub 热力图 / RSS / sitemap / SmartImage WebP |
+| v3.0 内容增强 | 2026-05-31 | HashRouter 链接修复 / KaTeX 数学 / Mermaid 图表 / GitHub 热力图 / sitemap / SmartImage WebP |
 | v3.1 工程化 | 2026-05-31 | GitHub Actions CI/CD / Husky 钩子 / 打包体积守门 / Lighthouse CI / Dependabot |
 | v3.2 体验升级 | 2026-06-29 | 全站动态 SEO / 专题上下篇导航 / 内页 i18n 全覆盖 / 奖项时间线 / 技能雷达图 / 图片 Lightbox / /now & /uses 数据解耦 / Hero 粒子星空 / 骨架屏体系 / 导航弹簧下划线 / 回到顶部进度环 / 联系区渐变卡片 |
 | v3.3 质量提升 | 2026-06-29 | 精准阅读时间估算（中英分速） / 通用 Avatar 组件 / 专题封面图支持 / 暗色模式圆形擦除动画（View Transition API） / SW 分层缓存策略（skipWaiting + 5 条 runtimeCaching） |

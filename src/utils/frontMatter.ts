@@ -1,9 +1,8 @@
 /**
  * Front-Matter 解析 —— 纯函数，不依赖浏览器或 Vite 专有 API。
  *
- * 被三处共用，保证解析结果完全一致：
+ * 被两处共用，保证解析结果完全一致：
  * - `src/data/blog.ts`（浏览器构建，配 import.meta.glob）
- * - `scripts/rss-feed-plugin.ts`（Node 构建脚本）
  * - `scripts/sitemap-plugin.ts`（Node 构建脚本）
  *
  * 支持 YAML 子集：string / number / boolean / inline 数组 `[a, b]` / 列表 `- item`

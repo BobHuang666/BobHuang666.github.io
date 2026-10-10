@@ -1,4 +1,4 @@
-import { Github, Mail, Rss } from 'lucide-react';
+import { Github, Mail } from 'lucide-react';
 import { uiText } from '../../../data/uiText';
 import { profile } from '../../../data/profile';
 import { scrollToId } from '../../../utils/scroll';
@@ -35,15 +35,6 @@ const Footer = () => {
                   <Mail className="h-5 w-5" />
                 </a>
               )}
-              <a
-                href="/feed.xml"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="RSS Feed"
-                className="hover:text-orange-400 transition-colors"
-              >
-                <Rss className="h-5 w-5" />
-              </a>
             </div>
           </div>
 
@@ -84,7 +75,6 @@ const Footer = () => {
 
         <div className="mt-8 pt-6 border-t border-slate-800 flex flex-col sm:flex-row gap-2 items-center justify-between text-xs text-slate-500">
           <span>© {new Date().getFullYear()} {profile.name}. All rights reserved.</span>
-          <span>{uiText.footer.builtWith}</span>
         </div>
       </div>
     </footer>

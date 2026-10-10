@@ -36,14 +36,13 @@ export const uiText = {
     blog: '游戏攻略',
     more: '更多',
     friends: '友人帐',
-    fandom: '秘密花园',
+    fandom: '追星日记',
     travel: '足迹地图',
   },
 
   /** 页脚 */
   footer: {
     navTitle: '导航',
-    builtWith: '本站使用 React + Vite + Tailwind 构建',
   },
 
   /** 相关跳转卡片：全站复用，避免各处硬编码文案不一致 */
@@ -51,7 +50,7 @@ export const uiText = {
     home: { title: '返回主城', desc: '查看项目与技能概览' },
     blog: { title: '游戏攻略', desc: '读我写的文章' },
     friends: { title: '友人帐', desc: '友情链接' },
-    fandom: { title: '秘密花园', desc: '追星专题' },
+    fandom: { title: '追星日记', desc: '追星专题' },
     travel: { title: '足迹地图', desc: '点亮去过的城市与出行路线' },
   },
 
@@ -100,7 +99,6 @@ export const uiText = {
   blog: {
     title: '游戏攻略',
     subtitle: '技术笔记、项目复盘、学习记录 —— 慢慢写，慢慢更新',
-    rss: 'RSS 订阅',
     searchLabel: '搜索',
     searchPlaceholder: '标题、标签…',
     categoryLabel: '分类',
@@ -144,7 +142,7 @@ export const uiText = {
       friendsDesc: '友情链接 & 友链申请',
       travel: '足迹地图 / Travel',
       travelDesc: '中国地级行政区足迹地图，含出行路径与交通方式',
-      fandom: '秘密花园 / Fandom',
+      fandom: '追星日记 / Fandom',
       fandomDesc: '追星专题 · 偶像墙、演唱会、线下打卡与周边收藏',
     },
   },

@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
-import { rssFeed } from './scripts/rss-feed-plugin'
 import { sitemap } from './scripts/sitemap-plugin'
 
 const SITE_URL = 'https://blog.bobhuang.cn/'
@@ -10,12 +9,6 @@ const SITE_URL = 'https://blog.bobhuang.cn/'
 export default defineConfig({
   plugins: [
     react(),
-    rssFeed({
-      siteUrl: SITE_URL,
-      title: 'BobHuang · 博客',
-      description: '算法、前端、AI 实践与生活思考',
-      author: { name: 'Bob Huang', email: '2295672887@qq.com' },
-    }),
     sitemap({
       siteUrl: SITE_URL,
       routes: [

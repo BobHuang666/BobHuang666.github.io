@@ -28,7 +28,7 @@
 | 路由 | 页面 | 说明 |
 | --- | --- | --- |
 | `/travel` | **足迹地图** | 中国 / 世界足迹地图，点亮去过的城市与出行路线 |
-| `/fandom` | **秘密花园** | 追星专题 · 偶像墙 / 演唱会 / 线下打卡 / 周边收藏 |
+| `/fandom` | **追星日记** | 追星专题 · 偶像墙 / 演唱会 / 线下打卡 / 周边收藏 |
 | `/friends` | **友人帐** | 友情链接 + 申请友链流程 |
 
 ### 其他
@@ -113,7 +113,7 @@ src/
 | **动画** | framer-motion + `prefers-reduced-motion` 兼容 |
 | **设计 token** | Tailwind 扩展 brand/gold 色阶 + Inter/Noto Sans SC |
 | **可访问性** | aria-label / focus ring / 键盘可达 / `prefers-reduced-motion` |
-| **SEO** | 动态 title / description / OG + Twitter Card + sitemap + RSS |
+| **SEO** | 动态 title / description / OG + Twitter Card + sitemap |
 | **代码分割** | react-vendor / motion / markdown / katex 固定分包 + 路由与浮层组件懒加载 |
 
 ---
