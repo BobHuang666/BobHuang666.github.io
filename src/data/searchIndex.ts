@@ -1,7 +1,7 @@
 import { blogData } from './blog';
 import { projects } from './projects';
 import { awards } from './awards';
-import { skillsDetail } from './skills';
+import { skillGroups, hobbies } from './profile';
 import { uiText } from './uiText';
 import { formatAwardDate } from '../utils/awardDate';
 
@@ -46,12 +46,12 @@ const awardItems: SearchItem[] = awards.map((a) => ({
   href: '#/profile',
 }));
 
-const skillItems: SearchItem[] = skillsDetail.flatMap((cat) =>
+const skillItems: SearchItem[] = [...skillGroups, ...hobbies].flatMap((cat) =>
   cat.skills.map((s) => ({
-    id: `skill-${cat.category}-${s.name}`,
+    id: `skill-${cat.name}-${s}`,
     kind: 'skill' as const,
-    title: s.name,
-    description: `${cat.category}${s.note ? ' · ' + s.note : ''}`,
+    title: s,
+    description: cat.name,
     href: '#/profile',
   })),
 );

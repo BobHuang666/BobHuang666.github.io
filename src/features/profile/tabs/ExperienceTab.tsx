@@ -1,5 +1,5 @@
 import { Compass, Users } from 'lucide-react';
-import { practiceExperiences, studentWork } from '../../../data/skills';
+import { practiceExperiences, studentWork } from '../../../data/profile';
 import { SectionHeading, TimelineCard } from './primitives';
 
 /** 学生工作 + 实践经历 */

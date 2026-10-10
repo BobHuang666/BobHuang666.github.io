@@ -127,7 +127,7 @@ src/
 | 个人基础信息 / 邮箱 / GitHub | `src/data/profile.ts` |
 | 添加 / 修改项目 | `src/data/projects.ts` |
 | 添加奖项 | `src/data/awards.ts` |
-| 修改技能 / 课程 / 实习 / 科研 | `src/data/skills.ts` |
+| 修改技能 / 兴趣爱好 / 实习 / 培训 / 实践 / 学生工作 / 科研 / 著作 | `src/data/profile.ts` |
 | 添加博客 | 在 `src/posts/` 新建 `xxx.md`，自动出现在列表 |
 | 友链 | `src/data/friends.ts` |
 | 追星 | `src/data/fandom.ts` |

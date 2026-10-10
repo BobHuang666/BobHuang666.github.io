@@ -1,5 +1,5 @@
 import { Briefcase, GraduationCap } from 'lucide-react';
-import { experiences, trainingExperiences } from '../../../data/skills';
+import { experiences, trainingExperiences } from '../../../data/profile';
 import { SectionHeading, TimelineCard } from './primitives';
 
 /** 实习经历 + 培训经历 */

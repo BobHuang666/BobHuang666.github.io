@@ -1,7 +1,6 @@
-import { profile } from '../../data/profile';
+import { profile, skillGroups, hobbies, experiences, practiceExperiences, studentWork } from '../../data/profile';
 import { projects } from '../../data/projects';
 import { blogData } from '../../data/blog';
-import { skillsDetail, skillPills, experiences, practiceExperiences, studentWork, courses } from '../../data/skills';
 import { awards } from '../../data/awards';
 import { formatAwardDate } from '../../utils/awardDate';
 
@@ -31,7 +30,7 @@ export function buildKB(): KBChunk[] {
       `在读时间：${profile.education.map((e) => e.period).join('、')}`,
       `政治面貌：${profile.politicalStatus}`,
       `职务：${studentWork.map((w) => `${w.org} ${w.role}`).join('；')}`,
-      `兴趣爱好：${skillPills.filter((p) => p.group === 'hobby').map((p) => p.name).join('、')}`,
+      `兴趣爱好：${hobbies.flatMap((h) => h.skills).join('、')}`,
       `GitHub：${profile.github}`,
     ].join('\n'),
     keywords: ['bob', 'huang', '个人', '基本', '信息', '学校', '专业', '大学', 'gpa', '学生', '是谁', '介绍', '北师大', '北京师范大学'],
@@ -72,20 +71,10 @@ export function buildKB(): KBChunk[] {
     id: 'skills',
     category: '技术技能',
     title: '技术栈与技能',
-    content: skillsDetail.map(cat =>
-      `【${cat.category}】\n` +
-      cat.skills.map(s => `  ${s.name}（${s.stars}星）：${s.note}`).join('\n')
+    content: skillGroups.map(cat =>
+      `【${cat.name}】\n` + cat.skills.map(s => `  ${s}`).join('\n')
     ).join('\n\n'),
     keywords: ['技能', '技术', '编程', '语言', '前端', '后端', '框架', 'vue', 'react', 'python', 'c++', 'go', 'typescript', '算法', '工具'],
-  });
-
-  // ── 课程成绩 ────────────────────────────────────────────
-  chunks.push({
-    id: 'courses',
-    category: '课程成绩',
-    title: '主要课程成绩',
-    content: '主要课程成绩：\n' + courses.map(c => `  ${c.name}：${c.score}分（${c.description}）`).join('\n'),
-    keywords: ['课程', '成绩', '分数', '学习', '绩点', '成绩单', '科目'],
   });
 
   // ── 实习经历 ────────────────────────────────────────────

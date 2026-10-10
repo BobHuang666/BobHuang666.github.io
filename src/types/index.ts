@@ -45,28 +45,6 @@ export interface SkillCategory {
   skills: string[];
 }
 
-export interface SkillDetailCategory {
-  category: string;
-  icon: IconName;
-  skills: {
-    name: string;
-    level: number;          // 0-100，仅用于排序参考
-    stars?: 1 | 2 | 3 | 4 | 5;
-    note?: string;
-    tone: GradientTone;
-    /** 证据链接：项目 id 或外链 */
-    evidence?: { label: string; href: string }[];
-  }[];
-}
-
-/** 技能胶囊类别：只决定胶囊浅色调，页面不再分组展示 */
-export type SkillPillGroup = 'language' | 'frontend' | 'backend' | 'tool' | 'hobby';
-
-export interface SkillPill {
-  name: string;
-  group: SkillPillGroup;
-}
-
 /** 奖项级别常量：数据、筛选器、类型共用同一份，避免各处重复声明 */
 export const AWARD_LEVELS = ['国际级', '国家级', '省级', '校级', '院系级'] as const;
 export type AwardLevel = (typeof AWARD_LEVELS)[number];
@@ -103,13 +81,6 @@ export interface Experience {
   time: string;
   org: string;
   role: string;
-  description?: string;
-}
-
-export interface Course {
-  name: string;
-  score: number | string;
-  semester?: string;
   description?: string;
 }
 
