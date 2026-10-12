@@ -1,18 +1,20 @@
-import type { Award as AwardType } from '../types';
+import type { Award as AwardType, AwardCategory, IconName } from '../types';
+import type { GradientTone } from '../utils/gradients';
 
 /**
  * 奖项数据 - 单一数据源，被 HomePage / ProfilePage 共用
- * icon 使用字符串 key，组件层通过 resolveIcon() 解析，避免数据层引入 lucide 依赖
- *
- * tone / icon 均按「奖项类别」归类，方便一眼区分赛道：
- *   算法/程序设计竞赛 → violet  + Code2
- *   数学类           → blueIndigo + Brain
- *   科研/学术作品竞赛 → emeraldTeal + BookOpen
- *   奖学金/助学金     → amber   + Award
- *   学生工作/荣誉     → rose    + Users
- *   社会实践/调研     → orange  + Star
- *   职业规划          → cyanBlue + Medal
  */
+
+export const AWARD_CATEGORY_META: Record<AwardCategory, { icon: IconName; tone: GradientTone }> = {
+  程序设计: { icon: 'Code2', tone: 'violet' },
+  学科竞赛: { icon: 'Brain', tone: 'blueIndigo' },
+  荣誉称号: { icon: 'Users', tone: 'rose' },
+  奖学金: { icon: 'Award', tone: 'amber' },
+  其他: { icon: 'Medal', tone: 'cyanBlue' },
+};
+
+export const awardCategoryMeta = (cat: AwardCategory) => AWARD_CATEGORY_META[cat];
+
 export const awards: AwardType[] = [
   {
     title: 'iGEM 国际基因工程机器大赛 金奖 & TOP10',
@@ -20,8 +22,7 @@ export const awards: AwardType[] = [
     year: '2024',
     month: '10',
     level: '国际级',
-    icon: 'BookOpen',
-    tone: 'emeraldTeal',
+    category: '学科竞赛',
   },
   {
     title: 'ICPC 国际大学生程序设计竞赛全国邀请赛 铜奖',
@@ -30,8 +31,7 @@ export const awards: AwardType[] = [
     month: '4',
     day: '11',
     level: '国家级',
-    icon: 'Code2',
-    tone: 'violet',
+    category: '程序设计',
   },
   {
     title: 'CCCC 团体程序设计天梯赛 三等奖',
@@ -40,8 +40,7 @@ export const awards: AwardType[] = [
     month: '5',
     day: '6',
     level: '国家级',
-    icon: 'Code2',
-    tone: 'violet',
+    category: '程序设计',
   },
   {
     title: '蓝桥杯全国总决赛 三等奖',
@@ -50,8 +49,7 @@ export const awards: AwardType[] = [
     month: '6',
     day: '23',
     level: '国家级',
-    icon: 'Code2',
-    tone: 'violet',
+    category: '程序设计',
   },
   {
     title: '蓝桥杯广东赛区 一等奖',
@@ -60,8 +58,7 @@ export const awards: AwardType[] = [
     month: '5',
     day: '26',
     level: '国家级',
-    icon: 'Code2',
-    tone: 'violet',
+    category: '程序设计',
   },
   {
     title: 'GDCPC 广东省大学生程序设计竞赛 铜奖',
@@ -70,8 +67,7 @@ export const awards: AwardType[] = [
     month: '5',
     day: '17',
     level: '省级',
-    icon: 'Code2',
-    tone: 'violet',
+    category: '程序设计',
   },
   {
     title: 'CCF算法能力大赛区域赛 二等奖',
@@ -80,8 +76,7 @@ export const awards: AwardType[] = [
     month: '12',
     day: '31',
     level: '省级',
-    icon: 'Code2',
-    tone: 'violet',
+    category: '程序设计',
   },
   {
     title: '北京高校数学建模校际联赛 一等奖',
@@ -91,8 +86,7 @@ export const awards: AwardType[] = [
     day: '6',
     description: '基于启发式混合进化算法的三维装箱问题求解',
     level: '省级',
-    icon: 'Brain',
-    tone: 'blueIndigo',
+    category: '学科竞赛',
   },
   {
     title: '全国大学生数学建模竞赛 广东省二等奖',
@@ -101,8 +95,7 @@ export const awards: AwardType[] = [
     month: '12',
     description: '基于抽样检测与生产流程优化的多步决策模型研究',
     level: '省级',
-    icon: 'Brain',
-    tone: 'blueIndigo',
+    category: '学科竞赛',
   },
   {
     title: '全国大学生数学建模竞赛 广东省三等奖',
@@ -111,8 +104,7 @@ export const awards: AwardType[] = [
     month: '12',
     description: '基于启发式搜索与智能优化的无人机烟幕干扰弹投放模型',
     level: '省级',
-    icon: 'Brain',
-    tone: 'blueIndigo',
+    category: '学科竞赛',
   },
   {
     title: '美国大学生数学建模竞赛 S奖',
@@ -121,8 +113,7 @@ export const awards: AwardType[] = [
     month: '5',
     description: 'Olympic Horizons: Navigating Data to Forecast Medal Triumphs',
     level: '国际级',
-    icon: 'Brain',
-    tone: 'blueIndigo',
+    category: '学科竞赛',
   },
   {
     title: '全国大学生数学竞赛 广东省三等奖',
@@ -130,8 +121,7 @@ export const awards: AwardType[] = [
     year: '2023',
     month: '12',
     level: '省级',
-    icon: 'Brain',
-    tone: 'blueIndigo',
+    category: '学科竞赛',
   },
   {
     title: 'BNUPC北京师范大学程序设计竞赛 一等奖',
@@ -139,8 +129,7 @@ export const awards: AwardType[] = [
     year: '2025',
     month: '5',
     level: '校级',
-    icon: 'Code2',
-    tone: 'violet',
+    category: '程序设计',
   },
   {
     title: '“京师杯”课外学术科技作品竞赛 一等奖',
@@ -150,8 +139,7 @@ export const awards: AwardType[] = [
     day: '6',
     description: '公私协创：政府和社会资本合作模式对城市新质生产力发展的影响研究',
     level: '校级',
-    icon: 'BookOpen',
-    tone: 'emeraldTeal',
+    category: '学科竞赛',
   },
   {
     title: '“京师杯”课外学术科技作品竞赛 一等奖',
@@ -160,8 +148,7 @@ export const awards: AwardType[] = [
     month: '7',
     description: '墨尺衡文——数字赋能乡镇语文作文教学',
     level: '校级',
-    icon: 'BookOpen',
-    tone: 'emeraldTeal',
+    category: '学科竞赛',
   },
   {
     title: '北京师范大学京师二等奖学金',
@@ -169,8 +156,15 @@ export const awards: AwardType[] = [
     year: '2026',
     month: '12',
     level: '校级',
-    icon: 'Award',
-    tone: 'amber',
+    category: '奖学金',
+  },
+  {
+    title: '北京师范大学京师三等奖学金',
+    organization: '北京师范大学',
+    year: '2024',
+    month: '12',
+    level: '校级',
+    category: '奖学金',
   },
   {
     title: '北京师范大学竞赛一等奖学金',
@@ -178,8 +172,7 @@ export const awards: AwardType[] = [
     year: '2025',
     month: '12',
     level: '校级',
-    icon: 'Award',
-    tone: 'amber',
+    category: '奖学金',
   },
   {
     title: '北京师范大学 社会工作奖',
@@ -187,17 +180,25 @@ export const awards: AwardType[] = [
     year: '2025',
     month: '12',
     level: '校级',
-    icon: 'Users',
-    tone: 'rose',
+    category: '荣誉称号',
   },
   {
     title: '北京师范大学本科生二等奖励性助学金',
     organization: '北京师范大学',
     year: '2025',
     month: '12',
+    description: '于24-25春、25-26秋、25-26春共获三次',
     level: '校级',
-    icon: 'Award',
-    tone: 'amber',
+    category: '奖学金',
+  },
+  {
+    title: '北京师范大学本科生三等奖励性助学金',
+    organization: '北京师范大学',
+    year: '2023',
+    month: '12',
+    description: '23-24秋、23-24春共获两次',
+    level: '校级',
+    category: '奖学金',
   },
   {
     title: '北京师范大学会同书院 优秀学生干部',
@@ -205,8 +206,7 @@ export const awards: AwardType[] = [
     year: '2025',
     month: '12',
     level: '院系级',
-    icon: 'Users',
-    tone: 'rose',
+    category: '荣誉称号',
   },
   {
     title: '会同书院 社会实践先进个人',
@@ -214,8 +214,7 @@ export const awards: AwardType[] = [
     year: '2024',
     month: '11',
     level: '院系级',
-    icon: 'Star',
-    tone: 'orange',
+    category: '荣誉称号',
   },
   {
     title: '全国大学生职业规划大赛北京师范大学珠海校区校赛 优秀奖',
@@ -224,8 +223,7 @@ export const awards: AwardType[] = [
     month: '12',
     day: '8',
     level: '校级',
-    icon: 'Medal',
-    tone: 'cyanBlue',
+    category: '其他',
   },
   {
     title: '青年科技创新协会 优秀干事',
@@ -235,8 +233,7 @@ export const awards: AwardType[] = [
     day: '13',
     description: '于2023年9-10月、11-12月、2024年4-5月共获3次',
     level: '院系级',
-    icon: 'Users',
-    tone: 'rose',
+    category: '荣誉称号',
   },
   {
     title: '大学生教育国情调查 优秀调查员',
@@ -245,8 +242,7 @@ export const awards: AwardType[] = [
     month: '4',
     day: '16',
     level: '校级',
-    icon: 'Star',
-    tone: 'orange',
+    category: '其他',
   },
   {
     title: '汕头市金山中学 三好学生',
@@ -255,8 +251,7 @@ export const awards: AwardType[] = [
     month: '4',
     day: '27',
     level: '校级',
-    icon: 'Users',
-    tone: 'rose',
+    category: '荣誉称号',
   },
   {
     title: '全国中学生生物学联赛 三等奖',
@@ -264,8 +259,7 @@ export const awards: AwardType[] = [
     year: '2022',
     month: '7',
     level: '省级',
-    icon: 'BookOpen',
-    tone: 'emeraldTeal',
+    category: '学科竞赛',
   },
   {
     title: '广东“新时代好少年”',
@@ -273,8 +267,7 @@ export const awards: AwardType[] = [
     year: '2018',
     month: '12',
     level: '省级',
-    icon: 'Award',
-    tone: 'amber',
+    category: '荣誉称号',
   },
   {
     title: '潮汕星河奖品德奖 二等奖',
@@ -283,8 +276,7 @@ export const awards: AwardType[] = [
     month: '8',
     day: '20',
     level: '省级',
-    icon: 'Award',
-    tone: 'amber',
+    category: '荣誉称号',
   },
   {
     title: '南粤最美少年 活力好少年',
@@ -292,8 +284,7 @@ export const awards: AwardType[] = [
     year: '2017',
     month: '6',
     level: '省级',
-    icon: 'Award',
-    tone: 'amber',
+    category: '荣誉称号',
   },
   {
     title: '广东省优秀少先队员',
@@ -301,8 +292,7 @@ export const awards: AwardType[] = [
     year: '2017',
     month: '6',
     level: '省级',
-    icon: 'Award',
-    tone: 'amber',
+    category: '荣誉称号',
   },
   {
     title: '全国全民健身操舞大赛总决赛 特等奖',
@@ -311,7 +301,6 @@ export const awards: AwardType[] = [
     month: '9',
     description: '有氧健身操 小学混合组',
     level: '国家级',
-    icon: 'Medal',
-    tone: 'cyanBlue',
+    category: '其他',
   },
 ];

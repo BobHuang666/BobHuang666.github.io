@@ -93,6 +93,7 @@ export const uiText = {
   profile: {
     cardView: '卡片',
     timelineView: '时间线',
+    categoryView: '分类',
   },
 
   /** /blog 列表页 */

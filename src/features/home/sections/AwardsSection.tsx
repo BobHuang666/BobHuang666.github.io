@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Trophy } from 'lucide-react';
 import { uiText } from '../../../data/uiText';
-import { awards } from '../../../data/awards';
+import { awards, awardCategoryMeta } from '../../../data/awards';
 import { AWARD_LEVELS, type AwardLevel } from '../../../types';
 import { resolveIcon } from '../../../utils/iconMap';
 import { formatAwardDate } from '../../../utils/awardDate';
@@ -46,13 +46,15 @@ export const AwardsSection = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAwards.map((award, index) => (
+          {filteredAwards.map((award, index) => {
+            const meta = awardCategoryMeta(award.category);
+            return (
             <SectionReveal key={`${award.title}-${index}`} delay={index * 0.06}>
               <div className="card-base p-6 h-full">
                 <div className="flex items-center mb-3">
                   <GradientIcon
-                    icon={resolveIcon(award.icon, Trophy)}
-                    tone={award.tone}
+                    icon={resolveIcon(meta.icon, Trophy)}
+                    tone={meta.tone}
                     className="mr-3 shadow-md"
                   />
                   <div className="flex-1 min-w-0">
@@ -74,7 +76,8 @@ export const AwardsSection = () => {
                 </div>
               </div>
             </SectionReveal>
-          ))}
+          );
+          })}
         </div>
 
         <div className="text-center mt-10">

@@ -49,6 +49,16 @@ export interface SkillCategory {
 export const AWARD_LEVELS = ['国际级', '国家级', '省级', '校级', '院系级'] as const;
 export type AwardLevel = (typeof AWARD_LEVELS)[number];
 
+/** 奖项分类常量：分类视图按此顺序分组 */
+export const AWARD_CATEGORIES = [
+  '程序设计',
+  '学科竞赛',
+  '荣誉称号',
+  '奖学金',
+  '其他',
+] as const;
+export type AwardCategory = (typeof AWARD_CATEGORIES)[number];
+
 export interface Award {
   title: string;
   organization: string;
@@ -56,10 +66,9 @@ export interface Award {
   month?: string;
   day?: string;
   level: AwardLevel;
+  category: AwardCategory;
   description?: string;
   rank?: string;
-  icon: IconName;
-  tone?: GradientTone;
 }
 
 export interface BlogPost {
