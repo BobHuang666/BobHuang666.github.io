@@ -2,20 +2,23 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, MapPin, Music, Quote, Ticket } from 'lucide-react';
 import { concerts, type Concert } from '../../../data/fandom';
 import { gradient } from '../../../utils/gradients';
-import { fmtDate, daysUntil } from '../format';
+import { fmtDate, daysUntil, isUpcoming, parseLocalDate } from '../format';
 import { FandomEmptyState } from '../components';
 
 /** 按年份分组（倒序）；同一年内按日期倒序（最新在前） */
 const groupByYear = (items: { date: string }[]) => {
   const m = new Map<number, Concert[]>();
   for (const it of items) {
-    const y = new Date(it.date).getFullYear();
+    const y = parseLocalDate(it.date).getFullYear();
     if (!m.has(y)) m.set(y, []);
     m.get(y)!.push(it as Concert);
   }
   return [...m.entries()]
     .sort((a, b) => b[0] - a[0])
-    .map(([y, list]) => [y, list.sort((a, b) => +new Date(b.date) - +new Date(a.date))] as [number, Concert[]]);
+    .map(
+      ([y, list]) =>
+        [y, list.sort((a, b) => +parseLocalDate(b.date) - +parseLocalDate(a.date))] as [number, Concert[]],
+    );
 };
 
 /** 单张演唱会卡片（已结束） */
@@ -62,9 +65,9 @@ const ConcertCard = ({ c, idx }: { c: Concert; idx: number }) => (
 /** 演唱会日历：待赴约（渐变卡 + 倒计时）置顶 + 按年份分组的「票根」卡片网格 */
 export const ConcertsTab = () => {
   const upcoming = concerts
-    .filter((c) => c.status === 'upcoming')
-    .sort((a, b) => +new Date(a.date) - +new Date(b.date)); // 临近的在前
-  const past = concerts.filter((c) => c.status !== 'upcoming');
+    .filter((c) => isUpcoming(c.date))
+    .sort((a, b) => +parseLocalDate(a.date) - +parseLocalDate(b.date));
+  const past = concerts.filter((c) => !isUpcoming(c.date));
 
   if (concerts.length === 0) {
     return <FandomEmptyState icon={Calendar} text="还没有演唱会记录 —— 期待下一场约定" />;
@@ -100,9 +103,9 @@ export const ConcertsTab = () => {
                       </span>
                       <div className="text-right">
                         <div className="text-2xl font-extrabold leading-none">
-                          {days > 0 ? days : 0}
+                          {days === 0 ? '今天' : days}
                         </div>
-                        <div className="text-[10px] opacity-90">{days > 0 ? '天后' : '就在今天'}</div>
+                        <div className="text-[10px] opacity-90">{days === 0 ? '就在今天' : '天后'}</div>
                       </div>
                     </div>
                     <h4 className="text-lg font-bold mb-1">{c.tour}</h4>

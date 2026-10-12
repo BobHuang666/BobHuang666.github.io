@@ -9,6 +9,7 @@ import { uiText } from '../../data/uiText';
 import { RelatedLink } from '../../shared/components/ui/RelatedLink';
 import { usePageMeta } from '../../hooks/usePageMeta';
 import { StatPill } from './components';
+import { isUpcoming } from './format';
 import { IdolsTab } from './tabs/IdolsTab';
 import { ConcertsTab } from './tabs/ConcertsTab';
 import { CheckInTab } from './tabs/CheckInTab';
@@ -72,7 +73,7 @@ const FandomPage = () => {
   };
 
   const stats = useMemo(() => {
-    const attended = concerts.filter((c) => c.status === 'attended').length;
+    const attended = concerts.filter((c) => !isUpcoming(c.date)).length;
     const fanYears = fandomConfig.fanSince
       ? Math.max(1, new Date().getFullYear() - Number(fandomConfig.fanSince))
       : 0;

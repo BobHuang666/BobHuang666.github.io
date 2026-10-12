@@ -32,10 +32,8 @@ export interface Concert {
   city: string;
   /** 场馆 */
   venue: string;
-  /** 日期 ISO，如 2024-08-10 */
+  /** 日期 ISO */
   date: string;
-  /** upcoming = 待赴约 · attended = 已现场 */
-  status: 'upcoming' | 'attended';
   /** 票档 / 区域（可选） */
   seat?: string;
   /** 一句话期待或回忆 */
@@ -149,7 +147,8 @@ export const idols: Idol[] = [
 
 /**
  * 演唱会日历
- * status='upcoming' 会自动出现倒计时
+ * 无需维护状态：date >= 今天 自动进入「即将赴约」并显示倒计时，
+ * 早于今天的场次自动按年份归入下方「票根」区。
  */
 export const concerts: Concert[] = [
   {
@@ -159,7 +158,6 @@ export const concerts: Concert[] = [
     city: '河池',
     venue: '河池市体育场',
     date: '2026-10-31',
-    status: 'upcoming',
     highlight: '时隔一个月又见R.E.D & 姚晓棠',
     tone: 'fuchsiaRose',
   },
@@ -170,7 +168,6 @@ export const concerts: Concert[] = [
     city: '香港',
     venue: '启德体艺馆',
     date: '2026-10-11',
-    status: 'upcoming',
     tone: 'cardIndigo',
   },
   {
@@ -180,7 +177,7 @@ export const concerts: Concert[] = [
     city: '汕尾',
     venue: '汕尾市体育中心',
     date: '2026-09-21',
-    status: 'attended',
+    highlight: 'R.E.D、姚晓棠、曾舜晞、陈晓东、蔡旻佑、Yamy郭颖、王以诺等',
     tone: 'mintCyan',
   },
   {
@@ -190,7 +187,6 @@ export const concerts: Concert[] = [
     city: '深圳',
     venue: '深圳宝安体育中心',
     date: '2026-07-11',
-    status: 'attended',
     tone: 'cardAmber',
   },
   {
@@ -200,7 +196,6 @@ export const concerts: Concert[] = [
     city: '香港',
     venue: '西九文化区',
     date: '2026-01-01',
-    status: 'attended',
     tone: 'indigoViolet',
   },
   {
@@ -210,7 +205,6 @@ export const concerts: Concert[] = [
     city: '深圳',
     venue: '深圳宝安体育中心',
     date: '2025-07-27',
-    status: 'attended',
     tone: 'fuchsiaRose',
   },
   {
@@ -220,7 +214,6 @@ export const concerts: Concert[] = [
     city: '香港',
     venue: '亚洲国际博览馆 Arena',
     date: '2025-06-07',
-    status: 'attended',
     highlight: '耳机🎧里唱歌的人出现了',
     tone: 'cardAmber',
   },
@@ -231,7 +224,6 @@ export const concerts: Concert[] = [
     city: '澳门',
     venue: '美狮美高梅',
     date: '2025-01-01',
-    status: 'attended',
     highlight: 'Keep on going higher!',
     tone: 'indigoViolet',
   },
@@ -242,7 +234,6 @@ export const concerts: Concert[] = [
     city: '澳门',
     venue: '美狮美高梅',
     date: '2024-10-14',
-    status: 'attended',
     highlight: 'R.E.D、薛之谦、周深、单依纯、周深、周笔畅、黄子弘凡、刘宇宁、王琳凯、陈卓璇、陈端端',
     tone: 'skyTeal',
   },
@@ -253,7 +244,6 @@ export const concerts: Concert[] = [
     city: '广州',
     venue: '广州体育馆 1 号馆',
     date: '2024-08-24',
-    status: 'attended',
     highlight: '也是在国内听到Regular了',
     tone: 'mintCyan',
   },
@@ -264,7 +254,6 @@ export const concerts: Concert[] = [
     city: '深圳',
     venue: 'HOU LIVE X Mixc cube',
     date: '2024-08-23',
-    status: 'attended',
     highlight: 'First Date',
     tone: 'fuchsiaRose',
   },
@@ -275,7 +264,6 @@ export const concerts: Concert[] = [
     city: '广州',
     venue: '宝能广州国际体育演艺中心',
     date: '2024-08-02',
-    status: 'attended',
     tone: 'sunsetAmber',
   },
   {
@@ -285,7 +273,7 @@ export const concerts: Concert[] = [
     city: '澳门',
     venue: '澳门百老汇',
     date: '2024-03-31',
-    status: 'attended',
+    highlight: 'XIUMIN、崔元明、李洗蕴',
     tone: 'indigoViolet',
   },
   {
@@ -295,7 +283,7 @@ export const concerts: Concert[] = [
     city: '佛山',
     venue: '佛山市青年公园',
     date: '2023-10-04',
-    status: 'attended',
+    highlight: '张艺兴、王子浩LE\'V、LIN、弹壳Danko、GALI、马伯骞Victor、MurdaBeatz、单依纯、Vinida万妮达、王子异',
     tone: 'mintGreen',
   },
 ];

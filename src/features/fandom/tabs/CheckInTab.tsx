@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { CalendarDays, MapPin } from 'lucide-react';
 import { checkIns, type CheckIn } from '../../../data/fandom';
-import { fmtDate } from '../format';
+import { fmtDate, parseLocalDate } from '../format';
 import { FandomEmptyState } from '../components';
 
 /** 明星胶囊渐变配色（已按色相错开排列，相近颜色不相邻） */
@@ -38,13 +38,16 @@ const idolColor = (name: string) => {
 const groupByYear = (items: { date: string }[]) => {
   const m = new Map<number, CheckIn[]>();
   for (const it of items) {
-    const y = new Date(it.date).getFullYear();
+    const y = parseLocalDate(it.date).getFullYear();
     if (!m.has(y)) m.set(y, []);
     m.get(y)!.push(it as CheckIn);
   }
   return [...m.entries()]
     .sort((a, b) => b[0] - a[0])
-    .map(([y, list]) => [y, list.sort((a, b) => +new Date(b.date) - +new Date(a.date))] as [number, CheckIn[]]);
+    .map(
+      ([y, list]) =>
+        [y, list.sort((a, b) => +parseLocalDate(b.date) - +parseLocalDate(a.date))] as [number, CheckIn[]],
+    );
 };
 
 /** 线下打卡：按年份分组的时间线（竖向路径 + 打卡点） */
