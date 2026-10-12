@@ -40,6 +40,40 @@
         } catch (e) {}
       })();
     </script>
+
+    <!-- 白屏兜底 -->
+    <script>
+      (function () {
+        var PREFIX = 'bh:asset-reload:';
+        function isViteAsset(url) {
+          return /\/assets\/[^?#]*\.(?:js|mjs|css)(?:[?#]|$)/.test(url);
+        }
+        function reloadOnce(url) {
+          try {
+            if (sessionStorage.getItem(PREFIX + url)) return;
+            sessionStorage.setItem(PREFIX + url, '1');
+          } catch (e) {
+            return;
+          }
+          var sep = location.search ? '&' : '?';
+          location.replace(
+            location.pathname + location.search + sep + '_t=' + Date.now() + location.hash,
+          );
+        }
+        window.addEventListener(
+          'error',
+          function (e) {
+            var t = e.target;
+            if (!t || !t.tagName) return;
+            var url = t.src || t.href;
+            if ((t.tagName === 'SCRIPT' || t.tagName === 'LINK') && url && isViteAsset(url)) {
+              reloadOnce(url);
+            }
+          },
+          true,
+        );
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
