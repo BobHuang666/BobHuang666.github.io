@@ -52,12 +52,14 @@ export default defineConfig({
         // mode: 'development' 可规避 workbox-build terser 插件在 rollup 环境中的冲突
         mode: 'development',
         disableDevLogs: true,
+        // 关闭默认 navigateFallback，导航交由下方自定义 NetworkFirst 处理
+        navigateFallback: undefined,
         // SW 安装后立即激活并接管
         skipWaiting: true,
         clientsClaim: true,
         cleanupOutdatedCaches: true,
-        // 预缓存：只缓存 HTML 与静态图片，排除 js/css。
-        globPatterns: ['**/*.{html,ico,png,svg,jpg,jpeg,webp,avif}'],
+        // 仅预缓存静态图片与图标
+        globPatterns: ['**/*.{ico,png,svg,jpg,jpeg,webp,avif}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         runtimeCaching: [
           // ① 导航请求（HTML）：NetworkFirst，离线时返回缓存
@@ -66,7 +68,9 @@ export default defineConfig({
             handler: 'NetworkFirst',
             options: {
               cacheName: 'pages-cache',
-              networkTimeoutSeconds: 3,
+              // 仅网络失败时回退缓存；no-store 跳过浏览器缓存，始终取最新 HTML
+              // fetchOptions 在 Workbox 运行时合法，但 @types/node 的 RequestInit 未声明 cache 字段，做最小断言
+              fetchOptions: { cache: 'no-store' } as unknown as RequestInit,
               expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 },
               cacheableResponse: { statuses: [0, 200] },
             },

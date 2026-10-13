@@ -1,10 +1,9 @@
-import { useEffect, useState, Suspense } from 'react';
+import { lazy, useEffect, useState, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import { Search } from 'lucide-react';
 import { ErrorBoundary } from '../../shared/components/ui/ErrorBoundary';
-import { lazyWithRetry } from '../../utils/lazyWithRetry';
 
-const SearchPalette = lazyWithRetry(() => import('./SearchPalette'), 'SearchPalette');
+const SearchPalette = lazy(() => import('./SearchPalette'));
 
 /** 全局搜索触发器：按钮 + 全局 ⌘K / Ctrl+K 快捷键 */
 export const SearchTrigger = ({ className = '' }: { className?: string }) => {

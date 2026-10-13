@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { HashRouter as Router } from 'react-router-dom';
 import Navigation from '../shared/components/layout/Navigation';
 import Footer from '../shared/components/layout/Footer';
@@ -7,10 +7,9 @@ import ScrollRestoration from '../shared/components/effects/ScrollRestoration';
 import { ErrorBoundary } from '../shared/components/ui/ErrorBoundary';
 import { AppProviders } from './AppProviders';
 import { AppRoutes } from './routes';
-import { lazyWithRetry } from '../utils/lazyWithRetry';
 
-const AiAssistant = lazyWithRetry(() => import('../features/assistant/AiAssistant'), 'AiAssistant');
-const MouseParticles = lazyWithRetry(() => import('../shared/components/effects/MouseParticles'), 'MouseParticles');
+const AiAssistant = lazy(() => import('../features/assistant/AiAssistant'));
+const MouseParticles = lazy(() => import('../shared/components/effects/MouseParticles'));
 
 /** Root composition: providers, shared shell, route outlet, and global overlays. */
 export default function App() {

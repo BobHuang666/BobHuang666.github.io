@@ -55,10 +55,7 @@
           } catch (e) {
             return;
           }
-          var sep = location.search ? '&' : '?';
-          location.replace(
-            location.pathname + location.search + sep + '_t=' + Date.now() + location.hash,
-          );
+          location.reload();
         }
         window.addEventListener(
           'error',

@@ -12,7 +12,7 @@
 - **博客**：`src/posts/*.md` 自动加载，Front-Matter / GFM / rehype-highlight / rehype-katex / Mermaid / 复制 / TOC / 阅读进度 / giscus 评论
 - **搜索**：Fuse.js 命令面板（⌘K / Ctrl+K / `/`），覆盖博客 / 项目 / 奖项 / 技能 / 页面
 - **AI 助手**：RAG 知识库检索 + OpenAI 兼容流式对话，无 API Key 时降级为站内检索结果
-- **PWA**：自动生成 SW + manifest，分层缓存（页面 NetworkFirst / 图片 CacheFirst / 字体 StaleWhileRevalidate / GitHub API NetworkFirst）
+- **PWA**：自动生成 SW + manifest，分层缓存（关闭默认 `navigateFallback`，导航请求由 NetworkFirst + `no-store` 接管，仅网络失败时回退运行时 `pages-cache`；图片 CacheFirst / 字体 StaleWhileRevalidate / GitHub API NetworkFirst）；防白屏三层兜底：`index.html` 内联脚本（入口资源失败刷新）+ `vite:preloadError`（动态 chunk 失败刷新）+ `ErrorBoundary`（渲染异常兜底）
 - **性能**：路由与浮层组件懒加载；GitHub 组件进入视口才发请求；Hero canvas 在移动端与 `prefers-reduced-motion` 下降级
 - **工程**：TypeScript strict + ESLint 零错误；husky + lint-staged + GitHub Actions CI/CD + 体积守门 + Lighthouse CI + Dependabot
 
