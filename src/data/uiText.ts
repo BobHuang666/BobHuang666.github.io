@@ -91,7 +91,7 @@ export const uiText = {
 
   /** /profile 页面视图切换 */
   profile: {
-    cardView: '卡片',
+    cardView: '等级',
     timelineView: '时间线',
     categoryView: '分类',
   },

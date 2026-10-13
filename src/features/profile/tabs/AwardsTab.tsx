@@ -34,7 +34,7 @@ const CATEGORY_TITLE_TEXT: Record<AwardCategory, string> = {
   其他: 'text-cyan-600 dark:text-cyan-400',
 };
 
-/** 单张奖项卡片：卡片视图（按等级）与分类视图（按类别）共用
+/** 单张奖项卡片：等级视图（按等级）与分类视图（按类别）共用
  * - showLevel：是否在卡片上标注等级（分类视图开启，颜色同时间线视图） */
 const AwardCard = ({
   award,
@@ -48,7 +48,7 @@ const AwardCard = ({
   <motion.div
     initial={{ opacity: 0, y: 8 }}
     animate={{ opacity: 1, y: 0 }}
-    className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+    className="flex flex-col h-full bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
   >
     <div className="flex items-start mb-3">
       <GradientIcon icon={resolveIcon(meta.icon, Star)} tone={meta.tone} className="mr-3 shadow" />
@@ -66,7 +66,7 @@ const AwardCard = ({
         {award.description}
       </p>
     )}
-    <div className="flex items-center justify-between text-xs gap-2">
+    <div className="flex items-center justify-between text-xs gap-2 mt-auto pt-1">
       <div className="flex items-center gap-2 min-w-0">
         {showLevel && (
           <span className={`px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-medium shrink-0 ${levelText(award.level)}`}>
@@ -87,11 +87,11 @@ const AwardCard = ({
   );
 };
 
-/** 获奖经历：卡片视图（按等级分组）+ 时间线视图（按年份）+ 分类视图（按类别） */
+/** 获奖经历：等级视图（按等级分组）+ 时间线视图（按年份）+ 分类视图（按类别） */
 export const AwardsTab = () => {
   const [view, setView] = useState<'card' | 'timeline' | 'category'>('card');
 
-  // 卡片视图：按等级分组（高 → 低），组内按时间降序
+  // 等级视图：按等级分组（高 → 低），组内按时间降序
   const levelGroups = AWARD_LEVELS
     .map((level) => ({
       level,
