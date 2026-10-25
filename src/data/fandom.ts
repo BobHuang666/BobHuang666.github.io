@@ -152,16 +152,6 @@ export const idols: Idol[] = [
  */
 export const concerts: Concert[] = [
   {
-    id: 'c-hechi-2026',
-    idol: 'R.E.D',
-    tour: '2026 活力金城音乐节',
-    city: '河池',
-    venue: '河池市体育场',
-    date: '2026-10-31',
-    highlight: '时隔一个月又见R.E.D & 姚晓棠',
-    tone: 'fuchsiaRose',
-  },
-  {
     id: 'c-nct127-hk-2026',
     idol: 'NCT',
     tour: "NCT 127 5TH TOUR 'NEO CITY : THE REDLINE'",
@@ -208,12 +198,12 @@ export const concerts: Concert[] = [
     tone: 'fuchsiaRose',
   },
   {
-    id: 'c-taeyeon-hk-2025',
+    id: 'c-taeyeon-mo-2025',
     idol: '泰妍',
-    tour: 'TAEYEON CONCERT – The TENSE in HONG KONG',
-    city: '香港',
-    venue: '亚洲国际博览馆 Arena',
-    date: '2025-06-07',
+    tour: 'TAEYEON CONCERT – The TENSE in MACAU',
+    city: '澳门',
+    venue: '威尼斯人综艺馆',
+    date: '2025-04-26',
     highlight: '耳机🎧里唱歌的人出现了',
     tone: 'cardAmber',
   },
@@ -290,6 +280,13 @@ export const concerts: Concert[] = [
 
 /** 线下打卡 */
 export const checkIns: CheckIn[] = [
+  {
+    id: 'ci-20261023',
+    date: '2026-10-23',
+    idol: '蓝心羽 / 江辰',
+    place: '广州音乐唐人馆',
+    note: 'Dragon请客，蓝心羽2026「爱是love is...」巡回演唱会广州站，第一次看这样的演唱会',
+  },
   {
     id: 'ci-20260906',
     date: '2026-09-06',
