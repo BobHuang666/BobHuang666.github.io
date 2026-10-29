@@ -159,7 +159,8 @@ src/
 | `GOATCOUNTER_API_TOKEN` | GoatCounter（个人设置 → API）生成的密钥 | 每日访客日报需要 |
 
 3. 发送脚本为 `.github/scripts/feishu-notify.mjs`，所有通知均为飞书卡片消息
-4. GoatCounter 后台时区请设为北京时间，日报日期才对得上
+4. 每日日报用显式 `+08:00` 偏移查询统计，不依赖 GoatCounter 时区设置；
+   若想让 Dashboard 的按天分组也按北京时间切分：右上角用户名 → 用户设置 → **Preferences** 标签 → **Timezone** 选 `Asia/Shanghai` → Save
 
 ---
 
@@ -232,7 +233,7 @@ PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节
 | 🚨 CI 失败 | push / PR 检查失败，卡片含失败步骤与日志链接 | `ci.yml` |
 | 🚀 部署成功 / 🚨 部署失败 | 部署流水线结束，含版本、gzip 体积、Lighthouse 分数 | `deploy.yml` |
 | 🚨 站点宕机 / ✅ 恢复 | 每 15 分钟探测 `blog.bobhuang.cn`（3 次重试防误报），状态翻转才通知，防轰炸 | `uptime.yml` |
-| 📊 每日日报 | 每天 08:05（北京时间）：昨日访客、热门页面 TOP5、SSL 证书剩余天数（不足 14 天转橙色警告） | `daily-report.yml` |
+| 📊 每日日报 | 每天 08:05（北京时间）：昨日访客、热门页面 TOP5、SSL 证书剩余天数（北京时间显示，不足 14 天转橙色警告） | `daily-report.yml` |
 
 > 本站托管在 GitHub Pages（无服务器/容器/备份），故 CPU / 内存 / 容器 / 备份类告警不适用。
 > schedule 任务在仓库 60 天无 push 后会被 GitHub 暂停，手动跑一次即可恢复。

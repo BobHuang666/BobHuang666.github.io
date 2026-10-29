@@ -55,7 +55,7 @@ jobs:
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "code=$code" >> "$GITHUB_OUTPUT"
           echo "latency_ms=$(awk -v t="$latency" 'BEGIN { printf "%.0f", t * 1000 }')" >> "$GITHUB_OUTPUT"
-          echo "at=$(TZ=Asia/Shanghai date '+%F %T')" >> "$GITHUB_OUTPUT"
+          echo "at=$(date -u -d '+8 hours' '+%F %T')" >> "$GITHUB_OUTPUT"
 
       - name: 判定状态并发送飞书通知
         id: notify
@@ -106,7 +106,7 @@ jobs:
             echo 'changed=true' >> "$GITHUB_OUTPUT"
             start=${prev#* }
             minutes=$(( ($(date +%s) - start + 59) / 60 ))
-            down_at=$(TZ=Asia/Shanghai date -d "@$start" '+%F %T' 2>/dev/null || echo '未知')
+            down_at=$(date -u -d "@$(( start + 8 * 3600 ))" '+%F %T' 2>/dev/null || echo '未知')
             export FEISHU_TITLE='✅ 博客已恢复 · blog.bobhuang.cn'
             export FEISHU_COLOR=green
             export FEISHU_BODY="$(printf '%s\n' \

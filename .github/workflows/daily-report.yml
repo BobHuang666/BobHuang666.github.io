@@ -30,24 +30,26 @@ jobs:
           GC_SITE: 'bobhuang'
         run: |
           set -euo pipefail
-          export TZ=Asia/Shanghai
-          yesterday=$(date -d 'yesterday' +%F)
-          today=$(date +%F)
-          # start/end 按站点时区解析，请确保 GoatCounter 后台时区设为北京时间
+          # 北京时区的"昨日"窗口，用 UTC+8h 换算（不依赖 runner 的时区数据）。
+          # GoatCounter API 只接受 2026-01-02 或 RFC3339 两种时间格式，
+          # 这里用显式 +08:00 偏移的 RFC3339，也不依赖站点时区设置
+          y=$(date -u -d '-1 day +8 hours' '+%F')
+          start="${y}T00:00:00+08:00"
+          end="$(date -u -d '+8 hours' '+%F')T00:00:00+08:00"
           base="https://${GC_SITE}.goatcounter.com/api/v0/stats"
           fetch() {
-            curl -sS --max-time 20 \
+            curl -sS --max-time 20 -f \
               -H "Authorization: Bearer $GC_TOKEN" -H 'Content-Type: application/json' \
               --get "$base/$1" "${@:2}"
           }
 
-          total=$(fetch total --data-urlencode "start=$yesterday 00:00" --data-urlencode "end=$today 00:00")
+          total=$(fetch total --data-urlencode "start=$start" --data-urlencode "end=$end")
           visitors=$(printf '%s' "$total" | jq -r '.total // 0')
 
-          top=$(fetch hits --data-urlencode "start=$yesterday 00:00" --data-urlencode "end=$today 00:00" --data-urlencode 'limit=5' \
+          top=$(fetch hits --data-urlencode "start=$start" --data-urlencode "end=$end" --data-urlencode 'limit=5' \
             | jq -r '.hits[]? | select(.event != true) | "· `\(.path)` — \(.count)"')
 
-          echo "yesterday=$yesterday" >> "$GITHUB_OUTPUT"
+          echo "yesterday=$y" >> "$GITHUB_OUTPUT"
           echo "visitors=$visitors" >> "$GITHUB_OUTPUT"
           {
             echo 'top<<EOF'
@@ -62,14 +64,17 @@ jobs:
           end=$(echo | timeout 20 openssl s_client -connect blog.bobhuang.cn:443 -servername blog.bobhuang.cn 2>/dev/null \
             | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2 || true)
           days=''
+          expire_bj=''
           if [ -n "$end" ]; then
             expire=$(date -d "$end" +%s)
             days=$(( (expire - $(date +%s)) / 86400 ))
+            expire_bj=$(date -u -d "@$(( expire + 8 * 3600 ))" '+%F %H:%M')
           fi
           echo "days=$days" >> "$GITHUB_OUTPUT"
-          echo "expire=$end" >> "$GITHUB_OUTPUT"
+          echo "expire=$expire_bj" >> "$GITHUB_OUTPUT"
 
       - name: 发送飞书日报
+        if: always()
         continue-on-error: true
         env:
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
@@ -95,9 +100,9 @@ jobs:
           if [[ "$SSL_DAYS" =~ ^[0-9]+$ ]]; then
             if [ "$SSL_DAYS" -lt 14 ]; then
               title="⚠️ SSL 证书仅剩 ${SSL_DAYS} 天 · 博客日报"
-              body+=$'\n\n'"**🔒 SSL 证书**：${SSL_DAYS} 天后到期（${SSL_EXPIRE}），请尽快处理"
+              body+=$'\n\n'"**🔒 SSL 证书**：${SSL_DAYS} 天后到期（$SSL_EXPIRE 北京时间），请尽快处理"
             else
-              body+=$'\n\n'"**🔒 SSL 证书**：剩余 ${SSL_DAYS} 天（${SSL_EXPIRE} 到期）"
+              body+=$'\n\n'"**🔒 SSL 证书**：剩余 ${SSL_DAYS} 天（$SSL_EXPIRE 北京时间到期）"
             fi
           else
             body+=$'\n\n**🔒 SSL 证书**：今日获取失败'

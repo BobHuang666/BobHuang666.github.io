@@ -122,11 +122,27 @@ jobs:
         id: lh_summary
         if: always()
         env:
-          RESULTS: ${{ steps.lhci.outputs.resultsJson }}
+          RESULTS_PATH: ${{ steps.lhci.outputs.resultsPath }}
           LINKS: ${{ steps.lhci.outputs.links }}
         run: |
-          # 取首页（第一个 URL）的四项评分；格式异常时留空，通知卡自动省略
-          scores=$(printf '%s' "$RESULTS" | jq -c '.[0].summary // empty' 2>/dev/null || true)
+          # v12 的 resultsPath 指向 LHCI 结果文件夹，lhr-*.json 为完整报告；
+          # 优先取首页（不带 # 的 URL）那份，取不到退回第一份；解析失败留空，通知卡自动省略
+          scores=''
+          if [ -n "$RESULTS_PATH" ] && [ -d "$RESULTS_PATH" ]; then
+            f=$(grep -lE '"requestedUrl": ?"https://blog\.bobhuang\.cn/"' "$RESULTS_PATH"/*.json 2>/dev/null | head -n 1 || true)
+            [ -z "$f" ] && f=$(find "$RESULTS_PATH" -maxdepth 1 -name 'lhr-*.json' 2>/dev/null | head -n 1 || true)
+            if [ -n "$f" ]; then
+              echo "使用报告: $f"
+              scores=$(jq -c '{
+                performance: (.categories.performance.score // 0),
+                accessibility: (.categories.accessibility.score // 0),
+                "best-practices": (.categories["best-practices"].score // 0),
+                seo: (.categories.seo.score // 0)
+              }' "$f" 2>/dev/null || true)
+            fi
+          else
+            echo "RESULTS_PATH 为空或目录不存在: '$RESULTS_PATH'"
+          fi
           echo "scores=$scores" >> "$GITHUB_OUTPUT"
           url=$(printf '%s' "$LINKS" | { grep -oE 'https://[^ "]+' || true; } | head -n 1)
           echo "report_url=$url" >> "$GITHUB_OUTPUT"
