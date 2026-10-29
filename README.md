@@ -236,6 +236,7 @@ PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节
 
 > 本站托管在 GitHub Pages（无服务器/容器/备份），故 CPU / 内存 / 容器 / 备份类告警不适用。
 > schedule 任务在仓库 60 天无 push 后会被 GitHub 暂停，手动跑一次即可恢复。
+> 想看卡片效果：**Actions → 对应工作流 → Run workflow** 手动触发（`Uptime Monitor` 勾选 `force` 可强制发卡；`CI` 仅失败时才发通知）。
 
 ---
 

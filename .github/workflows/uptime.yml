@@ -6,6 +6,15 @@ on:
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
+    inputs:
+      url:
+        description: '临时覆盖探测地址（留空 = 探测线上站点），配 force 可测试宕机告警卡'
+        required: false
+        default: ''
+      force:
+        description: '强制发送当前探测结果卡片（仅测试，不改变状态机）'
+        type: boolean
+        default: false
 
 # 同一时间只保留一次探测
 concurrency:
@@ -31,9 +40,11 @@ jobs:
 
       - name: 探测（失败重试 3 次，防误报）
         id: probe
+        env:
+          PROBE_URL: ${{ github.event.inputs.url }}
         run: |
           set -euo pipefail
-          url='https://blog.bobhuang.cn/'
+          url="${PROBE_URL:-https://blog.bobhuang.cn/}"
           code='000'; latency='0'
           for i in 1 2 3; do
             out=$(curl -o /dev/null -sS -w '%{http_code} %{time_total}' --max-time 20 "$url" || true)
@@ -41,6 +52,7 @@ jobs:
             [ "$code" = 200 ] && break
             [ "$i" = 3 ] || sleep 15
           done
+          echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "code=$code" >> "$GITHUB_OUTPUT"
           echo "latency_ms=$(awk -v t="$latency" 'BEGIN { printf "%.0f", t * 1000 }')" >> "$GITHUB_OUTPUT"
           echo "at=$(TZ=Asia/Shanghai date '+%F %T')" >> "$GITHUB_OUTPUT"
@@ -52,6 +64,8 @@ jobs:
         env:
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
           FEISHU_WEBHOOK_SECRET: ${{ secrets.FEISHU_WEBHOOK_SECRET }}
+          FORCE: ${{ github.event.inputs.force }}
+          PROBE_URL: ${{ steps.probe.outputs.url }}
           CODE: ${{ steps.probe.outputs.code }}
           LATENCY_MS: ${{ steps.probe.outputs.latency_ms }}
           AT: ${{ steps.probe.outputs.at }}
@@ -61,6 +75,21 @@ jobs:
           state_file='.uptime-state/status.txt'
           prev=$(cat "$state_file" 2>/dev/null || true)
           prev_state=${prev%% *}
+
+          # 手动测试模式：只发送当前探测结果，不改变状态机
+          if [ "$FORCE" = true ]; then
+            if [ "$CODE" = 200 ]; then
+              export FEISHU_TITLE='✅ 探测正常（测试） · blog.bobhuang.cn' FEISHU_COLOR=green
+            else
+              export FEISHU_TITLE='🚨 探测失败（测试） · blog.bobhuang.cn' FEISHU_COLOR=red
+            fi
+            export FEISHU_BODY="$(printf '%s\n' \
+              "**探测时间**：$AT（北京时间）" \
+              "**探测地址**：$PROBE_URL" \
+              "**结果**：HTTP $CODE（$LATENCY_MS ms）")"
+            node .github/scripts/feishu-notify.mjs
+            exit 0
+          fi
 
           if [ "$CODE" != 200 ] && [ "$prev_state" != DOWN ]; then
             # 状态存 Unix 时间戳，时长计算与时区无关
