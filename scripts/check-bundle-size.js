@@ -125,6 +125,16 @@ console.log(`按需加载 JS: ${fmt(lazyJsGz)} (gzip)`)
 console.log(`JS 总计:     ${fmt(totalJsGz)} (gzip)  限额 ${LIMITS.totalJsGzipKB} KB`)
 console.log(`CSS 总计:    ${fmt(totalCssGz)} (gzip)`)
 
+// 机器可读汇总行，部署通知（deploy.yml）会抓取这一行展示
+console.log(
+  'SIZE_JSON:' +
+    JSON.stringify({
+      criticalJsKB: +(criticalJsGz / 1024).toFixed(2),
+      totalJsKB: +(totalJsGz / 1024).toFixed(2),
+      totalCssKB: +(totalCssGz / 1024).toFixed(2),
+    }),
+)
+
 if (criticalJsGz > LIMITS.criticalJsGzipKB * 1024) {
   failed = true
   issues.push(

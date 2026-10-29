@@ -147,6 +147,20 @@ src/
 1. 在 <https://www.goatcounter.com/> 注册
 2. 把分配的 code 填到 `src/utils/analytics.ts` 的 `goatcounterCode`
 
+### 启用飞书告警机器人（Feishu Webhook）
+
+1. 在飞书群里添加「自定义机器人」，拿到 Webhook 地址（可选开启签名校验）
+2. 仓库 **Settings → Secrets and variables → Actions** 添加：
+
+| Secret | 用途 | 必填 |
+| --- | --- | --- |
+| `FEISHU_WEBHOOK_URL` | 机器人 Webhook 地址，不配置则所有通知静默跳过 | CI/部署/宕机告警需要 |
+| `FEISHU_WEBHOOK_SECRET` | 机器人开启「签名校验」时的密钥 | 否 |
+| `GOATCOUNTER_API_TOKEN` | GoatCounter（个人设置 → API）生成的密钥 | 每日访客日报需要 |
+
+3. 发送脚本为 `.github/scripts/feishu-notify.mjs`，所有通知均为飞书卡片消息
+4. GoatCounter 后台时区请设为北京时间，日报日期才对得上
+
 ---
 
 ## 部署 GitHub Pages
@@ -208,6 +222,20 @@ PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节
 - SEO ≥ 90
 
 每次部署后报告会上传到临时公开存储，可在 Actions 运行日志里点开链接查看。
+
+### 飞书服务告警（Feishu Webhook）
+
+配置 `FEISHU_WEBHOOK_URL` secret 后自动生效（详见上方「配置指南」），通知均为简明卡片消息：
+
+| 通知 | 触发 | 工作流 |
+| --- | --- | --- |
+| 🚨 CI 失败 | push / PR 检查失败，卡片含失败步骤与日志链接 | `ci.yml` |
+| 🚀 部署成功 / 🚨 部署失败 | 部署流水线结束，含版本、gzip 体积、Lighthouse 分数 | `deploy.yml` |
+| 🚨 站点宕机 / ✅ 恢复 | 每 15 分钟探测 `blog.bobhuang.cn`（3 次重试防误报），状态翻转才通知，防轰炸 | `uptime.yml` |
+| 📊 每日日报 | 每天 08:05（北京时间）：昨日访客、热门页面 TOP5、SSL 证书剩余天数（不足 14 天转橙色警告） | `daily-report.yml` |
+
+> 本站托管在 GitHub Pages（无服务器/容器/备份），故 CPU / 内存 / 容器 / 备份类告警不适用。
+> schedule 任务在仓库 60 天无 push 后会被 GitHub 暂停，手动跑一次即可恢复。
 
 ---
 

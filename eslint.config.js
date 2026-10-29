@@ -36,6 +36,7 @@ export default tseslint.config(
     files: [
       '*.config.{js,cjs,mjs}',
       'scripts/**/*.{js,mjs,cjs,ts}',
+      '.github/scripts/**/*.{js,mjs,cjs}',
       'postcss.config.js',
       'tailwind.config.js',
       'eslint.config.js',

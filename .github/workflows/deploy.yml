@@ -19,8 +19,11 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    outputs:
+      size_json: ${{ steps.size_summary.outputs.json }}
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@v6
 
       - name: Setup Node.js
@@ -30,22 +33,37 @@ jobs:
           cache: 'npm'
 
       - name: Verify lockfile is in sync with package.json
+        id: lockfile
         run: npm ci --dry-run
 
       - name: Install dependencies
+        id: install
         run: npm ci
 
       - name: Type Check
+        id: typecheck
         run: npm run typecheck
 
       - name: Lint
+        id: lint
         run: npm run lint
 
       - name: Build
+        id: build
         run: npm run build
 
       - name: Bundle Size Check
-        run: npm run size
+        id: size
+        run: |
+          set -o pipefail
+          node scripts/check-bundle-size.js | tee /tmp/size-report.txt
+
+      - name: 提取体积摘要
+        id: size_summary
+        if: always()
+        run: |
+          json=$(grep -o 'SIZE_JSON:.*' /tmp/size-report.txt | tail -n 1 | sed 's/^SIZE_JSON://')
+          echo "json=$json" >> "$GITHUB_OUTPUT"
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
@@ -73,6 +91,9 @@ jobs:
     runs-on: ubuntu-latest
     # Lighthouse 失败不阻塞部署，只产出报告
     continue-on-error: true
+    outputs:
+      scores: ${{ steps.lh_summary.outputs.scores }}
+      report_url: ${{ steps.lh_summary.outputs.report_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -86,6 +107,7 @@ jobs:
         run: sleep 30
 
       - name: Run Lighthouse CI
+        id: lhci
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
@@ -95,3 +117,82 @@ jobs:
           uploadArtifacts: true
           temporaryPublicStorage: true
           configPath: ./.github/lighthouse/lighthouserc.json
+
+      - name: 提取分数与报告链接
+        id: lh_summary
+        if: always()
+        env:
+          RESULTS: ${{ steps.lhci.outputs.resultsJson }}
+          LINKS: ${{ steps.lhci.outputs.links }}
+        run: |
+          # 取首页（第一个 URL）的四项评分；格式异常时留空，通知卡自动省略
+          scores=$(printf '%s' "$RESULTS" | jq -c '.[0].summary // empty' 2>/dev/null || true)
+          echo "scores=$scores" >> "$GITHUB_OUTPUT"
+          url=$(printf '%s' "$LINKS" | { grep -oE 'https://[^ "]+' || true; } | head -n 1)
+          echo "report_url=$url" >> "$GITHUB_OUTPUT"
+
+  notify:
+    name: Feishu 通知
+    needs: [build, deploy, lighthouse]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: 发送飞书通知
+        continue-on-error: true
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_WEBHOOK_SECRET: ${{ secrets.FEISHU_WEBHOOK_SECRET }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+          SIZE_JSON: ${{ needs.build.outputs.size_json }}
+          LH_SCORES: ${{ needs.lighthouse.outputs.scores }}
+          LH_REPORT_URL: ${{ needs.lighthouse.outputs.report_url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          site='https://blog.bobhuang.cn'
+          short_sha="${GITHUB_SHA::8}"
+
+          if [ "$BUILD_RESULT" = success ] && [ "$DEPLOY_RESULT" = success ]; then
+            export FEISHU_TITLE="🚀 部署成功 · $site"
+            export FEISHU_COLOR=green
+            lines=("**版本**：\`$short_sha\`　**分支**：\`$GITHUB_REF_NAME\`　**触发者**：\`$GITHUB_ACTOR\`")
+
+            if [ -n "$SIZE_JSON" ]; then
+              critical=$(printf '%s' "$SIZE_JSON" | jq -r '.criticalJsKB // "?"')
+              total=$(printf '%s' "$SIZE_JSON" | jq -r '.totalJsKB // "?"')
+              css=$(printf '%s' "$SIZE_JSON" | jq -r '.totalCssKB // "?"')
+              lines+=("**体积（gzip）**：首屏 JS ${critical} KB · JS 总计 ${total} KB · CSS 总计 ${css} KB")
+            fi
+
+            if [ -n "$LH_SCORES" ]; then
+              vals=$(printf '%s' "$LH_SCORES" | jq -r '[.performance, .accessibility, .["best-practices"], .seo] | map((. // 0) * 100 | round | tostring) | join(" ")' 2>/dev/null || true)
+              if [ -n "$vals" ]; then
+                read -r p a bp seo <<<"$vals"
+                lines+=("**Lighthouse（首页）**：性能 $p · 无障碍 $a · 最佳实践 $bp · SEO $seo")
+              fi
+            fi
+            if [ -n "$LH_REPORT_URL" ]; then
+              lines+=("[📊 Lighthouse 报告]($LH_REPORT_URL)")
+            fi
+
+            export FEISHU_BODY="$(printf '%s\n' "${lines[@]}")"
+            export FEISHU_BUTTONS_JSON="$(jq -nc --arg site "$site" --arg run "$RUN_URL" \
+              '[{"text":"访问站点","url":$site},{"text":"查看运行","url":$run,"type":"default"}]')"
+          else
+            failed=''
+            [ "$BUILD_RESULT" != success ] && failed='Build'
+            [ "$DEPLOY_RESULT" != success ] && failed="${failed:+$failed、}Deploy"
+            export FEISHU_TITLE="🚨 部署失败 · $site"
+            export FEISHU_COLOR=red
+            export FEISHU_BODY="$(printf '%s\n' \
+              "**失败阶段**：${failed:-未知}" \
+              "**版本**：\`$short_sha\`　**分支**：\`$GITHUB_REF_NAME\`　**触发者**：\`$GITHUB_ACTOR\`" \
+              "**时间**：$(TZ=Asia/Shanghai date '+%F %T')（北京时间）")"
+            export FEISHU_BUTTONS_JSON="$(jq -nc --arg run "$RUN_URL" '[{"text":"查看日志","url":$run}]')"
+          fi
+
+          node .github/scripts/feishu-notify.mjs

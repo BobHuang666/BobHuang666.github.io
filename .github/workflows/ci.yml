@@ -13,6 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@v6
 
       - name: Setup Node.js
@@ -22,20 +23,47 @@ jobs:
           cache: 'npm'
 
       - name: Verify lockfile is in sync with package.json
+        id: lockfile
         # 提前拦截 manifest 与 lockfile 不一致 / peer 冲突，错误信息更直观
         run: npm ci --dry-run
 
       - name: Install dependencies
+        id: install
         run: npm ci
 
       - name: Type Check
+        id: typecheck
         run: npm run typecheck
 
       - name: Lint
+        id: lint
         run: npm run lint
 
       - name: Build
+        id: build
         run: npm run build
 
       - name: Bundle Size Check
+        id: size
         run: npm run size
+
+      - name: Feishu 告警（CI 失败）
+        # checkout 成功才发（否则脚本不存在）；手动取消不发；通知失败不影响 CI 结论
+        if: >-
+          failure() &&
+          job.status == 'failure' &&
+          steps.checkout.conclusion == 'success'
+        continue-on-error: true
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_WEBHOOK_SECRET: ${{ secrets.FEISHU_WEBHOOK_SECRET }}
+          FEISHU_TITLE: '🚨 CI 失败 · ${{ github.repository }}'
+          FEISHU_COLOR: 'red'
+          FEISHU_BODY: |
+            **分支**：${{ github.ref_name }}（${{ github.event_name }}）
+            **提交**：${{ github.sha }}
+            **失败步骤**：${{ steps.lockfile.outcome == 'failure' && 'Lockfile 校验' || steps.install.outcome == 'failure' && '安装依赖' || steps.typecheck.outcome == 'failure' && 'Type Check' || steps.lint.outcome == 'failure' && 'Lint' || steps.build.outcome == 'failure' && 'Build' || steps.size.outcome == 'failure' && 'Bundle Size Check' || '见运行日志' }}
+            **触发者**：${{ github.actor }}
+          FEISHU_BUTTON_TEXT: '查看日志'
+          FEISHU_BUTTON_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: node .github/scripts/feishu-notify.mjs

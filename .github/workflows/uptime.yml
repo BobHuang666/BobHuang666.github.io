@@ -1,0 +1,99 @@
+name: Uptime Monitor
+
+# 每 15 分钟探测一次站点（UTC 定时，GitHub 可能有小幅延迟）。
+# 注意：仓库 60 天无 push 活动后 GitHub 会暂停 schedule 触发，届时手动跑一次即可恢复。
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+# 同一时间只保留一次探测
+concurrency:
+  group: uptime-monitor
+  cancel-in-progress: false
+
+# 状态文件通过 Actions Cache 跨次运行传递（仅在状态翻转时写入，
+# 恢复键 uptime-state- 前缀命中最近一次保存的状态）
+jobs:
+  probe:
+    name: 探测站点可用性
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: 恢复上次探测状态
+        uses: actions/cache/restore@v4
+        with:
+          path: .uptime-state
+          key: uptime-state-${{ github.run_id }}
+          restore-keys: uptime-state-
+
+      - name: 探测（失败重试 3 次，防误报）
+        id: probe
+        run: |
+          set -euo pipefail
+          url='https://blog.bobhuang.cn/'
+          code='000'; latency='0'
+          for i in 1 2 3; do
+            out=$(curl -o /dev/null -sS -w '%{http_code} %{time_total}' --max-time 20 "$url" || true)
+            code=${out%% *}; latency=${out##* }
+            [ "$code" = 200 ] && break
+            [ "$i" = 3 ] || sleep 15
+          done
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "latency_ms=$(awk -v t="$latency" 'BEGIN { printf "%.0f", t * 1000 }')" >> "$GITHUB_OUTPUT"
+          echo "at=$(TZ=Asia/Shanghai date '+%F %T')" >> "$GITHUB_OUTPUT"
+
+      - name: 判定状态并发送飞书通知
+        id: notify
+        # 仅在 状态翻转 时通知：宕机只报一次，恢复再报一次，不重复轰炸
+        continue-on-error: true
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_WEBHOOK_SECRET: ${{ secrets.FEISHU_WEBHOOK_SECRET }}
+          CODE: ${{ steps.probe.outputs.code }}
+          LATENCY_MS: ${{ steps.probe.outputs.latency_ms }}
+          AT: ${{ steps.probe.outputs.at }}
+        run: |
+          set -euo pipefail
+          mkdir -p .uptime-state
+          state_file='.uptime-state/status.txt'
+          prev=$(cat "$state_file" 2>/dev/null || true)
+          prev_state=${prev%% *}
+
+          if [ "$CODE" != 200 ] && [ "$prev_state" != DOWN ]; then
+            # 状态存 Unix 时间戳，时长计算与时区无关
+            echo "DOWN $(date +%s)" > "$state_file"
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+            export FEISHU_TITLE='🚨 博客无法访问 · blog.bobhuang.cn'
+            export FEISHU_COLOR=red
+            export FEISHU_BODY="$(printf '%s\n' \
+              "**探测时间**：$AT（北京时间）" \
+              "**结果**：HTTP $CODE（3 次重试均失败）" \
+              "**响应耗时**：$LATENCY_MS ms")"
+          elif [ "$CODE" = 200 ] && [ "$prev_state" = DOWN ]; then
+            echo 'OK' > "$state_file"
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+            start=${prev#* }
+            minutes=$(( ($(date +%s) - start + 59) / 60 ))
+            down_at=$(TZ=Asia/Shanghai date -d "@$start" '+%F %T' 2>/dev/null || echo '未知')
+            export FEISHU_TITLE='✅ 博客已恢复 · blog.bobhuang.cn'
+            export FEISHU_COLOR=green
+            export FEISHU_BODY="$(printf '%s\n' \
+              "**恢复时间**：$AT（北京时间）" \
+              "**本次宕机**：约 ${minutes} 分钟（自 $down_at 起）" \
+              "**响应**：HTTP 200（$LATENCY_MS ms）")"
+          else
+            echo '状态无变化，不发送通知'
+            exit 0
+          fi
+
+          node .github/scripts/feishu-notify.mjs
+
+      - name: 状态变化时保存
+        if: steps.notify.outputs.changed == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .uptime-state
+          key: uptime-state-${{ github.run_id }}

@@ -1,0 +1,112 @@
+name: Daily Report
+
+# 北京时间每天 08:05 发送：昨日访客统计（GoatCounter）+ SSL 证书剩余天数。
+# 证书不足 14 天时标题会变橙色警告。
+# 注意：仓库 60 天无 push 活动后 GitHub 会暂停 schedule 触发，届时手动跑一次即可恢复。
+on:
+  schedule:
+    - cron: '5 0 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: daily-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    name: 访客统计与证书日报
+    runs-on: ubuntu-latest
+    env:
+      HAS_GC_TOKEN: ${{ secrets.GOATCOUNTER_API_TOKEN != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: 拉取 GoatCounter 昨日统计
+        id: stats
+        if: env.HAS_GC_TOKEN == 'true'
+        env:
+          GC_TOKEN: ${{ secrets.GOATCOUNTER_API_TOKEN }}
+          GC_SITE: 'bobhuang'
+        run: |
+          set -euo pipefail
+          export TZ=Asia/Shanghai
+          yesterday=$(date -d 'yesterday' +%F)
+          today=$(date +%F)
+          # start/end 按站点时区解析，请确保 GoatCounter 后台时区设为北京时间
+          base="https://${GC_SITE}.goatcounter.com/api/v0/stats"
+          fetch() {
+            curl -sS --max-time 20 \
+              -H "Authorization: Bearer $GC_TOKEN" -H 'Content-Type: application/json' \
+              --get "$base/$1" "${@:2}"
+          }
+
+          total=$(fetch total --data-urlencode "start=$yesterday 00:00" --data-urlencode "end=$today 00:00")
+          visitors=$(printf '%s' "$total" | jq -r '.total // 0')
+
+          top=$(fetch hits --data-urlencode "start=$yesterday 00:00" --data-urlencode "end=$today 00:00" --data-urlencode 'limit=5' \
+            | jq -r '.hits[]? | select(.event != true) | "· `\(.path)` — \(.count)"')
+
+          echo "yesterday=$yesterday" >> "$GITHUB_OUTPUT"
+          echo "visitors=$visitors" >> "$GITHUB_OUTPUT"
+          {
+            echo 'top<<EOF'
+            printf '%s\n' "$top"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: 检查 SSL 证书剩余天数
+        id: ssl
+        run: |
+          set -euo pipefail
+          end=$(echo | timeout 20 openssl s_client -connect blog.bobhuang.cn:443 -servername blog.bobhuang.cn 2>/dev/null \
+            | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2 || true)
+          days=''
+          if [ -n "$end" ]; then
+            expire=$(date -d "$end" +%s)
+            days=$(( (expire - $(date +%s)) / 86400 ))
+          fi
+          echo "days=$days" >> "$GITHUB_OUTPUT"
+          echo "expire=$end" >> "$GITHUB_OUTPUT"
+
+      - name: 发送飞书日报
+        continue-on-error: true
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_WEBHOOK_SECRET: ${{ secrets.FEISHU_WEBHOOK_SECRET }}
+          YESTERDAY: ${{ steps.stats.outputs.yesterday }}
+          VISITORS: ${{ steps.stats.outputs.visitors }}
+          TOP: ${{ steps.stats.outputs.top }}
+          SSL_DAYS: ${{ steps.ssl.outputs.days }}
+          SSL_EXPIRE: ${{ steps.ssl.outputs.expire }}
+        run: |
+          set -euo pipefail
+          export TZ=Asia/Shanghai
+          title="📊 博客日报 · $(date '+%F')"
+          body=''
+
+          if [ -n "$VISITORS" ]; then
+            body+="**昨日访客（$YESTERDAY）**：$VISITORS 人次"
+            if [ -n "$TOP" ]; then
+              body+=$'\n\n**热门页面 TOP5**\n'"$TOP"
+            fi
+          fi
+
+          if [[ "$SSL_DAYS" =~ ^[0-9]+$ ]]; then
+            if [ "$SSL_DAYS" -lt 14 ]; then
+              title="⚠️ SSL 证书仅剩 ${SSL_DAYS} 天 · 博客日报"
+              body+=$'\n\n'"**🔒 SSL 证书**：${SSL_DAYS} 天后到期（${SSL_EXPIRE}），请尽快处理"
+            else
+              body+=$'\n\n'"**🔒 SSL 证书**：剩余 ${SSL_DAYS} 天（${SSL_EXPIRE} 到期）"
+            fi
+          else
+            body+=$'\n\n**🔒 SSL 证书**：今日获取失败'
+          fi
+
+          if [[ "$SSL_DAYS" =~ ^[0-9]+$ ]] && [ "$SSL_DAYS" -lt 14 ]; then
+            export FEISHU_COLOR=orange
+          else
+            export FEISHU_COLOR=green
+          fi
+          export FEISHU_TITLE="$title" FEISHU_BODY="$body"
+          node .github/scripts/feishu-notify.mjs
