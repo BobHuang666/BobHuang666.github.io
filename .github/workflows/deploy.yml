@@ -144,7 +144,15 @@ jobs:
             echo "RESULTS_PATH 为空或目录不存在: '$RESULTS_PATH'"
           fi
           echo "scores=$scores" >> "$GITHUB_OUTPUT"
-          url=$(printf '%s' "$LINKS" | { grep -oE 'https://[^ "]+' || true; } | head -n 1)
+          # links 输出是 {被审计URL: 报告URL} 的 JSON 对象；取首页对应的报告链接，
+          # 首页不在时退回第一条，再退回从文本里抓 storage.googleapis.com 链接
+          url=$(printf '%s' "$LINKS" | jq -r '.["https://blog.bobhuang.cn/"] // empty' 2>/dev/null || true)
+          if [ -z "$url" ]; then
+            url=$(printf '%s' "$LINKS" | jq -r 'to_entries[0].value // empty' 2>/dev/null || true)
+          fi
+          if [ -z "$url" ]; then
+            url=$(printf '%s' "$LINKS" | { grep -oE 'https://storage\.googleapis\.com/[^ "]+' || true; } | head -n 1)
+          fi
           echo "report_url=$url" >> "$GITHUB_OUTPUT"
 
   notify:
@@ -207,7 +215,7 @@ jobs:
             export FEISHU_BODY="$(printf '%s\n' \
               "**失败阶段**：${failed:-未知}" \
               "**版本**：\`$short_sha\`　**分支**：\`$GITHUB_REF_NAME\`　**触发者**：\`$GITHUB_ACTOR\`" \
-              "**时间**：$(TZ=Asia/Shanghai date '+%F %T')（北京时间）")"
+              "**时间**：$(date -u -d '+8 hours' '+%F %T')（北京时间）")"
             export FEISHU_BUTTONS_JSON="$(jq -nc --arg run "$RUN_URL" '[{"text":"查看日志","url":$run}]')"
           fi
 

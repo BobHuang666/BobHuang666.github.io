@@ -46,11 +46,21 @@ jobs:
           total=$(fetch total --data-urlencode "start=$start" --data-urlencode "end=$end")
           visitors=$(printf '%s' "$total" | jq -r '.total // 0')
 
+          # 本周访客：本周一 00:00（北京时间）至今，周一为一周起点
+          dow=$(date -u -d '+8 hours' '+%u')
+          monday=$(date -u -d "+8 hours -$(( dow - 1 )) days" '+%F')
+          weekly=$(fetch total \
+            --data-urlencode "start=${monday}T00:00:00+08:00" \
+            --data-urlencode "end=$(date -u -d '+8 hours +1 day' '+%F')T00:00:00+08:00")
+          week_total=$(printf '%s' "$weekly" | jq -r '.total // 0')
+
           top=$(fetch hits --data-urlencode "start=$start" --data-urlencode "end=$end" --data-urlencode 'limit=5' \
             | jq -r '.hits[]? | select(.event != true) | "· `\(.path)` — \(.count)"')
 
           echo "yesterday=$y" >> "$GITHUB_OUTPUT"
           echo "visitors=$visitors" >> "$GITHUB_OUTPUT"
+          echo "week_start=$monday" >> "$GITHUB_OUTPUT"
+          echo "week_total=$week_total" >> "$GITHUB_OUTPUT"
           {
             echo 'top<<EOF'
             printf '%s\n' "$top"
@@ -81,17 +91,21 @@ jobs:
           FEISHU_WEBHOOK_SECRET: ${{ secrets.FEISHU_WEBHOOK_SECRET }}
           YESTERDAY: ${{ steps.stats.outputs.yesterday }}
           VISITORS: ${{ steps.stats.outputs.visitors }}
+          WEEK_START: ${{ steps.stats.outputs.week_start }}
+          WEEK_TOTAL: ${{ steps.stats.outputs.week_total }}
           TOP: ${{ steps.stats.outputs.top }}
           SSL_DAYS: ${{ steps.ssl.outputs.days }}
           SSL_EXPIRE: ${{ steps.ssl.outputs.expire }}
         run: |
           set -euo pipefail
-          export TZ=Asia/Shanghai
-          title="📊 博客日报 · $(date '+%F')"
+          title="📊 博客日报 · $(date -u -d '+8 hours' '+%F')"
           body=''
 
           if [ -n "$VISITORS" ]; then
             body+="**昨日访客（$YESTERDAY）**：$VISITORS 人次"
+            if [ -n "$WEEK_TOTAL" ]; then
+              body+=$'\n'"**本周访客（自 $WEEK_START）**：$WEEK_TOTAL 人次"
+            fi
             if [ -n "$TOP" ]; then
               body+=$'\n\n**热门页面 TOP5**\n'"$TOP"
             fi
@@ -100,9 +114,9 @@ jobs:
           if [[ "$SSL_DAYS" =~ ^[0-9]+$ ]]; then
             if [ "$SSL_DAYS" -lt 14 ]; then
               title="⚠️ SSL 证书仅剩 ${SSL_DAYS} 天 · 博客日报"
-              body+=$'\n\n'"**🔒 SSL 证书**：${SSL_DAYS} 天后到期（$SSL_EXPIRE 北京时间），请尽快处理"
+              body+=$'\n\n'"**🔒 SSL 证书**：${SSL_DAYS} 天后到期（北京时间 $SSL_EXPIRE），请尽快处理"
             else
-              body+=$'\n\n'"**🔒 SSL 证书**：剩余 ${SSL_DAYS} 天（$SSL_EXPIRE 北京时间到期）"
+              body+=$'\n\n'"**🔒 SSL 证书**：剩余 ${SSL_DAYS} 天（北京时间 $SSL_EXPIRE 到期）"
             fi
           else
             body+=$'\n\n**🔒 SSL 证书**：今日获取失败'
