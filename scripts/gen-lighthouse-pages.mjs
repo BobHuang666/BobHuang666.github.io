@@ -50,9 +50,7 @@ if (existsSync(postsDir)) {
     const raw = readFileSync(join(postsDir, file), 'utf8')
     if (/^draft:\s*true\s*$/m.test(raw)) continue // 跳过草稿
     const id = file.replace(/\.md$/, '')
-    const m = raw.match(/^title:\s*(.+)$/m)
-    const title = m ? m[1].trim().replace(/^['"]|['"]$/g, '') : id
-    pages.push({ label: `文章·${title}`, url: `${SITE}/#/blog/${id}` })
+    pages.push({ label: '文章', url: `${SITE}/#/blog/${id}` })
     break
   }
 }
@@ -64,12 +62,7 @@ if (existsSync(projectsFile)) {
   const m = srcText.match(/^\s*id:\s*'([^']+)'/m)
   if (m) {
     const id = m[1]
-    const escaped = id.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
-    const tm = srcText.match(
-      new RegExp(`id:\\s*'${escaped}'[\\s\\S]*?title:\\s*'([^']+)'`),
-    )
-    const title = tm ? tm[1] : id
-    pages.push({ label: `项目·${title}`, url: `${SITE}/#/projects/${id}` })
+    pages.push({ label: '项目', url: `${SITE}/#/projects/${id}` })
   }
 }
 

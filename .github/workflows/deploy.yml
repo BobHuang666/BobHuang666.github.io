@@ -166,18 +166,24 @@ jobs:
             fi
             score_entries+=("$(jq -nc --arg label "$label" --argjson sc "$sc" '{label:$label, scores:$sc}')")
 
-            # 2) 找到对应页面的报告链接（按 URL 匹配，容忍末尾斜杠差异）
+            # 2) 报告链接：HashRouter 下 LHCI 的 links.json 以 finalUrl（丢失 # 片段）为 key，
+            #    各页互相覆盖，无法区分。改为自行把该页 HTML 报告上传到 LHCI 临时公开存储，
+            #    拿到一一对应的直链（LHCI 内部也是调这个接口）。links.json 仅作兜底。
             link=''
-            if [ -n "$LINKS_JSON" ]; then
+            html="${f%.json}.html"
+            if [ -n "$f" ] && [ -f "$html" ]; then
+              resp=$(curl -s -X POST -H 'content-type: text/html' \
+                --data-binary "@$html" \
+                'https://us-central1-lighthouse-infrastructure.cloudfunctions.net/saveHtmlReport' 2>/dev/null || true)
+              link=$(printf '%s' "$resp" | jq -r '.url // empty' 2>/dev/null || true)
+            fi
+            if [ -z "$link" ] && [ -n "$LINKS_JSON" ]; then
               link=$(printf '%s' "$LINKS_JSON" | jq -r --arg u "$url" '
                 to_entries[]
                 | select((.key | gsub("/+$";"")) == ($u | gsub("/+$";"")))
                 | .value' 2>/dev/null | head -n 1 || true)
-              if [ -z "$link" ]; then
-                link=$(printf '%s' "$LINKS_JSON" | jq -r 'to_entries[0].value // empty' 2>/dev/null || true)
-              fi
             fi
-            link_entries+=("$(jq -nc --arg label "$label" --arg url "$link" '{label:$label, url:$url}')")
+            link_entries+=("$(jq -nc --arg label "$label" --arg url "$link" '{label:$label, url:$link}')")
           done
 
           scores_json=$(printf '%s\n' "${score_entries[@]}" | jq -sc '.')
