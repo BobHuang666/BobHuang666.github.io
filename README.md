@@ -184,7 +184,7 @@ git push origin main
 
 1. 安装依赖、跑 `typecheck` + `lint` + `build` + `size` 检查
 2. 上传 `dist/` 产物到 GitHub Pages
-3. 部署完成后跑 Lighthouse 评分（首页 / 博客 / Profile）
+3. 部署完成后对全站各页面跑 Lighthouse 评分（静态页 + 每类动态详情页代表，由脚本自动枚举，详见下方「Lighthouse CI」）
 
 PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节失败都会阻塞合并。
 
@@ -215,14 +215,16 @@ PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节
 
 ### Lighthouse CI
 
-`.github/lighthouse/lighthouserc.json` 设定的最低分（warn 级别，不阻塞部署）：
+部署时由 `scripts/gen-lighthouse-pages.mjs` **自动枚举被测页面**并生成配置，覆盖全站：
 
-- Performance ≥ 80
-- Accessibility ≥ 90
-- Best Practices ≥ 90
-- SEO ≥ 90
+- **静态路由（8 个）**：首页 / 关于 / 博客 / 友链 / 同好 / 旅行 / 500 / 404
+- **动态详情页各 1 个代表**：自动取 `src/posts` 第一篇非草稿文章、`src/data/projects.ts` 第一个项目
 
-每次部署后报告会上传到临时公开存储，可在 Actions 运行日志里点开链接查看。
+阈值（`lighthouserc.json` 基线，warn 级、不阻塞部署）：Performance ≥ 80 · Accessibility ≥ 90 · Best Practices ≥ 90 · SEO ≥ 90。
+
+报告上传到临时公开存储，**飞书「部署成功」卡片逐页列出各页面分数，并提供每个页面对应的报告链接**。因为是 `HashRouter` SPA，Lighthouse 会执行 JS 渲染对应路由后再审计，配合 `usePageMeta` 按路由更新 `title` / `meta description`，各页分数是真实独立的（不是同一个首页分）。
+
+> 生成的 `lighthouserc.generated.json` 与 `pages.json` 为 CI 运行时产物（已 gitignore），改阈值请改 `lighthouserc.json` 基线。
 
 ### 飞书服务告警（Feishu Webhook）
 

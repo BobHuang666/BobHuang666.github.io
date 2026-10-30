@@ -93,7 +93,7 @@ jobs:
     continue-on-error: true
     outputs:
       scores: ${{ steps.lh_summary.outputs.scores }}
-      report_url: ${{ steps.lh_summary.outputs.report_url }}
+      report_links: ${{ steps.lh_summary.outputs.report_links }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -106,17 +106,16 @@ jobs:
       - name: Wait for site to be live
         run: sleep 30
 
+      - name: 生成 Lighthouse 页面清单与配置
+        run: node scripts/gen-lighthouse-pages.mjs
+
       - name: Run Lighthouse CI
         id: lhci
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: |
-            https://blog.bobhuang.cn/
-            https://blog.bobhuang.cn/#/blog
-            https://blog.bobhuang.cn/#/profile
           uploadArtifacts: true
           temporaryPublicStorage: true
-          configPath: ./.github/lighthouse/lighthouserc.json
+          configPath: ./.github/lighthouse/lighthouserc.generated.json
 
       - name: 提取分数与报告链接
         id: lh_summary
@@ -125,35 +124,66 @@ jobs:
           RESULTS_PATH: ${{ steps.lhci.outputs.resultsPath }}
           LINKS: ${{ steps.lhci.outputs.links }}
         run: |
-          # v12 的 resultsPath 指向 LHCI 结果文件夹，lhr-*.json 为完整报告；
-          # 优先取首页（不带 # 的 URL）那份，取不到退回第一份；解析失败留空，通知卡自动省略
-          scores=''
-          if [ -n "$RESULTS_PATH" ] && [ -d "$RESULTS_PATH" ]; then
-            f=$(grep -lE '"requestedUrl": ?"https://blog\.bobhuang\.cn/"' "$RESULTS_PATH"/*.json 2>/dev/null | head -n 1 || true)
-            [ -z "$f" ] && f=$(find "$RESULTS_PATH" -maxdepth 1 -name 'lhr-*.json' 2>/dev/null | head -n 1 || true)
+          set -euo pipefail
+          RP="${RESULTS_PATH:-}"
+          LINKS_JSON="${LINKS:-}"
+
+          # 读取由 gen-lighthouse-pages.mjs 生成的页面清单（标签 + URL）
+          PAGES_JSON='[]'
+          if [ -f .github/lighthouse/pages.json ]; then
+            PAGES_JSON=$(cat .github/lighthouse/pages.json 2>/dev/null || printf '[]')
+          fi
+
+          score_entries=()
+          link_entries=()
+          n=$(printf '%s' "$PAGES_JSON" | jq 'length' 2>/dev/null || echo 0)
+          i=0
+          while [ "$i" -lt "$n" ]; do
+            entry=$(printf '%s' "$PAGES_JSON" | jq -c ".[$i]" 2>/dev/null || true)
+            i=$((i + 1))
+            if [ -z "$entry" ]; then continue; fi
+            label=$(printf '%s' "$entry" | jq -r '.label // empty' 2>/dev/null || true)
+            url=$(printf '%s' "$entry" | jq -r '.url // empty' 2>/dev/null || true)
+            if [ -z "$label" ] || [ -z "$url" ]; then continue; fi
+
+            # 1) 找到对应页面的 Lighthouse 报告文件，提取分数（按 requestedUrl 精确匹配）
+            f=''
+            if [ -n "$RP" ] && [ -d "$RP" ]; then
+              f=$(grep -lE "\"requestedUrl\": ?\"$url\"" "$RP"/*.json 2>/dev/null | head -n 1 || true)
+              if [ -z "$f" ]; then
+                f=$(find "$RP" -maxdepth 1 -name 'lhr-*.json' 2>/dev/null | head -n 1 || true)
+              fi
+            fi
+            sc='null'
             if [ -n "$f" ]; then
-              echo "使用报告: $f"
-              scores=$(jq -c '{
+              echo "使用报告($label): $f"
+              sc=$(jq -c '{
                 performance: (.categories.performance.score // 0),
                 accessibility: (.categories.accessibility.score // 0),
                 "best-practices": (.categories["best-practices"].score // 0),
                 seo: (.categories.seo.score // 0)
-              }' "$f" 2>/dev/null || true)
+              }' "$f" 2>/dev/null || printf 'null')
             fi
-          else
-            echo "RESULTS_PATH 为空或目录不存在: '$RESULTS_PATH'"
-          fi
-          echo "scores=$scores" >> "$GITHUB_OUTPUT"
-          # links 输出是 {被审计URL: 报告URL} 的 JSON 对象；取首页对应的报告链接，
-          # 首页不在时退回第一条，再退回从文本里抓 storage.googleapis.com 链接
-          url=$(printf '%s' "$LINKS" | jq -r '.["https://blog.bobhuang.cn/"] // empty' 2>/dev/null || true)
-          if [ -z "$url" ]; then
-            url=$(printf '%s' "$LINKS" | jq -r 'to_entries[0].value // empty' 2>/dev/null || true)
-          fi
-          if [ -z "$url" ]; then
-            url=$(printf '%s' "$LINKS" | { grep -oE 'https://storage\.googleapis\.com/[^ "]+' || true; } | head -n 1)
-          fi
-          echo "report_url=$url" >> "$GITHUB_OUTPUT"
+            score_entries+=("$(jq -nc --arg label "$label" --argjson sc "$sc" '{label:$label, scores:$sc}')")
+
+            # 2) 找到对应页面的报告链接（按 URL 匹配，容忍末尾斜杠差异）
+            link=''
+            if [ -n "$LINKS_JSON" ]; then
+              link=$(printf '%s' "$LINKS_JSON" | jq -r --arg u "$url" '
+                to_entries[]
+                | select((.key | gsub("/+$";"")) == ($u | gsub("/+$";"")))
+                | .value' 2>/dev/null | head -n 1 || true)
+              if [ -z "$link" ]; then
+                link=$(printf '%s' "$LINKS_JSON" | jq -r 'to_entries[0].value // empty' 2>/dev/null || true)
+              fi
+            fi
+            link_entries+=("$(jq -nc --arg label "$label" --arg url "$link" '{label:$label, url:$url}')")
+          done
+
+          scores_json=$(printf '%s\n' "${score_entries[@]}" | jq -sc '.')
+          links_json=$(printf '%s\n' "${link_entries[@]}" | jq -sc '.')
+          echo "scores=$scores_json" >> "$GITHUB_OUTPUT"
+          echo "report_links=$links_json" >> "$GITHUB_OUTPUT"
 
   notify:
     name: Feishu 通知
@@ -173,7 +203,7 @@ jobs:
           DEPLOY_RESULT: ${{ needs.deploy.result }}
           SIZE_JSON: ${{ needs.build.outputs.size_json }}
           LH_SCORES: ${{ needs.lighthouse.outputs.scores }}
-          LH_REPORT_URL: ${{ needs.lighthouse.outputs.report_url }}
+          LH_REPORT_LINKS: ${{ needs.lighthouse.outputs.report_links }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
@@ -193,14 +223,40 @@ jobs:
             fi
 
             if [ -n "$LH_SCORES" ]; then
-              vals=$(printf '%s' "$LH_SCORES" | jq -r '[.performance, .accessibility, .["best-practices"], .seo] | map((. // 0) * 100 | round | tostring) | join(" ")' 2>/dev/null || true)
-              if [ -n "$vals" ]; then
+              n=$(printf '%s' "$LH_SCORES" | jq 'length' 2>/dev/null || echo 0)
+              i=0
+              while [ "$i" -lt "$n" ]; do
+                entry=$(printf '%s' "$LH_SCORES" | jq -c ".[$i]" 2>/dev/null || true)
+                i=$((i + 1))
+                if [ -z "$entry" ]; then continue; fi
+                label=$(printf '%s' "$entry" | jq -r '.label // empty' 2>/dev/null || true)
+                sc=$(printf '%s' "$entry" | jq -c '.scores // null' 2>/dev/null || true)
+                if [ -z "$label" ]; then continue; fi
+                if [ "$sc" = "null" ]; then continue; fi
+                vals=$(printf '%s' "$sc" | jq -r '[.performance, .accessibility, .["best-practices"], .seo] | map((. // 0) * 100 | round | tostring) | join(" ")' 2>/dev/null || true)
+                if [ -z "$vals" ]; then continue; fi
                 read -r p a bp seo <<<"$vals"
-                lines+=("**Lighthouse（首页）**：性能 $p · 无障碍 $a · 最佳实践 $bp · SEO $seo")
-              fi
+                lines+=("**Lighthouse（$label）**：性能 $p · 无障碍 $a · 最佳实践 $bp · SEO $seo")
+              done
             fi
-            if [ -n "$LH_REPORT_URL" ]; then
-              lines+=("[📊 Lighthouse 报告]($LH_REPORT_URL)")
+            if [ -n "$LH_REPORT_LINKS" ]; then
+              n=$(printf '%s' "$LH_REPORT_LINKS" | jq 'length' 2>/dev/null || echo 0)
+              parts=''
+              i=0
+              while [ "$i" -lt "$n" ]; do
+                entry=$(printf '%s' "$LH_REPORT_LINKS" | jq -c ".[$i]" 2>/dev/null || true)
+                i=$((i + 1))
+                if [ -z "$entry" ]; then continue; fi
+                label=$(printf '%s' "$entry" | jq -r '.label // empty' 2>/dev/null || true)
+                url=$(printf '%s' "$entry" | jq -r '.url // empty' 2>/dev/null || true)
+                if [ -z "$url" ]; then continue; fi
+                if [ -z "$parts" ]; then
+                  parts="[📊 $label]($url)"
+                else
+                  parts="$parts · [📊 $label]($url)"
+                fi
+              done
+              [ -n "$parts" ] && lines+=("$parts")
             fi
 
             export FEISHU_BODY="$(printf '%s\n' "${lines[@]}")"

@@ -23,3 +23,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Lighthouse 配置由 scripts/gen-lighthouse-pages.mjs 运行时生成
+.github/lighthouse/lighthouserc.generated.json
+.github/lighthouse/pages.json
