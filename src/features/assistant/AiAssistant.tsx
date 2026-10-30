@@ -15,12 +15,12 @@ const DEFAULT_CFG = DEFAULT_ASSISTANT_CONFIG;
 const SUGGESTIONS = [
   'Bob 是谁？有什么背景？',
   '介绍一下他的项目经历',
-  '获得过哪些奖项？',
-  '目前在做什么？',
+  '他去过哪些城市旅行？',
+  '他追哪些明星？',
 ];
 const WELCOME = `你好！我是**小bot**，Bob Huang 个人网站的 AI 助手 ✨
 
-我能回答关于 Bob 的任何问题——学习经历、项目成果、技术技能、竞赛荣誉等。你也可以点击下方快捷提问，或者直接输入你的问题。`;
+我能回答关于 Bob 的任何问题——学习经历、项目成果、技术技能、竞赛荣誉，还有旅行足迹、追星日常和友链互换。你也可以点击下方快捷提问，或者直接输入你的问题。`;
 
 // ── 流式 LLM 调用 ─────────────────────────────────────────
 
@@ -295,7 +295,7 @@ const AiAssistant = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed z-50 left-3 right-3 sm:left-6 sm:right-auto sm:w-96 h-[520px] flex flex-col rounded-2xl overflow-hidden
+            className="fixed z-50 left-3 right-3 sm:left-6 sm:right-auto sm:w-96 h-[min(520px,calc(100dvh-7rem))] flex flex-col rounded-2xl overflow-hidden
               bg-white/80 dark:bg-slate-900/85 backdrop-blur-2xl
               border border-white/50 dark:border-slate-700/60
               shadow-2xl shadow-indigo-500/10"
@@ -395,7 +395,7 @@ const AiAssistant = () => {
                         {busy ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
                       </button>
                     </div>
-                    <p className="text-center text-[10px] text-slate-400 dark:text-slate-600 mt-2">
+                    <p className="text-center text-[10px] text-slate-400 dark:text-slate-600 mt-2 [@media(max-height:500px)]:hidden">
                       {cfg.key ? 'RAG 增强 · 对话历史保留' : '当前为知识库检索模式 · 点击⚙️配置 API Key 启用 LLM'}
                     </p>
                   </div>
