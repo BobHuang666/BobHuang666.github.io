@@ -133,22 +133,16 @@ function wrapWords(
   return lines;
 }
 
-/** 渲染单行：整行渲染为单个 <text>，由浏览器按真实字体排布（避免单词重叠）。
- *  满行（非末行）用 textLength + lengthAdjust 做两端对齐。 */
+/** 渲染单行：整行渲染为单个 <text>，由浏览器按真实字体排布（左对齐，避免单词重叠） */
 function renderLine(
   line: { tk: WordToken; gap: number }[],
   x0: number,
-  x1: number,
   y: number,
   fontSize: number,
   color: string,
-  isLast: boolean,
 ): string {
-  const avail = x1 - x0;
   const n = line.length;
   if (n === 0) return '';
-  const lineW = line.reduce((a, it) => a + it.gap + it.tk.w, 0);
-  const justify = !isLast && n > 1 && lineW >= avail * 0.85;
 
   // 还原成整行文本（拉丁词间补真实空格，CJK 不加空格）
   let text = '';
@@ -157,11 +151,7 @@ function renderLine(
     text += it.tk.text;
   });
 
-  const justifyAttrs = justify
-    ? ` textLength="${avail.toFixed(2)}" lengthAdjust="spacing"`
-    : '';
-  const ls = justify ? '' : ' letter-spacing="0.3"';
-  return `<text x="${x0.toFixed(2)}" y="${y}" font-size="${fontSize}" font-weight="600"${ls} fill="${color}" font-family="${SANS}"${justifyAttrs}>${esc(text)}</text>`;
+  return `<text x="${x0.toFixed(2)}" y="${y}" font-size="${fontSize}" font-weight="600" letter-spacing="0.3" fill="${color}" font-family="${SANS}">${esc(text)}</text>`;
 }
 
 /** 渲染一段值（支持 \n 强制换行）；返回 SVG 与总行数 */
@@ -182,10 +172,10 @@ function renderValueBlock(
   }
   let svg = '';
   let y = yTop;
-  allLines.forEach((ln, idx) => {
-    svg += renderLine(ln, x0, x1, y, fontSize, color, idx === allLines.length - 1);
+  for (const ln of allLines) {
+    svg += renderLine(ln, x0, y, fontSize, color);
     y += lineH;
-  });
+  }
   return { svg, lines: allLines.length };
 }
 

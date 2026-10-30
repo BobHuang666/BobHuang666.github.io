@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import {
   Code2, Menu, X, ChevronDown,
   Music, UsersRound, MapPinned,
+  Home, User, LayoutGrid, Newspaper,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -13,6 +14,7 @@ import { SearchTrigger } from '../../../features/search';
 interface MainItem {
   to: string;
   label: string;
+  icon: LucideIcon;
   end?: boolean;
   anchor?: string;
 }
@@ -25,10 +27,10 @@ interface MoreItem {
 }
 
 const MAIN_ITEMS: MainItem[] = [
-  { to: '/', label: uiText.nav.home, end: true },
-  { to: '/profile', label: uiText.nav.profile },
-  { to: '/?section=projects', label: uiText.nav.projects, anchor: 'projects' },
-  { to: '/blog', label: uiText.nav.blog },
+  { to: '/', label: uiText.nav.home, icon: Home, end: true },
+  { to: '/profile', label: uiText.nav.profile, icon: User },
+  { to: '/?section=projects', label: uiText.nav.projects, icon: LayoutGrid, anchor: 'projects' },
+  { to: '/blog', label: uiText.nav.blog, icon: Newspaper },
 ];
 
 const MORE_ITEMS: MoreItem[] = [
@@ -287,10 +289,11 @@ const Navigation = () => {
                   key={item.label}
                   href="#/"
                   onClick={(e) => handleAnchorClick(e, item.anchor)}
-                  className="block px-3 py-2 rounded-md text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
+                  className="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
                   role="menuitem"
                 >
-                  {item.label}
+                  <item.icon className="h-4 w-4 shrink-0" />
+                  <span>{item.label}</span>
                 </a>
               ) : (
                 <NavLink
@@ -298,14 +301,15 @@ const Navigation = () => {
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-md transition-colors ${isActive
+                    `flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${isActive
                       ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 font-medium'
                       : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900'
                     }`
                   }
                   role="menuitem"
                 >
-                  {item.label}
+                  <item.icon className="h-4 w-4 shrink-0" />
+                  <span>{item.label}</span>
                 </NavLink>
               ),
             )}
