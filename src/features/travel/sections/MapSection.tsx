@@ -13,6 +13,7 @@ import { TripDetail } from '../components/TripDetail';
 import { segmentBounds } from '../utils/footprint';
 import type { FootprintPoint, FootprintStats, RouteSegment } from '../utils/footprint';
 import type { ChinaGeo, WorldGeo } from '../utils/projection';
+import { uiText } from '../../../data/uiText';
 
 export type MapMode = 'china' | 'world';
 
@@ -29,6 +30,8 @@ interface Props {
   selectedTripId: string | null;
   onSelectTrip: (id: string | null) => void;
   highlightTripId: string | null;
+  /** 切换中国 / 世界地图 */
+  onModeChange: (mode: MapMode) => void;
 }
 
 const PLAY_INTERVAL = 900;
@@ -48,6 +51,7 @@ export const MapSection = ({
   selectedTripId,
   onSelectTrip,
   highlightTripId,
+  onModeChange,
 }: Props) => {
   const { ref, inView } = useInView();
   const reducedMotion = useReducedMotion();
@@ -173,6 +177,16 @@ export const MapSection = ({
       // scroll-mt 给固定顶栏留位置，点击出行记录滚动过来时不会被遮住
       className="scroll-mt-20 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/50 p-4 sm:p-5"
     >
+      {/* 地图模式切换：紧贴地图上方，不放在页面顶部 */}
+      <div className="flex gap-2 mb-4">
+        <Chip active={isChina} onClick={() => onModeChange('china')} className="px-4 py-2">
+          {uiText.travel.tabChina}
+        </Chip>
+        <Chip active={!isChina} onClick={() => onModeChange('world')} className="px-4 py-2">
+          {uiText.travel.tabWorld}
+        </Chip>
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
         <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
           {isChina ? (

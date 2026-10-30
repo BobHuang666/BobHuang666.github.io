@@ -10,7 +10,7 @@ const VIEW_W = 1000;
 /** 数据没给比例时的兜底（等距圆柱原始比例 2.56:1） */
 const FALLBACK_ASPECT = 2.56;
 
-const MIN_W = VIEW_W * 0.1;
+const MIN_W = VIEW_W * 0.04;
 const EDGE = VIEW_W * 0.1;
 
 interface Props {
@@ -103,7 +103,7 @@ export const WorldMap = ({
       setView((v) => {
         const ax = v.x + ((e.clientX - rect.left) / rect.width) * v.w;
         const ay = v.y + ((e.clientY - rect.top) / rect.height) * v.h;
-        const nextW = clamp(v.w * (e.deltaY > 0 ? 1.18 : 1 / 1.18), MIN_W, VIEW_W);
+        const nextW = clamp(v.w * (e.deltaY > 0 ? 1.2 : 1 / 1.2), MIN_W, VIEW_W);
         const k = nextW / v.w;
         const nextH = v.h * k;
         return {

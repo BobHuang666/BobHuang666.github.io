@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Loader2, MapPinned } from 'lucide-react';
 import { travelPlaces, travelTrips, worldPlaces } from '../../data/travel';
 import { uiText } from '../../data/uiText';
-import { Chip } from '../../shared/components/ui/Chip';
 import { RelatedLink } from '../../shared/components/ui/RelatedLink';
 import { EmptyState } from '../../shared/components/ui/EmptyState';
 import { usePageMeta } from '../../hooks/usePageMeta';
@@ -88,16 +87,6 @@ const TravelPage = () => {
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
             {uiText.travel.subtitle}
           </p>
-
-          {/* 地图模式切换 */}
-          <div className="flex gap-2 mt-5">
-            <Chip active={isChina} onClick={() => switchMode('china')} className="px-4 py-2">
-              {uiText.travel.tabChina}
-            </Chip>
-            <Chip active={!isChina} onClick={() => switchMode('world')} className="px-4 py-2">
-              {uiText.travel.tabWorld}
-            </Chip>
-          </div>
         </motion.div>
 
         {active.loading && (
@@ -130,6 +119,7 @@ const TravelPage = () => {
               selectedTripId={selectedTripId}
               onSelectTrip={handleSelectTrip}
               highlightTripId={highlightTripId}
+              onModeChange={switchMode}
             />
             <TimelineSection
               trips={trips}

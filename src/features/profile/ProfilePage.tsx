@@ -1,5 +1,6 @@
 import { useRef, useState, type ComponentType } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useSyncedScroll } from '../../hooks/useSyncedScroll';
 import {
   Mail, MapPin, Shield,
   CreditCard, Award, Compass, Briefcase, FlaskConical,
@@ -44,12 +45,20 @@ const TAB_CONTENT: Record<TabId, ComponentType> = {
 const TabNav = ({
   activeTab,
   onSelect,
+  scrollRef,
+  onScroll,
 }: {
   activeTab: TabId;
   onSelect: (id: TabId) => void;
+  scrollRef?: React.Ref<HTMLDivElement>;
+  onScroll?: () => void;
 }) => (
   <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md mb-6 border border-slate-200 dark:border-slate-800">
-    <div className="flex overflow-x-auto scrollbar-none">
+    <div
+      ref={scrollRef}
+      onScroll={onScroll}
+      className="flex overflow-x-auto scrollbar-none"
+    >
       {TABS.map((tab) => (
         <button
           key={tab.id}
@@ -75,6 +84,7 @@ function ProfilePage() {
     tabParam && TABS.some((t) => t.id === tabParam) ? (tabParam as TabId) : 'basic';
   const [activeTab, setActiveTab] = useState<TabId>(initialTab);
   const topTabsRef = useRef<HTMLDivElement>(null);
+  const { topRef, bottomRef, onTopScroll, onBottomScroll } = useSyncedScroll<HTMLDivElement>();
   const ActiveContent = TAB_CONTENT[activeTab];
 
   // 切换底部 Tab 时滚动回到主体内容（顶部 Tab）位置
@@ -115,7 +125,7 @@ function ProfilePage() {
 
         {/* Tabs（顶部导航） */}
         <div ref={topTabsRef}>
-          <TabNav activeTab={activeTab} onSelect={setActiveTab} />
+          <TabNav activeTab={activeTab} onSelect={setActiveTab} scrollRef={topRef} onScroll={onTopScroll} />
         </div>
 
         {/* Content */}
@@ -133,6 +143,8 @@ function ProfilePage() {
         <div className="mt-6">
           <TabNav
             activeTab={activeTab}
+            scrollRef={bottomRef}
+            onScroll={onBottomScroll}
             onSelect={(id) => {
               setActiveTab(id);
               scrollToTop();

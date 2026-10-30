@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSyncedScroll } from '../../hooks/useSyncedScroll';
 import {
   Heart, Sparkles, Calendar, Ticket, Gift, CheckCircle2,
   type LucideIcon,
@@ -29,12 +30,20 @@ const FandomTabNav = ({
   tab,
   onSelect,
   layoutId,
+  scrollRef,
+  onScroll,
 }: {
   tab: TabId;
   onSelect: (id: TabId) => void;
   layoutId: string;
+  scrollRef?: React.Ref<HTMLDivElement>;
+  onScroll?: () => void;
 }) => (
-  <div className="flex gap-1 p-1 rounded-2xl bg-white/70 dark:bg-slate-900/70 border border-rose-100 dark:border-slate-800 w-fit max-w-full overflow-x-auto scrollbar-none">
+  <div
+    ref={scrollRef}
+    onScroll={onScroll}
+    className="flex gap-1 p-1 rounded-2xl bg-white/70 dark:bg-slate-900/70 border border-rose-100 dark:border-slate-800 w-fit max-w-full overflow-x-auto scrollbar-none"
+  >
     {TABS.map((tb) => (
       <button
         key={tb.id}
@@ -66,6 +75,7 @@ const FandomPage = () => {
   usePageMeta(uiText.nav.fandom, fandomConfig.intro);
   const [tab, setTab] = useState<TabId>('idols');
   const topTabsRef = useRef<HTMLDivElement>(null);
+  const { topRef, bottomRef, onTopScroll, onBottomScroll } = useSyncedScroll<HTMLDivElement>();
 
   // 切换底部 Tab 时滚动回到主体内容（顶部 Tab）位置
   const scrollToTop = () => {
@@ -112,7 +122,7 @@ const FandomPage = () => {
 
         {/* ===== Tabs（顶部导航，已去除 sticky） ===== */}
         <div ref={topTabsRef} className="mb-8">
-          <FandomTabNav tab={tab} onSelect={setTab} layoutId="fandomTabTop" />
+          <FandomTabNav tab={tab} onSelect={setTab} layoutId="fandomTabTop" scrollRef={topRef} onScroll={onTopScroll} />
         </div>
 
         {/* ===== Tab content ===== */}
@@ -135,6 +145,8 @@ const FandomPage = () => {
         <div className="mt-8">
           <FandomTabNav
             tab={tab}
+            scrollRef={bottomRef}
+            onScroll={onBottomScroll}
             onSelect={(id) => {
               setTab(id);
               scrollToTop();

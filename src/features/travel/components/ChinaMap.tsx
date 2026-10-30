@@ -10,8 +10,8 @@ import { RouteLayer } from './RouteLayer';
 const VIEW_W = 1000;
 const VIEW_H = 820;
 
-/** 最小缩放宽度与可拖出的边距 */
-const MIN_W = VIEW_W * 0.18;
+/** 最小缩放宽度与可拖出的边距：放得越小，放大倍率越高 */
+const MIN_W = VIEW_W * 0.05;
 const EDGE = VIEW_W * 0.12;
 
 interface Props {
@@ -113,7 +113,7 @@ export const ChinaMap = ({
       setView((v) => {
         const ax = v.x + ((e.clientX - rect.left) / rect.width) * v.w;
         const ay = v.y + ((e.clientY - rect.top) / rect.height) * v.h;
-        const nextW = clamp(v.w * (e.deltaY > 0 ? 1.18 : 1 / 1.18), MIN_W, VIEW_W);
+        const nextW = clamp(v.w * (e.deltaY > 0 ? 1.2 : 1 / 1.2), MIN_W, VIEW_W);
         const k = nextW / v.w;
         const nextH = v.h * k;
         return {
