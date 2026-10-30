@@ -13,6 +13,7 @@
     "size": "node scripts/check-bundle-size.js",
     "geo": "node scripts/build-china-geo.js",
     "geo:world": "node scripts/build-world-geo.js",
+    "gen:card": "node scripts/encrypt-card.mjs",
     "preview": "vite preview",
     "prepare": "husky || true"
   },

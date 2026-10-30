@@ -131,8 +131,49 @@ src/
 | 添加博客 | 在 `src/posts/` 新建 `xxx.md`，自动出现在列表 |
 | 友链 | `src/data/friends.ts` |
 | 追星 | `src/data/fandom.ts` |
+| 友人帐名片（加密） | 明文 `scripts/.card-secret.json`（已被 .gitignore 忽略）；加密产物 `src/data/businessCard.ts`；用口令重新生成：`npm run gen:card` |
 | 主题色 / 字体 | `tailwind.config.js` |
 | 中文文案 | `src/data/uiText.ts` |
+
+### 生成友人帐名片（加密）
+
+友人帐页面提供「生成我的名片」：点击后输入**口令**才能进入，可勾选要展示的字段（姓名 / 昵称始终展示），并导出一张精美名片 PNG。
+隐私信息（手机 / 邮箱 / 地址等）**以 AES-GCM 密文**形式存放在 `src/data/businessCard.ts`，口令只在使用者脑中，**既不写进源码，也不进入构建产物**，因此源码 / 仓库中无法还原明文。
+
+> ⚠️ 明文 `scripts/.card-secret.json`（含隐私）已被 `.gitignore` 忽略，**切勿提交**。
+
+**明文格式**（schema）已固化为模板 `scripts/card-secret.example.json`，照抄结构即可：
+
+```json
+{
+  "fields": {
+    "name":     { "label": "姓名", "value": "…" },
+    "nickname": { "label": "昵称", "value": "…" },
+    "school":   { "label": "学校", "value": "…" },
+    "major":    { "label": "专业", "value": "…" },
+    "degree":   { "label": "学历", "value": "…" },
+    "phone":    { "label": "手机 / 微信", "value": "…" },
+    "email":    { "label": "邮箱", "value": "…" },
+    "address":  { "label": "地址", "value": "…" },
+    "blog":     { "label": "博客", "value": "…" }
+  }
+}
+```
+
+- `fields` 为必填对象；所有字段（含 `name` / `nickname`）**均可在弹窗里勾选**，勾选的内容才会出现在名片上。
+- 想新增/删除字段：增删对应 key 即可（顺序即名片展示顺序），无需改代码。
+
+重新生成密文（修改信息或更换口令后都需要重跑）：
+
+```bash
+# 1) 编辑 scripts/.card-secret.json 里的明文
+# 2) 用环境变量传入口令并执行
+CARD_PASSWORD=你的口令 npm run gen:card
+#    Windows PowerShell:
+#    $env:CARD_PASSWORD="你的口令"; npm run gen:card
+```
+
+浏览器端用相同口令（PBKDF2-SHA256 150000 次派生 AES-GCM-256 密钥）解密，口令错误会直接报错，无法进入。
 
 ### 启用评论（giscus）
 

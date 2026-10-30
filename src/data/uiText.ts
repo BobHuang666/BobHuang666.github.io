@@ -127,6 +127,30 @@ export const uiText = {
     step3: '我会尽快加上你的链接 ✨',
     mailBtn: '发邮件申请',
     issueBtn: '提 Issue',
+
+    /** 生成名片（加密 · 口令进入 · 可勾选字段 · 导出图片） */
+    card: {
+      title: '生成我的名片',
+      cardTitle: '个人名片',
+      desc: '名片信息已加密保存，输入口令后可见；可勾选要展示的内容并导出图片。',
+      button: '🎴 生成我的名片',
+      passwordLabel: '输入口令',
+      passwordPlaceholder: '请输入口令',
+      passwordSubmit: '进入',
+      passwordEmpty: '请输入口令',
+      passwordError: '口令错误，请重试',
+      loading: '解密中…',
+      notConfigured: '名片数据尚未生成，请先运行 `npm run gen:card`。',
+      selectTitle: '选择要展示的信息',
+      selectDesc: '勾选后可直接修改内容，仅本次生成生效、不会保存。',
+      selectAll: '全选',
+      selectNone: '清空',
+      generate: '生成名片预览',
+      previewTitle: '名片预览',
+      download: '下载图片',
+      back: '返回修改',
+      reset: '重新输入口令',
+    },
   },
 
   /** 搜索：类型徽章文案 + 静态页条目文案 */

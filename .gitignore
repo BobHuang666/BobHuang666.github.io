@@ -27,3 +27,6 @@ dist-ssr
 # Lighthouse 配置由 scripts/gen-lighthouse-pages.mjs 运行时生成
 .github/lighthouse/lighthouserc.generated.json
 .github/lighthouse/pages.json
+
+# 名片明文（含隐私信息），已加密进 src/data/businessCard.ts，切勿提交
+scripts/.card-secret.json

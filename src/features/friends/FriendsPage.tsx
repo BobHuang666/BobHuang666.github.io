@@ -6,9 +6,11 @@ import { friends, myLinkCard } from '../../data/friends';
 import { profile } from '../../data/profile';
 import { RelatedLink } from '../../shared/components/ui/RelatedLink';
 import { usePageMeta } from '../../hooks/usePageMeta';
+import { BusinessCardModal } from './BusinessCardModal';
 
 const FriendsPage = () => {
   const [copied, setCopied] = useState(false);
+  const [showCard, setShowCard] = useState(false);
   usePageMeta(uiText.friends.heading);
 
   const myCardText = `Name: ${myLinkCard.name}
@@ -83,6 +85,26 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
           ))}
         </div>
 
+        {/* 生成专属名片 */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-pink-50 to-indigo-50 dark:from-pink-950/30 dark:to-indigo-950/30 p-6"
+        >
+          <div>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">
+              🎴 我的专属名片
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              生成一张可分享的个人名片图片，信息已加密，需输入口令才能进入。
+            </p>
+          </div>
+          <button onClick={() => setShowCard(true)} className="btn-primary shrink-0">
+            {uiText.friends.card.button}
+          </button>
+        </motion.div>
+
         {/* 申请友链 */}
         <motion.section
           initial={{ opacity: 0, y: 12 }}
@@ -152,6 +174,8 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
           <RelatedLink to="/blog" emoji="📝" title={uiText.related.blog.title} desc={uiText.related.blog.desc} />
         </div>
       </div>
+
+      <BusinessCardModal open={showCard} onClose={() => setShowCard(false)} />
     </div>
   );
 };

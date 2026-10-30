@@ -116,3 +116,11 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============ 名片预览（SVG 自适应宽度，导出 PNG 时使用原始尺寸） ============ */
+.card-preview svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
