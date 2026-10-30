@@ -1,3 +1,4 @@
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -8,11 +9,10 @@ const SITE_URL = 'https://blog.bobhuang.cn/'
 /**
  * 为轻量路由 chunk 注入 modulepreload。
  *
- * HashRouter SPA 的路由页面全部走动态 import，首次渲染要经历
- * 「入口 chunk 执行 → 动态 chunk 请求 → 其共享小 chunk（usePageMeta 等）请求」
- * 的串行瀑布，Lighthouse 显示这段 render delay 占了 LCP 的 1s 左右。
- * 这里把除 BlogDetailPage（拖带 markdown/mermaid 巨型依赖）外的全部路由
- * chunk 及其静态依赖提前声明，首屏即并行取回，路由切换也因此零等待。
+ * 路由页面全走动态 import，首访要经历入口 chunk 执行后才请求路由
+ * chunk 及其共享小 chunk 的串行瀑布，这段 render delay 是 LCP 的大头。
+ * 把 BlogDetailPage 之外的路由 chunk 及其静态依赖提前声明：
+ * 首屏并行取回，路由切换零等待。
  */
 function routeModulePreload(include: string[], exclude: string[] = []): Plugin {
   return {
@@ -46,9 +46,8 @@ function routeModulePreload(include: string[], exclude: string[] = []): Plugin {
 }
 
 /**
- * 把入口 CSS 内联进 HTML。CSS 仅 ~17KB(gzip ~4KB)，单独发请求
- * 反而成为所有页面的渲染阻塞资源（Lighthouse render-blocking-insight）。
- * 文件本身仍照常产出，PWA precache 与旧缓存兼容不受影响。
+ * 把入口 CSS 内联进 HTML：CSS 只有几 KB gzip，单独请求却阻塞所有
+ * 页面的首次渲染。文件照常产出，PWA precache 不受影响。
  */
 function inlineEntryCss(): Plugin {
   return {
@@ -76,6 +75,11 @@ function inlineEntryCss(): Plugin {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
   plugins: [
     react(),
     routeModulePreload(

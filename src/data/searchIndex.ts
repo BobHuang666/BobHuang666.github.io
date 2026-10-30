@@ -1,9 +1,10 @@
+/** 全站搜索索引：由 data 层各来源派生的扁平条目，供 Fuse.js 检索 */
 import { blogData } from './blog';
 import { projects } from './projects';
 import { awards } from './awards';
 import { skillGroups, hobbies } from './profile';
 import { uiText } from './uiText';
-import { formatAwardDate } from '../utils/awardDate';
+import { formatAwardDate } from '@/utils/awardDate';
 
 export type SearchResultKind = 'blog' | 'project' | 'award' | 'skill' | 'page';
 

@@ -1,9 +1,10 @@
+/** 「演唱会」Tab：即将赴约倒计时 + 历史票根 */
 import { motion } from 'framer-motion';
 import { Calendar, Clock, MapPin, Music, Quote, Ticket } from 'lucide-react';
-import { concerts, type Concert } from '../../../data/fandom';
-import { gradient } from '../../../utils/gradients';
-import { fmtDate, daysUntil, isUpcoming, parseLocalDate } from '../format';
-import { FandomEmptyState } from '../components';
+import { concerts, type Concert } from '@/data/fandom';
+import { gradient } from '@/utils/gradients';
+import { fmtDate, daysUntil, isUpcoming, parseLocalDate } from '@/features/fandom/format';
+import { FandomEmptyState } from '@/features/fandom/components/primitives';
 
 /** 按年份分组（倒序）；同一年内按日期倒序（最新在前） */
 const groupByYear = (items: { date: string }[]) => {
@@ -75,7 +76,7 @@ export const ConcertsTab = () => {
 
   return (
     <div className="space-y-10">
-      {/* 待赴约：恢复成之前的整张渐变填充白字 + 大号倒计时 */}
+      {/* 待赴约：整卡渐变填充 + 大号倒计时，与历史票根的浅色卡片形成对比 */}
       {upcoming.length > 0 && (
         <section>
           <div className="flex items-end gap-3 mb-5">

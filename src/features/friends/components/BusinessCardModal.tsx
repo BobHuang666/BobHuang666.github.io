@@ -1,3 +1,4 @@
+/** 加密名片弹窗：口令解密、字段勾选与导出 */
 import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -11,10 +12,10 @@ import {
   Loader2,
   AlertTriangle,
 } from 'lucide-react';
-import { uiText } from '../../data/uiText';
-import { BUSINESS_CARD_CIPHERTEXT } from '../../data/businessCard';
-import { decryptBusinessCard, type BusinessCardData } from '../../utils/crypto';
-import { buildCardSvg, downloadSvgAsPng, type CardSvgResult } from './cardSvg';
+import { uiText } from '@/data/uiText';
+import { BUSINESS_CARD_CIPHERTEXT } from '@/data/businessCard';
+import { decryptBusinessCard, type BusinessCardData } from '@/utils/crypto';
+import { buildCardSvg, downloadSvgAsPng, type CardSvgResult } from '../cardSvg';
 
 type Step = 'password' | 'select' | 'preview';
 

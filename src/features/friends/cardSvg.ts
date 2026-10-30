@@ -1,11 +1,7 @@
 /**
- * 名片 SVG 生成器。
- *
- * 同一个 SVG 同时用于「屏幕预览」与「导出 PNG」，保证所见即所得。
- * 不依赖任何第三方库，纯字符串拼装，便于通过 <canvas> 转成图片下载。
- *
- * 结构：顶部「个人名片」标题 + 装饰条，下面按勾选顺序渲染字段列表，
- * 每个字段 = 彩色圆标 + 标题（小字）+ 内容（大字）。
+ * 名片 SVG 生成器：同一份 SVG 用于屏幕预览与导出 PNG，所见即所得。
+ * 纯字符串拼装，无第三方依赖，便于经 canvas 转成图片下载。
+ * 结构：顶部标题 + 装饰条，下方按勾选顺序渲染字段列表。
  */
 
 export interface CardField {
@@ -26,8 +22,8 @@ export interface CardSvgResult {
   height: number;
 }
 
-// 标题用衬线（宋体/思源宋体）做出编辑排版的气质；正文用无衬线保证可读性。
-// 只用系统可用字体——SVG 导出到 canvas 时不会加载外部 webfont。
+// 标题用衬线字体做出编辑排版的气质，正文用无衬线保证可读性；
+// 只用系统字体——SVG 导出到 canvas 时不会加载外部 webfont。
 const SERIF =
   "'Songti SC','STSong','SimSun','Noto Serif CJK SC','Source Han Serif SC',Georgia,serif";
 const SANS =

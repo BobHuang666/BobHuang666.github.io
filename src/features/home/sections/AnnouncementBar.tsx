@@ -1,7 +1,8 @@
+/** 首页公告栏：取最新一篇公告类文章展示 */
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Megaphone, ArrowRight } from 'lucide-react';
-import { blogMeta } from '../../../data/blog';
+import { blogMeta } from '@/data/blog';
 
 /**
  * 单条公告：当标题在容器内放得下时，正常左对齐展示；

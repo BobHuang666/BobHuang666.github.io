@@ -1,4 +1,5 @@
-import type { SkillCategory, Experience, Research, Work } from '../types';
+/** 个人资料数据 —— 教育、技能、经历、科研等全部个人事实的单一来源 */
+import type { SkillCategory, Experience, Research, Work } from '@/types';
 
 // 基础个人信息
 export const profile = {

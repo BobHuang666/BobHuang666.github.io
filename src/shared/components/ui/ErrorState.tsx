@@ -1,3 +1,4 @@
+/** 错误页视图（404/500 与错误边界共用） */
 import { Home, RotateCcw } from 'lucide-react';
 
 interface Props {
@@ -9,10 +10,6 @@ interface Props {
   detail?: string;
 }
 
-/**
- * 全站统一的错误页（500 / 渲染异常）。
- * 路由级错误边界与 /500 路由共用同一份视图，保证文案与操作一致。
- */
 export const ErrorState = ({ code, title, description, detail }: Props) => (
   <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 text-center gap-0">
     <div className="relative">

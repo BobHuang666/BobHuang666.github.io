@@ -1,13 +1,6 @@
 /**
- * Giscus 评论配置
- * ----------------------------------------------------------------
- * 启用步骤（参考 https://giscus.app/zh-CN）：
- * 1. 仓库需 public
- * 2. 安装 giscus app: https://github.com/apps/giscus
- * 3. 开启 Discussions
- * 4. 在 https://giscus.app/zh-CN 生成并复制配置，填到下面
- * ----------------------------------------------------------------
- * 当 repoId 或 categoryId 为空时，组件会显示"未启用"提示
+ * giscus 评论配置；启用步骤见 README。
+ * repoId 或 categoryId 为空时，评论区显示「未启用」提示。
  */
 export const giscusConfig = {
   repo: 'BobHuang666/BobHuang666.github.io' as `${string}/${string}`,

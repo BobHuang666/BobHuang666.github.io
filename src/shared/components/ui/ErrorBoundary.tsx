@@ -1,3 +1,4 @@
+/** React 错误边界，降级视图复用 ErrorState */
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { ErrorState } from './ErrorState';
 

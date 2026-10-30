@@ -1,13 +1,5 @@
 /**
- * 全站 UI 文案集中管理（单语言，不做 i18n）。
- *
- * 约定：
- * 1. 只放「用户看得见的中文」——标题 / 副标题 / 按钮 / 空状态 / 提示；
- *    图标名、路由、class、数值配置一律不放这里。
- * 2. 键名 camelCase，按「页面 / 区块」分组，层级不超过两层。
- * 3. 带变量的文案写成函数，参数名体现单位（count / minutes）。
- * 4. 渲染层不写死中文，统一从这里取。
- * 5. 下线功能时，同步删除对应文案。
+ * 全站 UI 文案，单语言不做 i18n。完整约定见 docs/ARCHITECTURE.md。
  */
 
 export const uiText = {
@@ -20,8 +12,7 @@ export const uiText = {
     detail: '项目详情',
     back: '返回',
     backToList: '返回博客列表',
-    /** 带阅读时长 */
-    readingMin: (minutes: number) => `${minutes} 分钟阅读`,
+      readingMin: (minutes: number) => `${minutes} 分钟阅读`,
     comments: '评论区',
     commentsHint: '基于 GitHub Discussions（giscus）· 需要 GitHub 账号',
     toc: '目录',
@@ -70,10 +61,8 @@ export const uiText = {
     blogSub: '算法题解 / 项目复盘 / 学习笔记 —— 正在持续更新',
     viewAllPosts: '查看全部文章',
     awardsTitle: '历史荣誉',
-    /** 带数量的副标题 */
-    awardsSub: (count: number) => `累计 ${count} 项荣誉`,
-    /** 带数量的「查看全部」 */
-    viewAllAwards: (count: number) => `查看全部 ${count} 项荣誉`,
+      awardsSub: (count: number) => `累计 ${count} 项荣誉`,
+      viewAllAwards: (count: number) => `查看全部 ${count} 项荣誉`,
     skillsTitle: '技能点',
     skillsSub: '在校期间持续点亮的技能树 —— 涵盖语言、前端、后端与工程化',
     moreTitle: '更多探索',
@@ -105,8 +94,7 @@ export const uiText = {
     categoryLabel: '分类',
     tagsLabel: '标签',
     clearFilters: '清空筛选',
-    /** 带数量的结果统计 */
-    found: (count: number) => `找到 ${count} 篇文章`,
+      found: (count: number) => `找到 ${count} 篇文章`,
     emptyTitle: '没有找到相关文章',
     emptyDesc: '尝试调整搜索条件或清空筛选',
   },

@@ -1,15 +1,16 @@
+/** 追星日记页：统计、Tab 编排与感悟区 */
 import { useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSyncedScroll } from '../../hooks/useSyncedScroll';
+import { useSyncedScroll } from '@/hooks/useSyncedScroll';
 import {
   Heart, Sparkles, Calendar, Ticket, Gift, CheckCircle2,
   type LucideIcon,
 } from 'lucide-react';
-import { concerts, checkIns, collections, fandomConfig, lessons } from '../../data/fandom';
-import { uiText } from '../../data/uiText';
-import { RelatedLink } from '../../shared/components/ui/RelatedLink';
-import { usePageMeta } from '../../hooks/usePageMeta';
-import { StatPill } from './components';
+import { concerts, checkIns, collections, fandomConfig, lessons } from '@/data/fandom';
+import { uiText } from '@/data/uiText';
+import { RelatedLink } from '@/shared/components/ui/RelatedLink';
+import { usePageMeta } from '@/hooks/usePageMeta';
+import { StatPill } from './components/primitives';
 import { isUpcoming } from './format';
 import { IdolsTab } from './tabs/IdolsTab';
 import { ConcertsTab } from './tabs/ConcertsTab';
@@ -67,10 +68,6 @@ const FandomTabNav = ({
   </div>
 );
 
-/**
- * /fandom —— 追星专题（公开页面）
- * 页面负责 Hero 统计与 Tab 编排；各 Tab 内容位于 ./tabs。
- */
 const FandomPage = () => {
   usePageMeta(uiText.nav.fandom, fandomConfig.intro);
   const [tab, setTab] = useState<TabId>('idols');
@@ -93,8 +90,7 @@ const FandomPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-rose-50 via-white to-pink-50 dark:from-slate-950 dark:via-slate-950 dark:to-rose-950/20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* ===== Hero ===== */}
-        <motion.div
+          <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -111,8 +107,7 @@ const FandomPage = () => {
             {fandomConfig.intro}
           </p>
 
-          {/* 统计胶囊 */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <StatPill icon={Heart} value={stats.fanYears ? `${stats.fanYears}` : '—'} label="追星 (年)" tone="rose" />
             <StatPill icon={Ticket} value={stats.attended} label="看过现场" tone="amber" />
             <StatPill icon={CheckCircle2} value={stats.checkIns} label="打卡次数" tone="fuchsia" />
@@ -120,12 +115,11 @@ const FandomPage = () => {
           </div>
         </motion.div>
 
-        {/* ===== Tabs（顶部导航，已去除 sticky） ===== */}
+        {/* ===== 顶部 Tab 导航（与底部导航共用状态） ===== */}
         <div ref={topTabsRef} className="mb-8">
           <FandomTabNav tab={tab} onSelect={setTab} layoutId="fandomTabTop" scrollRef={topRef} onScroll={onTopScroll} />
         </div>
 
-        {/* ===== Tab content ===== */}
         <AnimatePresence mode="wait">
           <motion.div
             key={tab}
@@ -142,7 +136,7 @@ const FandomPage = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* ===== Tabs（底部导航，状态与顶部同步，切换后滚回顶部） ===== */}
+        {/* 底部导航：状态与顶部同步，切换后滚回顶部 */}
         <div className="mt-8">
           <FandomTabNav
             tab={tab}
@@ -156,7 +150,6 @@ const FandomPage = () => {
           />
         </div>
 
-        {/* ===== 感悟 ===== */}
         {lessons.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 12 }}

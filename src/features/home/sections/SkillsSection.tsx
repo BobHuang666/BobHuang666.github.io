@@ -1,10 +1,10 @@
-import { uiText } from '../../../data/uiText';
-import { skillGroups } from '../../../data/profile';
-import { resolveIcon } from '../../../utils/iconMap';
-import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
+/** 首页技能区：按类目分组的技能清单 */
+import { uiText } from '@/data/uiText';
+import { skillGroups } from '@/data/profile';
+import { resolveIcon } from '@/shared/components/ui/iconMap';
+import { SectionReveal } from '@/shared/components/effects/SectionReveal';
 import { SectionHeader } from './SectionHeader';
 
-/** 技能树概览（四个分类的标签云） */
 export const SkillsSection = () => (
   <section id="skills" className="py-20 bg-slate-50 dark:bg-slate-900/40">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

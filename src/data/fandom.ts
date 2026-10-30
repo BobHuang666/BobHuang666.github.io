@@ -1,58 +1,35 @@
-import type { GradientTone } from '../utils/gradients';
+/** 追星专题数据（公开页面）：偶像、演出、打卡与收藏 */
+import type { GradientTone } from '@/types';
 
 /**
- * 追星专题数据（公开页面，无需密码）
- *
- * 数据完全静态，可随时调整，不泄露任何敏感信息。
- * 头像通过 avatar 字段加载：网络 URL 或项目内路径（如 /img/fandom/xxx.webp）。
- * 图片已保存到 public/img/fandom/（已统一转 webp），也可替换为官方图源。
+ * 追星专题数据，全部为可公开内容。
+ * 头像字段支持网络 URL 或 public/img/fandom/ 下的本地路径。
  */
 export interface Idol {
-  /** 显示名（昵称） */
   name: string;
-  /** 团体 / 公司 */
   group?: string;
-  /** 生日 / 出道日 */
   date?: string;
-  /** 入坑时间 */
   since?: string;
-  /** 头像图片地址：网络 URL 或项目内路径（如 /img/fandom/xxx.webp） */
   avatar?: string;
 }
 
-/** 演唱会 / 线下行程 */
 export interface Concert {
-  /** 唯一 id */
   id: string;
-  /** 艺人 / 团体 */
   idol: string;
-  /** 巡演 / 演出名称 */
   tour: string;
-  /** 城市 */
   city: string;
-  /** 场馆 */
   venue: string;
-  /** 日期 ISO */
   date: string;
-  /** 票档 / 区域（可选） */
   seat?: string;
-  /** 一句话期待或回忆 */
   highlight?: string;
-  /** 卡片渐变色 */
   tone: GradientTone;
 }
 
-/** 线下打卡 */
 export interface CheckIn {
-  /** 唯一 id */
   id: string;
-  /** 日期 ISO */
   date: string;
-  /** 对象艺人 */
   idol: string;
-  /** 打卡地点 */
   place: string;
-  /** 一句话感想（可选） */
   note?: string;
 }
 
@@ -66,22 +43,14 @@ export type CollectionCategory =
 
 export type Rarity = 'common' | 'rare' | 'epic' | 'legend';
 
-/** 周边收藏 */
 export interface Collection {
   id: string;
-  /** 物品名 */
   name: string;
-  /** 所属艺人 */
   idol: string;
-  /** 类别 */
   category: CollectionCategory;
-  /** 入手日期（可选） */
   date?: string;
-  /** 珍藏度 */
   rarity: Rarity;
-  /** 卡片渐变色 */
   tone: GradientTone;
-  /** 备注 / 小故事 */
   note?: string;
 }
 
@@ -387,10 +356,7 @@ export const checkIns: CheckIn[] = [
   },
 ];
 
-/**
- * 周边收藏
- * rarity 越高，卡片光效越华丽
- */
+// rarity 越高，卡片光效越华丽
 export const collections: Collection[] = [
   {
     id: 'm-1',
@@ -448,9 +414,6 @@ export const collections: Collection[] = [
   },
 ];
 
-/**
- * "我从他们身上学到的"
- */
 export const lessons: string[] = [
   'TODO',
   '坚持的力量 —— 每天进步一点点，比偶尔的爆发更重要',

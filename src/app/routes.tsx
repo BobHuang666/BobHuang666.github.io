@@ -1,19 +1,19 @@
+/** 路由声明表；路由级懒加载只允许出现在这里 */
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { PageSkeleton } from '../shared/components/ui/Skeleton';
-import HomePage from '../features/home/HomePage';
+import { PageSkeleton } from '@/shared/components/ui/Skeleton';
+import HomePage from '@/features/home/HomePage';
 
-const ProjectDetail = lazy(() => import('../features/projects/ProjectDetailPage'));
-const ProfilePage = lazy(() => import('../features/profile/ProfilePage'));
-const BlogPage = lazy(() => import('../features/blog/BlogPage'));
-const BlogDetailPage = lazy(() => import('../features/blog/BlogDetailPage'));
-const FriendsPage = lazy(() => import('../features/friends/FriendsPage'));
-const FandomPage = lazy(() => import('../features/fandom/FandomPage'));
-const TravelPage = lazy(() => import('../features/travel/TravelPage'));
-const NotFoundPage = lazy(() => import('../features/errors/NotFoundPage'));
-const ServerErrorPage = lazy(() => import('../features/errors/ServerErrorPage'));
+const ProjectDetail = lazy(() => import('@/features/projects/ProjectDetailPage'));
+const ProfilePage = lazy(() => import('@/features/profile/ProfilePage'));
+const BlogPage = lazy(() => import('@/features/blog/BlogPage'));
+const BlogDetailPage = lazy(() => import('@/features/blog/BlogDetailPage'));
+const FriendsPage = lazy(() => import('@/features/friends/FriendsPage'));
+const FandomPage = lazy(() => import('@/features/fandom/FandomPage'));
+const TravelPage = lazy(() => import('@/features/travel/TravelPage'));
+const NotFoundPage = lazy(() => import('@/features/errors/NotFoundPage'));
+const ServerErrorPage = lazy(() => import('@/features/errors/ServerErrorPage'));
 
-/** Route declarations only. Keep route-level lazy loading here. */
 export function AppRoutes() {
   return (
     <Suspense fallback={<PageSkeleton />}>

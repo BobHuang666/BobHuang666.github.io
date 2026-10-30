@@ -2,7 +2,7 @@ import {
   Plane, Train, Car, Bus, Ship, Footprints,
   type LucideIcon,
 } from 'lucide-react';
-import type { PlaceStatus, TransportMode } from '../../types';
+import type { PlaceStatus, TransportMode } from '@/types';
 
 /**
  * 交通方式 → 展示元数据。

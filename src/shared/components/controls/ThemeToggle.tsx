@@ -1,6 +1,7 @@
+/** 明暗主题切换按钮 */
 import { useRef } from 'react';
 import { Sun, Moon } from 'lucide-react';
-import { useTheme } from '../../../hooks/useTheme';
+import { useTheme } from '@/contexts/theme';
 
 /**
  * 暗色模式切换按钮

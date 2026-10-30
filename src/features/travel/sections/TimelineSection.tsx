@@ -1,9 +1,10 @@
+/** 出行记录时间线 */
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, Luggage } from 'lucide-react';
-import { TRANSPORT_META } from '../meta';
-import type { TravelTrip } from '../../../types';
-import type { RouteSegment } from '../utils/footprint';
+import { TRANSPORT_META } from '@/features/travel/meta';
+import type { TravelTrip } from '@/types';
+import type { RouteSegment } from '@/features/travel/utils/footprint';
 
 interface Props {
   trips: TravelTrip[];

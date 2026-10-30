@@ -1,15 +1,12 @@
+/** 首页打字机效果（本地实现，无第三方依赖） */
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface Props {
-  /** 打字序列：text = 要打的文本，hold = 打完后的停留毫秒（缺省 2200） */
+  /** 打字序列：text 为文本，hold 为打完后的停留毫秒，缺省 2200 */
   sequences: readonly { text: string; hold?: number }[];
   speed?: number;
 }
 
-/**
- * 首页 Hero 打字机。
- * 纯本地实现，不引入第三方库。
- */
 export const TypeWriter = ({ sequences, speed = 55 }: Props) => {
   const [text, setText] = useState('');
   const state = useRef({ strIdx: 0, charIdx: 0, deleting: false });

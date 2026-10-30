@@ -1,3 +1,4 @@
+/** 双向同步两个横向滚动容器的 Hook */
 import { useCallback, useRef } from 'react';
 
 /**

@@ -1,10 +1,11 @@
+/** 档案「基本信息」Tab：教育背景、技术栈、证书、兴趣 */
 import { motion } from 'framer-motion';
 import { Code2, GraduationCap, Heart, Award } from 'lucide-react';
-import { profile, skillGroups, hobbies } from '../../../data/profile';
-import type { SkillCategory } from '../../../types';
+import { profile, skillGroups, hobbies } from '@/data/profile';
+import type { SkillCategory } from '@/types';
 import { SectionHeading, InfoLine } from './primitives';
 
-/** 胶囊浅色调：按类目名区分（技术栈与兴趣爱好共用同一套配色风格） */
+/** 胶囊浅色调，按类目名区分 */
 const PILL_STYLE: Record<string, string> = {
   '编程语言': 'bg-sky-100 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300',
   '前端开发': 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300',
@@ -15,7 +16,7 @@ const PILL_STYLE: Record<string, string> = {
 const pillColor = (name: string) =>
   PILL_STYLE[name] ?? 'bg-slate-100 text-slate-700 dark:bg-slate-950/40 dark:text-slate-300';
 
-/** 胶囊列表：技术栈 / 兴趣爱好共用（结构一致，仅配色随类目变化） */
+/** 胶囊列表：技术栈与兴趣爱好共用 */
 const PillCloud = ({ groups }: { groups: SkillCategory[] }) => (
   <div className="flex flex-wrap gap-2.5">
     {groups.flatMap((g) =>
@@ -34,7 +35,6 @@ const PillCloud = ({ groups }: { groups: SkillCategory[] }) => (
   </div>
 );
 
-/** 基本信息：教育背景 + 技能专长 + 兴趣爱好 */
 export const BasicInfoTab = () => (
   <div className="space-y-8">
     <div>

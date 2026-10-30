@@ -1,6 +1,7 @@
-import { TRANSPORT_META } from '../meta';
-import { arcPath } from '../utils/projection';
-import type { RouteSegment } from '../utils/footprint';
+/** 出行路线图层：交通方式图标 + 动画描线 */
+import { TRANSPORT_META } from '@/features/travel/meta';
+import { arcPath } from '@/features/travel/utils/projection';
+import type { RouteSegment } from '@/features/travel/utils/footprint';
 
 /**
  * 图标组挂载时，手动启动其 <animateMotion>。
@@ -42,9 +43,9 @@ interface Props {
  * strokeDasharray=1 / strokeDashoffset 1→0 即为「从起点画到终点」，
  * 无需 JS 测量路径长度。
  *
- * 注意：这里不能用 vectorEffect="non-scaling-stroke" —— 它会让虚线长度在设备
+ * 注意：不能用 vectorEffect="non-scaling-stroke" —— 它会让虚线长度在设备
  * 空间计算，与 pathLength 归一化后的 dasharray 失配，导致放大后轨迹错乱。
- * 改为把线宽和图标尺寸乘以缩放系数 scale，既保持视觉恒定，又不影响几何。
+ * 因此线宽和图标尺寸都乘以缩放系数 scale：视觉恒定，几何不受影响。
  */
 export const RouteLayer = ({
   segments,

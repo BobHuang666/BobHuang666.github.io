@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { Chip } from '../../shared/components/ui/Chip';
-import { EmptyState } from '../../shared/components/ui/EmptyState';
+import { Chip } from '@/shared/components/ui/Chip';
+import { EmptyState } from '@/shared/components/ui/EmptyState';
 
-/** fandom 各 Tab 共用的展示原子 */
 
 const TONE_MAP: Record<string, string> = {
   rose: 'text-rose-500 from-rose-100 to-pink-100 dark:from-rose-950/40 dark:to-pink-950/40',

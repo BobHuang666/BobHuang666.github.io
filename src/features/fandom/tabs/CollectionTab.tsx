@@ -1,10 +1,11 @@
+/** 「周边收藏」Tab */
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Crown, Gift } from 'lucide-react';
-import { collections, type CollectionCategory } from '../../../data/fandom';
-import { gradient } from '../../../utils/gradients';
-import { categoryIcons, collectionCategoryMeta, rarityMeta } from '../meta';
-import { FilterChip, FandomEmptyState } from '../components';
+import { collections, type CollectionCategory } from '@/data/fandom';
+import { gradient } from '@/utils/gradients';
+import { categoryIcons, collectionCategoryMeta, rarityMeta } from '@/features/fandom/meta';
+import { FilterChip, FandomEmptyState } from '@/features/fandom/components/primitives';
 
 /** 周边收藏：按类别筛选 + 珍藏度光效 */
 export const CollectionTab = () => {

@@ -1,20 +1,20 @@
+/** 首页奖项区：级别筛选 + 荣誉统计 */
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Trophy } from 'lucide-react';
-import { uiText } from '../../../data/uiText';
-import { awards, awardCategoryMeta } from '../../../data/awards';
-import { AWARD_LEVELS, type AwardLevel } from '../../../types';
-import { resolveIcon } from '../../../utils/iconMap';
-import { formatAwardDate } from '../../../utils/awardDate';
-import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
-import { Chip } from '../../../shared/components/ui/Chip';
-import { GradientIcon } from '../../../shared/components/ui/GradientIcon';
+import { uiText } from '@/data/uiText';
+import { awards, awardCategoryMeta } from '@/data/awards';
+import { AWARD_LEVELS, type AwardLevel } from '@/types';
+import { resolveIcon } from '@/shared/components/ui/iconMap';
+import { formatAwardDate } from '@/utils/awardDate';
+import { SectionReveal } from '@/shared/components/effects/SectionReveal';
+import { Chip } from '@/shared/components/ui/Chip';
+import { GradientIcon } from '@/shared/components/ui/GradientIcon';
 import { SectionHeader } from './SectionHeader';
 
 type AwardFilter = 'all' | AwardLevel;
 const AWARD_FILTERS: AwardFilter[] = ['all', ...AWARD_LEVELS];
 
-/** 精选荣誉：支持按级别筛选，最多展示 6 项 */
 export const AwardsSection = () => {
   const [awardFilter, setAwardFilter] = useState<AwardFilter>('all');
 
@@ -31,8 +31,7 @@ export const AwardsSection = () => {
           subtitle={uiText.home.awardsSub(awards.length)}
         />
 
-        {/* 级别筛选 */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
           {AWARD_FILTERS.map((lv) => (
             <Chip
               key={lv}

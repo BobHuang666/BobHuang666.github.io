@@ -1,9 +1,6 @@
-import type { Award as AwardType, AwardCategory, IconName } from '../types';
-import type { GradientTone } from '../utils/gradients';
-
-/**
- * 奖项数据 - 单一数据源，被 HomePage / ProfilePage 共用
- */
+/** 奖项数据 —— 单一数据源，被首页与角色档案共用 */
+import type { Award as AwardType, AwardCategory, IconName } from '@/types';
+import type { GradientTone } from '@/types';
 
 export const AWARD_CATEGORY_META: Record<AwardCategory, { icon: IconName; tone: GradientTone }> = {
   程序设计: { icon: 'Code2', tone: 'violet' },

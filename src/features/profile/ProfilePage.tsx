@@ -1,16 +1,17 @@
+/** 角色档案页：Tab 编排，五个 Tab 展示全部个人数据 */
 import { useRef, useState, type ComponentType } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useSyncedScroll } from '../../hooks/useSyncedScroll';
+import { useSyncedScroll } from '@/hooks/useSyncedScroll';
 import {
   Mail, MapPin, Shield,
   CreditCard, Award, Compass, Briefcase, FlaskConical,
   type LucideIcon,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { uiText } from '../../data/uiText';
-import { profile } from '../../data/profile';
-import { RelatedLink } from '../../shared/components/ui/RelatedLink';
-import Avatar from '../../shared/components/ui/Avatar';
+import { uiText } from '@/data/uiText';
+import { profile } from '@/data/profile';
+import { RelatedLink } from '@/shared/components/ui/RelatedLink';
+import Avatar from '@/shared/components/ui/Avatar';
 import { BasicInfoTab } from './tabs/BasicInfoTab';
 import { AwardsTab } from './tabs/AwardsTab';
 import { InternshipTab } from './tabs/InternshipTab';
@@ -76,7 +77,6 @@ const TabNav = ({
   </div>
 );
 
-/** /profile —— 页面只负责头部信息卡与 Tab 编排，各 Tab 的内容在 ./tabs */
 function ProfilePage() {
   const [searchParams] = useSearchParams();
   const tabParam = searchParams.get('tab');
@@ -95,8 +95,7 @@ function ProfilePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header Card */}
-        <motion.div
+          <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -123,13 +122,11 @@ function ProfilePage() {
           </div>
         </motion.div>
 
-        {/* Tabs（顶部导航） */}
-        <div ref={topTabsRef}>
+          <div ref={topTabsRef}>
           <TabNav activeTab={activeTab} onSelect={setActiveTab} scrollRef={topRef} onScroll={onTopScroll} />
         </div>
 
-        {/* Content */}
-        <motion.div
+          <motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -152,8 +149,7 @@ function ProfilePage() {
           />
         </div>
 
-        {/* 相关跳转 */}
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <RelatedLink to="/" emoji="🏰" title={uiText.related.home.title} desc={uiText.related.home.desc} />
           <RelatedLink to="/blog" emoji="📝" title={uiText.related.blog.title} desc={uiText.related.blog.desc} />
           <RelatedLink to="/friends" emoji="🤝" title={uiText.related.friends.title} desc={uiText.related.friends.desc} />

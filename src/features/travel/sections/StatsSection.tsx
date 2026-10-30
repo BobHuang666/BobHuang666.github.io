@@ -1,7 +1,8 @@
+/** 足迹统计区：城市 / 省 / 国家 / 里程 */
 import { Compass, Globe2, MapPin, Plane, Route } from 'lucide-react';
-import { StatPill } from '../components';
-import { TRANSPORT_META } from '../meta';
-import type { FootprintStats } from '../utils/footprint';
+import { StatPill } from '@/features/travel/components/primitives';
+import { TRANSPORT_META } from '@/features/travel/meta';
+import type { FootprintStats } from '@/features/travel/utils/footprint';
 
 /** 顶部统计：城市 / 省级行政区 / 国家 / 出行次数 / 累计里程，附交通方式分布 */
 export const StatsSection = ({ stats }: { stats: FootprintStats }) => (

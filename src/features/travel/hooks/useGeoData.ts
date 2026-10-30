@@ -1,5 +1,6 @@
+/** 加载 / static/geo 底图数据并缓存 */
 import { useEffect, useState } from 'react';
-import type { ChinaGeo, WorldGeo } from '../utils/projection';
+import type { ChinaGeo, WorldGeo } from '@/features/travel/utils/projection';
 
 const CHINA_URL = `${import.meta.env.BASE_URL}static/geo/china-cities.json`;
 const WORLD_URL = `${import.meta.env.BASE_URL}static/geo/world-countries.json`;

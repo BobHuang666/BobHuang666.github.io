@@ -1,3 +1,4 @@
+/** 全局鼠标跟随粒子尾迹画布 */
 import { useEffect, useRef, useCallback } from 'react';
 
 interface Particle {
@@ -19,9 +20,8 @@ const HUES_LIGHT = [250, 270, 290, 330, 210]; // indigo / violet / pink / blue
 const HUES_DARK  = [190, 210, 260, 170, 220];  // cyan / blue / purple / teal
 
 /**
- * 全局鼠标跟随粒子尾迹（canvas overlay）
- * - pointer-events:none，不拦截任何交互
- * - 响应 prefers-reduced-motion，直接跳过渲染
+ * pointer-events:none 不拦截交互；
+ * prefers-reduced-motion 时直接跳过渲染。
  */
 const MouseParticles = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -50,7 +50,6 @@ const MouseParticles = () => {
   }, []);
 
   useEffect(() => {
-    // 尊重用户减少动效偏好
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const canvas = canvasRef.current;
@@ -58,14 +57,12 @@ const MouseParticles = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // 监听主题变化（通过 html.dark class）
     const observer = new MutationObserver(() => {
       darkRef.current = document.documentElement.classList.contains('dark');
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     darkRef.current = document.documentElement.classList.contains('dark');
 
-    // 画布尺寸同步视口
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;

@@ -1,9 +1,10 @@
+/** 单条行程的分段详情 */
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, Luggage, X } from 'lucide-react';
-import { TRANSPORT_META } from '../meta';
-import type { TravelTrip } from '../../../types';
-import type { RouteSegment } from '../utils/footprint';
+import { TRANSPORT_META } from '@/features/travel/meta';
+import type { TravelTrip } from '@/types';
+import type { RouteSegment } from '@/features/travel/utils/footprint';
 
 interface Props {
   trip: TravelTrip;

@@ -1,6 +1,7 @@
+/** 文章目录：标题抽取与滚动高亮 */
 import { useEffect, useState, useMemo } from 'react';
 import { List } from 'lucide-react';
-import { uiText } from '../../data/uiText';
+import { uiText } from '@/data/uiText';
 
 interface Heading {
   id: string;

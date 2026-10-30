@@ -1,13 +1,13 @@
+/** 首页项目区：代表性项目卡片网格 */
 import { useNavigate } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
-import { uiText } from '../../../data/uiText';
-import { projects } from '../../../data/projects';
-import { gradient } from '../../../utils/gradients';
-import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
-import { SmartImage } from '../../../shared/components/ui/SmartImage';
+import { uiText } from '@/data/uiText';
+import { projects } from '@/data/projects';
+import { gradient } from '@/utils/gradients';
+import { SectionReveal } from '@/shared/components/effects/SectionReveal';
+import { SmartImage } from '@/shared/components/ui/SmartImage';
 import { SectionHeader } from './SectionHeader';
 
-/** 精选项目卡片区 */
 export const ProjectsSection = () => {
   const navigate = useNavigate();
 

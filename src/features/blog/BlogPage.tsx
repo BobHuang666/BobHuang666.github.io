@@ -1,13 +1,13 @@
+/** 博客列表页：搜索、分类与标签筛选 */
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, FileText, Tag as TagIcon, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { blogData, blogCategories, blogTags } from '../../data/blog';
-import { uiText } from '../../data/uiText';
-import { Chip } from '../../shared/components/ui/Chip';
-import { EmptyState } from '../../shared/components/ui/EmptyState';
+import { blogData, blogCategories, blogTags } from '@/data/blog';
+import { uiText } from '@/data/uiText';
+import { Chip } from '@/shared/components/ui/Chip';
+import { EmptyState } from '@/shared/components/ui/EmptyState';
 
-/** /blog —— 列表页：负责筛选状态与编排，卡片与筛选器复用共享组件 */
 const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -45,8 +45,7 @@ const BlogPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="text-center mb-10">
+              <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
             {uiText.blog.title}
           </h1>
@@ -56,8 +55,7 @@ const BlogPage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Sidebar */}
-          <aside className="lg:col-span-1">
+                  <aside className="lg:col-span-1">
             <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 lg:sticky lg:top-24">
               {/* Search */}
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wide">
@@ -126,8 +124,7 @@ const BlogPage = () => {
             </div>
           </aside>
 
-          {/* List */}
-          <div className="lg:col-span-3">
+                  <div className="lg:col-span-3">
             <div className="mb-4 text-sm text-slate-600 dark:text-slate-400">
               {uiText.blog.found(filtered.length)}
               {searchTerm && <> · 搜索 "<span className="font-medium">{searchTerm}</span>"</>}

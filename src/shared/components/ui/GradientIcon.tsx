@@ -1,5 +1,7 @@
+/** 渐变底色的图标徽章 */
 import type { LucideIcon } from 'lucide-react';
-import { gradient, type GradientTone } from '../../../utils/gradients';
+import { gradient } from '@/utils/gradients';
+import type { GradientTone } from '@/types';
 
 const SIZE_MAP = {
   sm: { box: 'w-9 h-9', icon: 'h-4 w-4' },

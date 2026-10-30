@@ -1,3 +1,4 @@
+/** 回到顶部按钮 */
 import { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
 
@@ -5,11 +6,8 @@ const RADIUS = 18;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 /**
- * 全局浮动「回到顶部」按钮
- * - 环形 SVG 进度指示器（实时跟随滚动位置）
- * - 玻璃拟态外观
- * - hover 时显示 tooltip
- * - 纯 CSS transition 出入场，无 framer-motion 依赖
+ * 环形 SVG 实时显示滚动进度，玻璃拟态外观；
+ * 纯 CSS transition 出入场，无 framer-motion 依赖。
  */
 const ScrollToTopButton = () => {
   const [visible, setVisible] = useState(false);
@@ -39,7 +37,6 @@ const ScrollToTopButton = () => {
       `}
       aria-hidden={!visible}
     >
-      {/* Tooltip */}
       <span
         className="
           absolute -top-9 left-1/2 -translate-x-1/2
@@ -66,22 +63,19 @@ const ScrollToTopButton = () => {
           transition-transform duration-150
         "
       >
-        {/* 环形进度 SVG */}
-        <svg
+          <svg
           className="absolute inset-0 w-full h-full -rotate-90"
           viewBox="0 0 44 44"
           aria-hidden="true"
         >
-          {/* 轨道 */}
-          <circle
+            <circle
             cx="22" cy="22" r={RADIUS}
             fill="none"
             stroke="currentColor"
             strokeWidth="2.5"
             className="text-slate-200 dark:text-slate-700"
           />
-          {/* 进度 */}
-          <circle
+            <circle
             cx="22" cy="22" r={RADIUS}
             fill="none"
             stroke="currentColor"
@@ -93,7 +87,6 @@ const ScrollToTopButton = () => {
           />
         </svg>
 
-        {/* 箭头图标 */}
         <ArrowUp className="relative h-4 w-4 text-indigo-600 dark:text-indigo-400" />
       </button>
     </div>

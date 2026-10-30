@@ -1,5 +1,16 @@
+/** 跨领域数据模型：数据层与视图层共用的全部类型 */
 export type { LucideIcon } from 'lucide-react';
-import type { GradientTone } from '../utils/gradients';
+
+/** 渐变语义名：数据层只存语义，真实类名由 utils/gradients 的 GRADIENT 表解析 */
+export type GradientTone =
+  | 'indigo' | 'amber' | 'violet' | 'cyanBlue' | 'blueIndigo' | 'emeraldTeal'
+  | 'rose' | 'indigoBlue' | 'orange' | 'violetPurple' | 'red' | 'green'
+  | 'tealCyan' | 'pink' | 'blueBold' | 'yellowBold' | 'blueSoft' | 'yellowSoft'
+  | 'cyanBold' | 'greenEmerald' | 'tealCyanBold' | 'orangeBold' | 'purpleBold'
+  | 'gray' | 'indigoBold' | 'greenBold' | 'pinkRose' | 'emeraldTealBold'
+  | 'cardEmerald' | 'cardIndigo' | 'cardAmber' | 'cardSky' | 'sunsetPink'
+  | 'fuchsiaRose' | 'indigoViolet' | 'sunsetAmber' | 'fuchsiaRoseBold'
+  | 'skyTeal' | 'indigoVioletBold' | 'mintCyan' | 'mintGreen' | 'slate';
 
 /** lucide 图标名称字符串，供数据层使用（组件层通过 resolveIcon() 解析） */
 export type IconName = string;

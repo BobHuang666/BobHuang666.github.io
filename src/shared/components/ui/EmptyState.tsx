@@ -1,3 +1,4 @@
+/** 通用空状态 */
 import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -9,7 +10,6 @@ interface Props {
   className?: string;
 }
 
-/** 列表/分区为空时的统一占位，避免每个页面各写一份空态 */
 export const EmptyState = ({ icon: Icon, title, description, hint, className = '' }: Props) => (
   <div
     className={`flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 ${className}`}

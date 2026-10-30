@@ -1,16 +1,14 @@
-import type { BlogPost } from '../types';
-import { parseFrontMatter, deriveExcerpt, FRONT_MATTER_DEFAULTS } from '../utils/frontMatter';
+/** 博客数据层：读取 src/posts 全部 Markdown 并派生分类、标签与推荐阅读 */
+import type { BlogPost } from '@/types';
+import { parseFrontMatter, deriveExcerpt, FRONT_MATTER_DEFAULTS } from '@/utils/frontMatter';
 
 export type BlogMeta = Omit<BlogPost, 'content'>;
 
 /**
- * 智能阅读时间估算
- * - 中文字符：350 字/分钟
- * - 英文单词：200 词/分钟
- * - 先剥离 Markdown 语法再统计
+ * 阅读时间估算：中文 350 字/分钟、英文 200 词/分钟，
+ * 统计前先剥离代码块、行内代码、链接图片与 Markdown 标记。
  */
 function estimateReadTime(raw: string): number {
-  // 剥离代码块、Front-Matter 残留、HTML 标签、Markdown 符号
   const text = raw
     .replace(/```[\s\S]*?```/g, '')   // 代码块
     .replace(/`[^`]+`/g, '')          // 行内代码
@@ -21,16 +19,13 @@ function estimateReadTime(raw: string): number {
     .replace(/\s+/g, ' ')
     .trim();
 
-  // 中文字符数
   const zhChars = (text.match(/[\u4e00-\u9fa5\u3400-\u4dbf]/g) ?? []).length;
-  // 英文单词数（连续字母/数字序列）
   const enWords = (text.match(/[a-zA-Z0-9]+/g) ?? []).length;
 
   const minutes = zhChars / 350 + enWords / 200;
   return Math.max(1, Math.round(minutes));
 }
 
-// 自动加载 src/posts 下所有 .md 文件
 const modules = import.meta.glob('../posts/*.md', { query: '?raw', import: 'default', eager: true });
 
 /**
@@ -56,9 +51,7 @@ const posts: BlogPost[] = Object.entries(modules)
       isDraft: Boolean(data.draft),
     } as BlogPost;
   })
-  // A `draft: true` file may remain in a local checkout, but must never be
-  // addressable from the production application. CMS drafts live on their own
-  // workflow branches and are therefore absent from main altogether.
+  // draft: true 的文件永远不能出现在生产构建里
   .filter((post) => !post.isDraft)
   .sort((a, b) => (a.publishDate < b.publishDate ? 1 : -1));
 

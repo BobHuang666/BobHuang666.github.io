@@ -1,3 +1,4 @@
+/** 路由切换的滚动位置恢复策略 */
 import { useEffect } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
 

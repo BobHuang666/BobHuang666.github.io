@@ -1,11 +1,7 @@
-import type { Project, ProjectDetailData } from '../types';
+/** 项目数据 —— 简版（卡片）与详版（详情页）共用一份来源 */
+import type { Project, ProjectDetailData } from '@/types';
 
-/**
- * 项目数据 - 单一数据源
- * 数据来源：profile.md
- */
-
-// 简化版（首页卡片用）
+// 首页卡片用
 export const projects: Project[] = [
   {
     id: 'ink-ruler',
@@ -67,8 +63,7 @@ export const projects: Project[] = [
   },
 ];
 
-// 详细版（详情页用）
-// 通过 id 关联简版数据，避免依赖数组下标（调整顺序不会串数据）
+// 详情页用：通过 id 关联简版数据，调整顺序不影响取值
 const base = (id: string): Project => {
   const found = projects.find((p) => p.id === id);
   if (!found) throw new Error(`[data/projects] 详情缺少对应的项目简版数据：${id}`);
@@ -264,7 +259,7 @@ export const projectsDetail: Record<string, ProjectDetailData> = {
   },
 };
 
-/** 详情页按 id 取详情；id 不存在时返回 undefined，由页面渲染「项目不存在」 */
+/** 按 id 取详情；不存在时返回 undefined，页面据此渲染「项目不存在」*/
 export function getProjectDetail(id: string | undefined): ProjectDetailData | undefined {
   return id ? projectsDetail[id] : undefined;
 }

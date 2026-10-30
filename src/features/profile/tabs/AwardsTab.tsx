@@ -1,15 +1,16 @@
+/** 档案「奖项」Tab：等级 / 时间线 / 分类三种视图 */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AlignLeft, LayoutGrid, Star, Tags } from 'lucide-react';
-import { uiText } from '../../../data/uiText';
-import { awards, awardCategoryMeta } from '../../../data/awards';
-import { gradient } from '../../../utils/gradients';
-import { resolveIcon } from '../../../utils/iconMap';
-import { GradientIcon } from '../../../shared/components/ui/GradientIcon';
+import { uiText } from '@/data/uiText';
+import { awards, awardCategoryMeta } from '@/data/awards';
+import { gradient } from '@/utils/gradients';
+import { resolveIcon } from '@/shared/components/ui/iconMap';
+import { GradientIcon } from '@/shared/components/ui/GradientIcon';
 import { ViewSwitch } from './primitives';
-import { AWARD_LEVELS, AWARD_CATEGORIES } from '../../../types';
-import type { Award, AwardCategory } from '../../../types';
-import { formatAwardDate, compareAwardDateDesc } from '../../../utils/awardDate';
+import { AWARD_LEVELS, AWARD_CATEGORIES } from '@/types';
+import type { Award, AwardCategory } from '@/types';
+import { formatAwardDate, compareAwardDateDesc } from '@/utils/awardDate';
 
 /** 生成唯一 key，避免同名奖项（跨年份）造成的重复 key */
 const awardKey = (a: { title: string; year: string; month?: string; day?: string }) =>

@@ -1,9 +1,10 @@
+/** 世界足迹地图（国家粒度） */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Maximize2 } from 'lucide-react';
-import type { PlaceStatus } from '../../../types';
-import { NEUTRAL_FILL, PLACE_STATUS_META } from '../meta';
-import { createMapProjection, type WorldGeo } from '../utils/projection';
-import type { FootprintPoint, RouteSegment } from '../utils/footprint';
+import type { PlaceStatus } from '@/types';
+import { NEUTRAL_FILL, PLACE_STATUS_META } from '@/features/travel/meta';
+import { createMapProjection, type WorldGeo } from '@/features/travel/utils/projection';
+import type { FootprintPoint, RouteSegment } from '@/features/travel/utils/footprint';
 import { RouteLayer } from './RouteLayer';
 
 const VIEW_W = 1000;

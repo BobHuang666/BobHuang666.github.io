@@ -1,3 +1,4 @@
+/** 全站导航栏：主导航、更多下拉、滚动隐藏与插槽 */
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
@@ -7,9 +8,8 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { uiText } from '../../../data/uiText';
-import { ThemeToggle } from '../controls/ThemeToggle';
-import { SearchTrigger } from '../../../features/search';
+import { uiText } from '@/data/uiText';
+import { ThemeToggle } from '@/shared/components/controls/ThemeToggle';
 
 interface MainItem {
   to: string;
@@ -39,7 +39,7 @@ const MORE_ITEMS: MoreItem[] = [
   { to: '/friends', label: uiText.nav.friends, icon: UsersRound, description: uiText.related.friends.desc },
 ];
 
-const Navigation = () => {
+const Navigation = ({ desktopExtra, mobileExtra }: { desktopExtra?: React.ReactNode; mobileExtra?: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -50,7 +50,6 @@ const Navigation = () => {
   const moreRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
-  // 滚动隐藏
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
@@ -69,7 +68,6 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 点外部关闭
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       if (
@@ -88,7 +86,6 @@ const Navigation = () => {
     return () => document.removeEventListener('mousedown', onClick);
   }, []);
 
-  // Esc 关闭
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -100,7 +97,6 @@ const Navigation = () => {
     return () => document.removeEventListener('keydown', onKey);
   }, []);
 
-  // 路由变化关闭菜单
   useEffect(() => {
     setIsMenuOpen(false);
     setIsMoreOpen(false);
@@ -161,7 +157,6 @@ const Navigation = () => {
     );
   };
 
-  // 判断 "更多" 是否处于激活状态
   const isMoreActive = MORE_ITEMS.some((m) => location.pathname.startsWith(m.to));
 
   return (
@@ -187,8 +182,7 @@ const Navigation = () => {
             </span>
           </NavLink>
 
-          {/* Desktop */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-7">
+              <div className="hidden md:flex items-center space-x-6 lg:space-x-7">
             {MAIN_ITEMS.map((item) => (
               <AnimatedNavLink
                 key={item.label}
@@ -199,7 +193,6 @@ const Navigation = () => {
               />
             ))}
 
-            {/* "更多" 下拉 */}
             <div className="relative" ref={moreRef}>
               <button
                 type="button"
@@ -252,13 +245,12 @@ const Navigation = () => {
               )}
             </div>
 
-            <SearchTrigger />
+            {desktopExtra}
             <ThemeToggle />
           </div>
 
-          {/* Mobile */}
           <div className="md:hidden flex items-center gap-1 shrink-0">
-            <SearchTrigger />
+            {mobileExtra}
             <ThemeToggle />
             <button
               ref={buttonRef}
@@ -274,7 +266,6 @@ const Navigation = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isMenuOpen && (
         <div
           ref={menuRef}
@@ -314,7 +305,6 @@ const Navigation = () => {
               ),
             )}
 
-            {/* 移动端 "更多" 直接展开 */}
             <div className="pt-2 mt-2 border-t border-slate-200 dark:border-slate-800">
               <div className="px-3 mb-1 text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold">
                 {uiText.nav.more}

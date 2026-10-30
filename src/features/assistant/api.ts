@@ -1,6 +1,7 @@
+/** AI 助手的 LLM 请求适配（OpenAI 兼容流式接口） */
 import type { AssistantApiConfig, AssistantRole } from './types';
 
-/** Stream an OpenAI-compatible chat-completions response to the supplied callback. */
+/** 以 OpenAI 兼容的 chat/completions 流式接口请求回复，逐段回调输出 */
 export async function streamAssistantReply(
   messages: { role: AssistantRole; content: string }[],
   config: AssistantApiConfig,
@@ -39,7 +40,7 @@ export async function streamAssistantReply(
         const text = JSON.parse(data).choices?.[0]?.delta?.content;
         if (text) onChunk(text);
       } catch {
-        // Ignore malformed event fragments from compatible providers.
+        // 兼容厂商可能拼接出畸形事件片段，跳过即可
       }
     }
   }

@@ -1,8 +1,8 @@
-import { uiText } from '../../../data/uiText';
-import { RelatedLink } from '../../../shared/components/ui/RelatedLink';
+/** 首页「更多探索」区：三个次级页面入口 */
+import { uiText } from '@/data/uiText';
+import { RelatedLink } from '@/shared/components/ui/RelatedLink';
 import { SectionHeader } from './SectionHeader';
 
-/** 其它站内入口 */
 export const MoreSection = () => (
   <section id="more" className="py-20 bg-white dark:bg-slate-950">
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,3 +1,4 @@
+/** 页面底部的相关跳转卡片 */
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
@@ -8,7 +9,6 @@ interface Props {
   desc?: string;
 }
 
-/** 页面底部相关跳转卡片，统一样式 */
 export const RelatedLink = ({ to, emoji, title, desc }: Props) => {
   return (
     <Link

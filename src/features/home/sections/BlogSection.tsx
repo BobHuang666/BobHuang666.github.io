@@ -1,11 +1,11 @@
+/** 首页博客区：最新文章卡片 */
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { uiText } from '../../../data/uiText';
-import { blogMeta } from '../../../data/blog';
-import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
+import { uiText } from '@/data/uiText';
+import { blogMeta } from '@/data/blog';
+import { SectionReveal } from '@/shared/components/effects/SectionReveal';
 import { SectionHeader } from './SectionHeader';
 
-/** 首页精选文章（取最新 3 篇） */
 export const BlogSection = () => {
   const navigate = useNavigate();
   const featured = blogMeta.slice(0, 3);

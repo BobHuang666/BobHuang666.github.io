@@ -1,8 +1,8 @@
+/** travel 区块共用的展示原子 */
 import type { LucideIcon } from 'lucide-react';
-import { PLACE_STATUS_META, TRANSPORT_META } from './meta';
-import { PLACE_STATUSES, TRANSPORT_MODES } from '../../types';
+import { PLACE_STATUS_META, TRANSPORT_META } from '../meta';
+import { PLACE_STATUSES, TRANSPORT_MODES } from '@/types';
 
-/** travel 页面共用的展示原子 */
 
 const TONE_MAP: Record<string, string> = {
   indigo: 'text-indigo-500 from-indigo-100 to-violet-100 dark:from-indigo-950/40 dark:to-violet-950/40',

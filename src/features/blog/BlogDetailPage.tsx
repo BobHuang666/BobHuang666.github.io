@@ -1,13 +1,14 @@
+/** 博客详情页：正文渲染、目录、阅读进度与评论 */
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Tag as TagIcon } from 'lucide-react';
-import { uiText } from '../../data/uiText';
-import { getPost, getRelatedPosts, blogMeta } from '../../data/blog';
-import MarkdownRenderer from './MarkdownRenderer';
-import TableOfContents from './TableOfContents';
-import ReadingProgress from '../../shared/components/effects/ReadingProgress';
-import Comments from './Comments';
-import { RelatedLink } from '../../shared/components/ui/RelatedLink';
-import { usePageMeta } from '../../hooks/usePageMeta';
+import { uiText } from '@/data/uiText';
+import { getPost, getRelatedPosts, blogMeta } from '@/data/blog';
+import MarkdownRenderer from './components/MarkdownRenderer';
+import TableOfContents from './components/TableOfContents';
+import ReadingProgress from '@/shared/components/effects/ReadingProgress';
+import Comments from './components/Comments';
+import { RelatedLink } from '@/shared/components/ui/RelatedLink';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 const BlogDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -134,7 +135,7 @@ const BlogDetailPage = () => {
             </div>
           </article>
 
-          {/* 右侧 TOC（xl 以上才出现） */}
+          {/* 目录：宽屏时悬浮在右侧 */}
           <aside>
             <TableOfContents content={post.content} containerSelector="#blog-article" />
           </aside>

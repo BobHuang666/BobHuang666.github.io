@@ -1,6 +1,7 @@
+/** 多语言代码分组组件（Tab 切换 + 复制） */
 import { useState } from 'react';
 import { Check, Copy } from 'lucide-react';
-import { getLangMeta } from './codeLanguage';
+import { getLangMeta } from '../codeLanguage';
 
 export interface CodeTab {
   lang: string;
@@ -14,8 +15,8 @@ interface CodeGroupProps {
 }
 
 /**
- * 代码块分组切换组件：同一段功能给出多种编程语言的示例时按 Tab 切换。
- * 在 Markdown 中通过 :::code-group ... ::: 语法使用
+ * 同一段功能的多语言示例按 Tab 切换；
+ * Markdown 中通过 :::code-group ... ::: 语法使用
  */
 const CodeGroup = ({ tabs }: CodeGroupProps) => {
   const [active, setActive] = useState(0);
@@ -35,7 +36,6 @@ const CodeGroup = ({ tabs }: CodeGroupProps) => {
 
   return (
     <div className="not-prose my-4 rounded-xl overflow-hidden border border-white/5 shadow-sm">
-      {/* Tab 栏 */}
       <div className="flex items-center bg-slate-800 dark:bg-slate-950 overflow-x-auto scrollbar-none">
         {tabs.map((tab, i) => {
           const { display, color } = getLangMeta(tab.lang);
@@ -62,8 +62,7 @@ const CodeGroup = ({ tabs }: CodeGroupProps) => {
           );
         })}
 
-        {/* 右侧复制按钮 */}
-        <button
+          <button
           onClick={handleCopy}
           aria-label={copied ? '已复制' : '复制代码'}
           className="ml-auto mr-2 flex items-center gap-1 px-2 py-1 rounded text-[11px] font-mono text-slate-400 hover:text-slate-200 hover:bg-white/10 transition-colors shrink-0"
@@ -75,7 +74,6 @@ const CodeGroup = ({ tabs }: CodeGroupProps) => {
         </button>
       </div>
 
-      {/* 代码区 */}
       <pre className="bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 overflow-x-auto text-sm leading-relaxed m-0 rounded-none">
         <code>{cur.code}</code>
       </pre>

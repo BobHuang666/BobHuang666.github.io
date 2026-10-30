@@ -1,8 +1,9 @@
+/** 「线下打卡」Tab */
 import { motion } from 'framer-motion';
 import { CalendarDays, MapPin } from 'lucide-react';
-import { checkIns, type CheckIn } from '../../../data/fandom';
-import { fmtDate, parseLocalDate } from '../format';
-import { FandomEmptyState } from '../components';
+import { checkIns, type CheckIn } from '@/data/fandom';
+import { fmtDate, parseLocalDate } from '@/features/fandom/format';
+import { FandomEmptyState } from '@/features/fandom/components/primitives';
 
 /** 明星胶囊渐变配色（已按色相错开排列，相近颜色不相邻） */
 const IDOL_GRADIENTS = [

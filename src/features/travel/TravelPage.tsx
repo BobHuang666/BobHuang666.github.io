@@ -1,25 +1,19 @@
+/** 足迹地图页：地图模式切换、行程选中与区块编排 */
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPinned } from 'lucide-react';
-import { travelPlaces, travelTrips, worldPlaces } from '../../data/travel';
-import { uiText } from '../../data/uiText';
-import { RelatedLink } from '../../shared/components/ui/RelatedLink';
-import { EmptyState } from '../../shared/components/ui/EmptyState';
-import { usePageMeta } from '../../hooks/usePageMeta';
-import { scrollToId } from '../../utils/scroll';
+import { travelPlaces, travelTrips, worldPlaces } from '@/data/travel';
+import { uiText } from '@/data/uiText';
+import { RelatedLink } from '@/shared/components/ui/RelatedLink';
+import { EmptyState } from '@/shared/components/ui/EmptyState';
+import { usePageMeta } from '@/hooks/usePageMeta';
+import { scrollToId } from '@/utils/scroll';
 import { useChinaGeo, useWorldGeo } from './hooks/useGeoData';
 import { buildFootprints, buildRouteSegments, buildStats } from './utils/footprint';
 import { StatsSection } from './sections/StatsSection';
 import { MapSection, type MapMode } from './sections/MapSection';
 import { TimelineSection } from './sections/TimelineSection';
 
-/**
- * /travel —— 旅行足迹地图
- *
- * 页面只负责编排、地图模式切换与加载状态；
- * 地图渲染在 ./components，区块在 ./sections，足迹计算在 ./utils，
- * 展示元数据（交通方式 / 状态配色）在 ./meta。
- */
 const TravelPage = () => {
   usePageMeta(uiText.nav.travel, uiText.travel.subtitle);
   const [mode, setMode] = useState<MapMode>('china');

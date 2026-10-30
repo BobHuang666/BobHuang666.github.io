@@ -1,7 +1,8 @@
+/** 地图上的城市详情浮层 */
 import { motion } from 'framer-motion';
 import { MapPin, X, CalendarDays } from 'lucide-react';
-import { PLACE_STATUS_META } from '../meta';
-import type { FootprintPoint } from '../utils/footprint';
+import { PLACE_STATUS_META } from '@/features/travel/meta';
+import type { FootprintPoint } from '@/features/travel/utils/footprint';
 
 interface Props {
   point: FootprintPoint | null;

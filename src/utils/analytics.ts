@@ -1,12 +1,6 @@
 /**
- * GoatCounter 隐私友好的访问统计
- * ----------------------------------------------------------------
- * 启用方式：
- * 1. 注册 https://www.goatcounter.com/  → 拿到 yourcode.goatcounter.com
- * 2. 把下面的 code 改为你的名字
- * 3. 即可生效（HashRouter SPA 已做路径归一化 + hashchange 上报兼容）
- *
- * 设为空字符串则关闭（默认）
+ * GoatCounter 访问统计；启用方式见 README，code 置空则关闭。
+ * HashRouter 的路径归一化与 hashchange 上报都在本文件内处理。
  */
 export const ANALYTICS = {
   goatcounterCode: 'bobhuang',
@@ -46,7 +40,6 @@ export function initAnalytics() {
   const w = window as GoatCounterWindow;
   w.goatcounter = { ...(w.goatcounter ?? {}), path: normalizePath };
 
-  // 注入 GoatCounter 脚本
   const s = document.createElement('script');
   s.async = true;
   s.dataset.goatcounter = `https://${code}.goatcounter.com/count`;
@@ -71,13 +64,10 @@ export function initAnalytics() {
   });
 }
 
-/**
- * 轻量 Web Vitals：仅在开发环境 console 打印，不向任何服务端上报。
- */
+
 export function logWebVitals() {
   if (typeof window === 'undefined' || !('PerformanceObserver' in window)) return;
 
-  // LCP
   try {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
@@ -88,7 +78,6 @@ export function logWebVitals() {
     }).observe({ type: 'largest-contentful-paint', buffered: true });
   } catch { /* ignore */ }
 
-  // CLS
   try {
     let cls = 0;
     new PerformanceObserver((list) => {
@@ -101,7 +90,6 @@ export function logWebVitals() {
     }).observe({ type: 'layout-shift', buffered: true });
   } catch { /* ignore */ }
 
-  // INP / FID via PerformanceEventTiming
   try {
     new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {

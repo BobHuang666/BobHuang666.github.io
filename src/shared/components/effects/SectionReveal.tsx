@@ -1,3 +1,4 @@
+/** 区块进入视口时的上浮显现动画 */
 import { motion, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 

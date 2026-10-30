@@ -1,8 +1,9 @@
+/** 全站搜索命令面板：Fuse.js 模糊检索 + 键盘导航 */
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import Fuse from 'fuse.js';
 import { Search, X, ArrowRight, CornerDownLeft } from 'lucide-react';
-import { searchCorpus, type SearchItem, type SearchResultKind } from '../../data/searchIndex';
-import { uiText } from '../../data/uiText';
+import { searchCorpus, type SearchItem, type SearchResultKind } from '@/data/searchIndex';
+import { uiText } from '@/data/uiText';
 
 /** 结果类型徽章的展示样式（只有本组件用，故留在组件层而非数据层） */
 const KIND_META: Record<SearchResultKind, { label: string; color: string }> = {

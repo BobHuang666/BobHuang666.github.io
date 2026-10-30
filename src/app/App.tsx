@@ -1,19 +1,21 @@
+/** 应用根组件：Provider、路由、全局壳层与懒加载浮层的装配 */
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { HashRouter as Router } from 'react-router-dom';
-import Navigation from '../shared/components/layout/Navigation';
-import Footer from '../shared/components/layout/Footer';
-import ScrollToTopButton from '../shared/components/effects/ScrollToTopButton';
-import ScrollRestoration from '../shared/components/effects/ScrollRestoration';
-import { ErrorBoundary } from '../shared/components/ui/ErrorBoundary';
+import Navigation from '@/shared/components/layout/Navigation';
+import Footer from '@/shared/components/layout/Footer';
+import ScrollToTopButton from '@/shared/components/effects/ScrollToTopButton';
+import ScrollRestoration from '@/shared/components/effects/ScrollRestoration';
+import { ErrorBoundary } from '@/shared/components/ui/ErrorBoundary';
 import { AppProviders } from './AppProviders';
 import { AppRoutes } from './routes';
+import { SearchProvider, SearchButton } from '@/features/search';
 
-const AiAssistant = lazy(() => import('../features/assistant/AiAssistant'));
-const MouseParticles = lazy(() => import('../shared/components/effects/MouseParticles'));
+const AiAssistant = lazy(() => import('@/features/assistant/AiAssistant'));
+const MouseParticles = lazy(() => import('@/shared/components/effects/MouseParticles'));
 
 /**
- * 首屏渲染完成后再挂载全局增强组件（AI 助手 / 鼠标粒子），
- * 避免它们的加载与执行挤占首帧渲染（LCP）的主线程。
+ * 首屏渲染完成后再挂载全局增强组件，把 AI 助手与粒子效果的
+ * 加载和执行让位给首帧渲染。
  */
 function useIdleMount() {
   const [ready, setReady] = useState(false);
@@ -29,16 +31,18 @@ function useIdleMount() {
   return ready;
 }
 
-/** Root composition: providers, shared shell, route outlet, and global overlays. */
 export default function App() {
   const idleReady = useIdleMount();
   return (
     <AppProviders>
       <Router>
+        <SearchProvider>
         <div className="min-h-screen flex flex-col">
-          <Navigation />
-          {/* 路由级错误边界：单个页面 chunk 挂掉时，导航栏 / 页脚仍可用 */}
-          <main className="flex-1 pt-16">
+          <Navigation
+            desktopExtra={<SearchButton />}
+            mobileExtra={<SearchButton />}
+          />
+            <main className="flex-1 pt-16">
             <ErrorBoundary>
               <AppRoutes />
             </ErrorBoundary>
@@ -47,7 +51,6 @@ export default function App() {
         </div>
         <ScrollRestoration />
         <ScrollToTopButton />
-        {/* 可选增强：失败就静默降级，不能拖垮整站；空闲时再挂载，不与首屏抢主线程 */}
         {idleReady && (
           <>
             <ErrorBoundary fallback={null}>
@@ -58,6 +61,7 @@ export default function App() {
             </ErrorBoundary>
           </>
         )}
+        </SearchProvider>
       </Router>
     </AppProviders>
   );

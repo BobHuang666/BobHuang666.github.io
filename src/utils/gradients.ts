@@ -53,8 +53,7 @@ export const GRADIENT = {
   slate: 'from-slate-500 to-slate-600',
 } as const;
 
-/** 数据层使用的渐变语义名 */
-export type GradientTone = keyof typeof GRADIENT;
+import type { GradientTone } from '@/types';
 
 /** 缺省渐变 */
 export const DEFAULT_TONE: GradientTone = 'indigo';

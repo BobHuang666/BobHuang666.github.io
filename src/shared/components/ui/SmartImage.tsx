@@ -1,3 +1,4 @@
+/** 智能图片：懒加载 / webp+avif 自动协商 / 失败降级 / 点击放大 */
 import { useState } from 'react';
 import { ZoomIn } from 'lucide-react';
 import Lightbox from './Lightbox';
@@ -14,19 +15,17 @@ interface Props {
   sources?: { srcSet: string; type: string }[];
   /** 自动从 src 推断 .webp / .avif 路径 */
   autoModernFormats?: boolean;
-  /** 点击后在大图浮层中打开（需要 src 存在） */
+  /** 点击后在大图浮层中打开 */
   zoomable?: boolean;
   loading?: 'lazy' | 'eager';
   width?: number;
   height?: number;
 }
 
-/**
- * 智能图片：
- * - 有 src 时正常渲染，支持 lazy load / WebP / AVIF
- * - src 不存在 / 加载失败时降级为渐变背景 + 标题水印
- * - zoomable 时内置点击放大（复用 Lightbox，页面无需再自己写浮层逻辑）
- */
+  /**
+   * src 缺失或加载失败时降级为渐变背景 + 标题水印；
+   * zoomable 时内置点击放大，复用 Lightbox。
+   */
 export const SmartImage = ({
   src,
   alt,
@@ -59,7 +58,6 @@ export const SmartImage = ({
     );
   }
 
-  // 自动推断现代格式
   const autoSources: { srcSet: string; type: string }[] = [];
   if (autoModernFormats && src) {
     const base = src.replace(/\.(jpg|jpeg|png)$/i, '');

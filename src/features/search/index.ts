@@ -1,5 +1,7 @@
 /**
  * 搜索 feature 的公共入口。
- * 导航栏等跨 feature 场景只允许通过该入口引用。
+ * 其他层只允许通过该入口引用，搜索面板的实现细节不外泄。
  */
-export { SearchTrigger } from './SearchTrigger';
+export { SearchProvider } from './SearchProvider';
+export { useSearch } from './searchState';
+export { SearchButton } from './SearchButton';

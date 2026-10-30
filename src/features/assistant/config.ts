@@ -1,3 +1,4 @@
+/** AI 助手本地配置的存取键与默认值 */
 import type { AssistantApiConfig } from './types';
 
 export const ASSISTANT_STORAGE_KEY = 'ai-assistant-cfg';

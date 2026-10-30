@@ -1,3 +1,4 @@
+/** 通用筛选/标签胶囊 */
 import type { ReactNode } from 'react';
 
 export type ChipTone = 'indigo' | 'rose';
@@ -22,10 +23,6 @@ interface Props {
   children: ReactNode;
 }
 
-/**
- * 通用筛选/标签胶囊。
- * 全站的筛选器、标签云、分类按钮共用同一套视觉与交互，避免各处重复写类名。
- */
 export const Chip = ({ active = false, tone = 'indigo', onClick, className = '', children }: Props) => (
   <button
     type="button"

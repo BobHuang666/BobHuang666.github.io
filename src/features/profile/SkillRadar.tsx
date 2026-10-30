@@ -1,3 +1,4 @@
+/** 技能雷达图（canvas） */
 import { motion } from 'framer-motion';
 
 interface RadarItem {
@@ -10,9 +11,6 @@ interface Props {
   size?: number;
 }
 
-/**
- * 纯 SVG 雷达图，无外部依赖
- */
 const SkillRadar = ({ items, size = 280 }: Props) => {
   const cx = size / 2;
   const cy = size / 2;
@@ -41,8 +39,7 @@ const SkillRadar = ({ items, size = 280 }: Props) => {
         className="overflow-visible"
         aria-label="技能雷达图"
       >
-        {/* 背景层 */}
-        {levels.map((lvl) => (
+          {levels.map((lvl) => (
           <polygon
             key={lvl}
             points={pStr(items.map((_, i) => point(i, lvl)))}
@@ -53,8 +50,7 @@ const SkillRadar = ({ items, size = 280 }: Props) => {
           />
         ))}
 
-        {/* 轴线 */}
-        {items.map((_, i) => {
+          {items.map((_, i) => {
           const outer = point(i, 1);
           return (
             <line
@@ -70,8 +66,7 @@ const SkillRadar = ({ items, size = 280 }: Props) => {
           );
         })}
 
-        {/* 数据区域 */}
-        <motion.polygon
+          <motion.polygon
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
@@ -83,8 +78,7 @@ const SkillRadar = ({ items, size = 280 }: Props) => {
           strokeLinejoin="round"
         />
 
-        {/* 数据点 */}
-        {dataPoints.map((p, i) => (
+          {dataPoints.map((p, i) => (
           <motion.circle
             key={i}
             initial={{ r: 0 }}
@@ -98,8 +92,7 @@ const SkillRadar = ({ items, size = 280 }: Props) => {
           />
         ))}
 
-        {/* 标签 */}
-        {items.map((it, i) => {
+          {items.map((it, i) => {
           const labelPt = point(i, 1.22);
           const textAnchor =
             Math.abs(labelPt.x - cx) < 5 ? 'middle' : labelPt.x < cx ? 'end' : 'start';
@@ -118,8 +111,7 @@ const SkillRadar = ({ items, size = 280 }: Props) => {
           );
         })}
 
-        {/* 层级标注 */}
-        {levels.slice(0, -1).map((lvl) => {
+          {levels.slice(0, -1).map((lvl) => {
           const p = point(0, lvl);
           return (
             <text
@@ -135,7 +127,6 @@ const SkillRadar = ({ items, size = 280 }: Props) => {
         })}
       </svg>
 
-      {/* 图例 */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-1.5 text-xs text-slate-600 dark:text-slate-400 max-w-xs">
         {items.map((it) => (
           <div key={it.label} className="flex items-center gap-1.5">

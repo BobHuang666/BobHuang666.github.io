@@ -1,12 +1,13 @@
+/** 友人帐页：友链列表、申请方式与加密名片入口 */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Mail, Link2, Copy, Check, Github } from 'lucide-react';
-import { uiText } from '../../data/uiText';
-import { friends, myLinkCard } from '../../data/friends';
-import { profile } from '../../data/profile';
-import { RelatedLink } from '../../shared/components/ui/RelatedLink';
-import { usePageMeta } from '../../hooks/usePageMeta';
-import { BusinessCardModal } from './BusinessCardModal';
+import { uiText } from '@/data/uiText';
+import { friends, myLinkCard } from '@/data/friends';
+import { profile } from '@/data/profile';
+import { RelatedLink } from '@/shared/components/ui/RelatedLink';
+import { usePageMeta } from '@/hooks/usePageMeta';
+import { BusinessCardModal } from './components/BusinessCardModal';
 
 const FriendsPage = () => {
   const [copied, setCopied] = useState(false);

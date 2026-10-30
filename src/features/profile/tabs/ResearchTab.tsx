@@ -1,5 +1,6 @@
+/** 档案「科研」Tab：著作成果与课题 */
 import { FlaskConical, BookMarked } from 'lucide-react';
-import { research, works } from '../../../data/profile';
+import { research, works } from '@/data/profile';
 import { SectionHeading } from './primitives';
 
 /** 等级 → 徽标配色（与获奖经历一致：国家级=琥珀 / 省级=天蓝 / 校级=翠绿 / 院系级=紫） */

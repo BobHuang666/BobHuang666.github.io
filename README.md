@@ -1,274 +1,103 @@
 # BobHuang · 个人主页
 
-> 参与开发前请阅读 [前端结构设计与协作约定](docs/ARCHITECTURE.md)。
-
 [![Live](https://img.shields.io/badge/Live-blog.bobhuang.cn-6366f1?style=flat-square)](https://blog.bobhuang.cn/)
 [![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-5-646cff?style=flat-square&logo=vite)](https://vitejs.dev)
 [![Tailwind](https://img.shields.io/badge/Tailwind-3-38bdf8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 [![PWA](https://img.shields.io/badge/PWA-ready-5a0fc8?style=flat-square)](https://web.dev/progressive-web-apps/)
 
-> 基于 React 18 + Vite 5 + TypeScript + Tailwind CSS 构建的个人主页，支持暗色模式 / 全站搜索 / PWA / Markdown 博客 / 评论 / 数据统计。部署在 GitHub Pages。
-
----
+> 游戏化包装的个人主页 + 博客：React 18 + Vite 5 + TypeScript + Tailwind CSS，部署在 GitHub Pages。
 
 ## 站点地图
 
-### 主导航
-
 | 路由 | 页面 | 说明 |
 | --- | --- | --- |
-| `/` | **主城** | 首页 · Hero / 技能 / GitHub / 项目 / 博客 / 奖项 / 更多探索 / 联系 |
-| `/profile` | **角色档案** | Tab 简历：基本信息 / 获奖经历 / 实习经历/ 在校经历 / 科研课题 |
-| `/#projects` | **任务中心** | 首页项目区锚点跳转 |
-| `/blog` | **游戏攻略** | 博客列表 + 关键词搜索 + 分类 / 标签筛选 |
+| `/` | **主城** | Hero / 公告 / 项目 / 博客 / 奖项 / 技能 / 联系 |
+| `/profile` | **角色档案** | 五 Tab 简历：基本信息 / 奖项 / 实习 / 经历 / 科研 |
+| `/projects/:id` | 项目详情 | 概述 / 功能 / 技术栈 / 挑战 / 方案 / 成果 / 复盘 |
+| `/blog` · `/blog/:id` | **游戏攻略** | Markdown 博客：搜索 / 分类 / 标签 / TOC / 代码高亮 / giscus 评论 |
+| `/travel` | **足迹地图** | 中国 & 世界地图，足迹点亮 + 出行路线动画 |
+| `/fandom` | **追星日记** | 偶像墙 / 演唱会 / 线下打卡 / 周边收藏 |
+| `/friends` | **友人帐** | 友情链接 + 申请流程 + 加密名片生成 |
+| `/500` · `*` | 兜底页 | 500 错误页；404 内置弹弹球小游戏 |
+| 全局 | 🔍 搜索 · 🤖 AI 助手 | ⌘K 命令面板；RAG 知识库问答，无 API Key 时降级为站内检索 |
 
-### 探索（导航栏「更多」下拉）
-
-| 路由 | 页面 | 说明 |
-| --- | --- | --- |
-| `/travel` | **足迹地图** | 中国 / 世界足迹地图，点亮去过的城市与出行路线 |
-| `/fandom` | **追星日记** | 追星专题 · 偶像墙 / 演唱会 / 线下打卡 / 周边收藏 |
-| `/friends` | **友人帐** | 友情链接 + 申请友链流程 |
-
-### 其他
-
-| 路由 | 说明 |
-| --- | --- |
-| `/projects/:id` | 项目详情页（目录 + 概述 / 功能 / 技术栈 / 挑战 / 方案 / 成果 / 总结） |
-| `/blog/:id` | 博客详情（Markdown + TOC + 代码高亮 + 复制 + 阅读进度 + 推荐 + 评论） |
-| `/500` | 服务端 / 资源异常兜底页 |
-| `*` | 404 NotFound（内置弹弹球小游戏） |
-
----
-
-## 本地开发
+## 快速开始
 
 ```bash
-# 安装依赖（首次会自动初始化 husky 钩子）
-npm install
-
-# 启动开发服务器（默认 http://localhost:5173）
-npm run dev
-
-# 构建生产版本（输出到 dist/）
-npm run build
-
-# 预览构建结果
-npm run preview
-
-# 代码检查
-npm run lint            # 仅检查
-npm run lint:fix        # 检查并自动修复
-npm run typecheck       # TypeScript 类型检查
-npm run check           # typecheck + lint 一把梭
-
-# 打包体积报告（需先 build）
-npm run size
+npm install          # 首次会自动初始化 husky
+npm run dev          # 开发服务器 http://localhost:5173
+npm run build        # 构建到 dist/
+npm run preview      # 预览构建产物
+npm run check        # typecheck + lint
+npm run size         # 打包体积报告（需先 build）
 ```
 
-> Windows PowerShell 用户可直接复制运行，命令是跨平台的。
+## 架构
 
----
-
-## 目录结构
-
-完整的目录职责、依赖方向和新增文件的放置规则见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。以下为当前结构概览：
+四层单向依赖：**数据层 → 共享层 → 页面层 → 应用层**，import 统一走 `@/*` 别名（= `src/*`）。
 
 ```
 src/
-├── app/                     # 根壳层、Provider 与路由定义
-├── features/                # 业务功能：页面只做编排，区块/Tab 下沉为子组件
-│   ├── home/                # HomePage + sections/
-│   ├── profile/             # ProfilePage + tabs/
-│   ├── fandom/              # FandomPage + tabs/ + meta.ts
-│   ├── projects/ blog/ friends/ errors/
-│   └── search/ assistant/   # 跨页面能力，index.ts 暴露公共入口
-├── shared/components/       # 跨业务复用的布局、控件、UI 与视觉效果
-├── contexts/                # 全局 React Context
-├── hooks/                   # 跨功能复用 Hook
-├── data/                    # 内容单一事实来源（含 uiText.ts）及轻量派生索引
-├── posts/                   # Markdown 博客正文
-├── drafts/                  # 未发布草稿，不参与构建
-├── types/                   # 跨领域数据模型
-├── utils/                   # 无 React 状态的工具
-├── main.tsx                 # 浏览器入口
-└── index.css                # 全局样式
+├─ app/         # 应用层：Provider 组合、路由注册与懒加载、全局壳层
+├─ features/    # 页面层：每个路由页面 / 跨页能力一个模块
+│               #   内部约定：Page.tsx + sections|tabs + components + meta.ts
+├─ shared/      # 共享层：跨业务组件（layout / controls / ui / effects）
+├─ contexts/    # 全局状态（主题）    ├─ hooks/   跨 feature Hook
+├─ data/        # 数据层：内容单一事实来源 + uiText 文案 + 派生索引
+├─ posts/       # Markdown 博客正文   ├─ drafts/  草稿（不参与构建）
+├─ types/       # 跨领域数据模型      └─ utils/   纯函数工具
 ```
-
----
 
 ## 核心特性
 
 | 类别 | 实现 |
 | --- | --- |
-| **路由** | HashRouter（规避 GH Pages 刷新 404）+ 路由懒加载 + Suspense |
-| **暗色模式** | `prefers-color-scheme` + localStorage 持久化 + 防闪烁脚本 |
-| **中文文案层** | `src/data/uiText.ts` 集中管理 UI 文案，渲染层不写死字符串 |
-| **博客** | Markdown 文件自动加载，含 Front-Matter / GFM / 代码高亮 / 复制 / TOC / 阅读进度 |
-| **搜索** | Fuse.js 命令面板，⌘K / Ctrl+K / `/` 触发 |
-| **评论** | giscus 集成（GitHub Discussions） |
-| **统计** | GoatCounter 隐私友好统计 + Web Vitals 上报 |
-| **PWA** | vite-plugin-pwa 生成 SW + Manifest + 离线缓存 |
-| **动画** | framer-motion + `prefers-reduced-motion` 兼容 |
-| **设计 token** | Tailwind 扩展 brand/gold 色阶 + Inter/Noto Sans SC |
-| **可访问性** | aria-label / focus ring / 键盘可达 / `prefers-reduced-motion` |
-| **SEO** | 动态 title / description / OG + Twitter Card + sitemap |
-| **代码分割** | react-vendor / motion / markdown / katex 固定分包 + 路由与浮层组件懒加载 |
+| 路由 | HashRouter（规避 GH Pages 刷新 404）+ 路由懒加载 + modulepreload |
+| 博客 | `src/posts/*.md` 自动加载，Front-Matter / GFM / KaTeX / Mermaid / TOC / 复制 / 阅读进度 |
+| 搜索 | Fuse.js 命令面板，⌘K / Ctrl+K / `/`，覆盖博客 / 项目 / 奖项 / 技能 / 页面 |
+| AI 助手 | RAG 知识库由 `data/` 自动派生、与页面展示同步；OpenAI 兼容流式对话 |
+| 主题 | 明暗双主题，防闪烁内联脚本 + localStorage 持久化 |
+| PWA | vite-plugin-pwa：SW + manifest + 分层运行时缓存 + 防白屏兜底 |
+| 性能 | 图片管线（webp/avif + 右尺寸）、CSS 内联、路由预加载、空闲挂载浮层、`prefers-reduced-motion` 降级 |
+| 统计 | GoatCounter 隐私友好统计 |
+| SEO | 动态 title / description / OG + sitemap |
+| 工程 | TS strict、ESLint 零错误、husky + lint-staged、体积守门、Lighthouse CI、Dependabot |
 
----
+## 内容维护（改什么 → 改哪里）
 
-## 配置指南
-
-### 编辑内容
-
-| 想改什么 | 改哪里 |
+| 想改什么 | 位置 |
 | --- | --- |
-| 个人基础信息 / 邮箱 / GitHub | `src/data/profile.ts` |
-| 添加 / 修改项目 | `src/data/projects.ts` |
-| 添加奖项 | `src/data/awards.ts` |
-| 修改技能 / 兴趣爱好 / 实习 / 培训 / 实践 / 学生工作 / 科研 / 著作 | `src/data/profile.ts` |
-| 添加博客 | 在 `src/posts/` 新建 `xxx.md`，自动出现在列表 |
-| 友链 | `src/data/friends.ts` |
-| 追星 | `src/data/fandom.ts` |
-| 友人帐名片（加密） | 明文 `scripts/.card-secret.json`（已被 .gitignore 忽略）；加密产物 `src/data/businessCard.ts`；用口令重新生成：`npm run gen:card` |
+| 个人信息 / 教育 / 技能 / 实习 / 培训 / 实践 / 学生工作 / 科研 / 著作 | `src/data/profile.ts` |
+| 项目 / 奖项 | `src/data/projects.ts` · `src/data/awards.ts` |
+| 博客文章 | 在 `src/posts/` 新建 `xxx.md`（Front-Matter 见现有文章），自动进列表 |
+| 友链 / 追星 / 旅行 / 中文文案 | `src/data/friends.ts` · `fandom.ts` · `travel.ts` · `uiText.ts` |
 | 主题色 / 字体 | `tailwind.config.js` |
-| 中文文案 | `src/data/uiText.ts` |
+| AI 助手知识库 | 由 `data/` 自动派生，通常无需手改 |
 
-### 生成个人名片（加密）
+> 图片新增 / 替换后运行 `node scripts/optimize-images.mjs`：自动缩放尺寸并生成同名 `.webp` / `.avif`（`SmartImage` 自动协商使用）。
 
-友人帐页面提供「生成我的名片」：点击后输入**口令**才能进入，可勾选要展示的字段（姓名 / 昵称始终展示），并导出一张精美名片 PNG。
-隐私信息（手机 / 邮箱 / 地址等）**以 AES-GCM 密文**形式存放在 `src/data/businessCard.ts`，口令只在使用者脑中，**既不写进源码，也不进入构建产物**，因此源码 / 仓库中无法还原明文。
+### 加密名片（友人帐页）
 
-> ⚠️ 明文 `scripts/.card-secret.json`（含隐私）已被 `.gitignore` 忽略，**切勿提交**。
-
-**明文格式**（schema）已固化为模板 `scripts/card-secret.example.json`，照抄结构即可。
-
-- `fields` 为必填对象；所有字段（含 `name` / `nickname`）**均可在弹窗里勾选**，勾选的内容才会出现在名片上。
-- 每个字段可附带 `enLabel` / `enValue`（可选）：弹窗内切换「English」时展示英文标签与内容；缺失则回退中文。地址等较长内容可用 `\n` 在英文版里强制换行。
-- 想新增/删除字段：增删对应 key 即可（顺序即名片展示顺序），无需改代码。
-
-重新生成密文（修改信息或更换口令后都需要重跑）：
+名片隐私信息以 **AES-GCM 密文**存在 `src/data/businessCard.ts`，口令不进源码、不进构建产物。编辑明文 `scripts/.card-secret.json`（已被 gitignore，schema 见 `card-secret.example.json`）后重新生成：
 
 ```bash
-# 1) 编辑 scripts/.card-secret.json 里的明文
-# 2) 用环境变量传入口令并执行
-CARD_PASSWORD=你的口令 npm run gen:card
-#    Windows PowerShell:
-#    $env:CARD_PASSWORD="你的口令"; npm run gen:card
+CARD_PASSWORD=你的口令 npm run gen:card     # PowerShell: $env:CARD_PASSWORD="你的口令"; npm run gen:card
 ```
 
-浏览器端用相同口令（PBKDF2-SHA256 150000 次派生 AES-GCM-256 密钥）解密，口令错误会直接报错，无法进入。
+### giscus 评论 / GoatCounter 统计
 
-### 启用评论（giscus）
+- 评论：仓库开启 Discussions 并安装 [giscus App](https://github.com/apps/giscus)，把 <https://giscus.app/zh-CN> 生成的 `repoId` / `categoryId` 填入 `src/data/giscus.ts`。
+- 统计：在 [goatcounter.com](https://www.goatcounter.com/) 注册后，把 code 填入 `src/utils/analytics.ts` 的 `goatcounterCode`。
 
-1. 仓库改为 public
-2. 安装 [giscus GitHub App](https://github.com/apps/giscus)
-3. 仓库设置中开启 Discussions
-4. 去 <https://giscus.app/zh-CN> 生成配置
-5. 把 `repoId` / `categoryId` 填到 `src/data/giscus.ts`
+## 部署
 
-### 启用访问统计（GoatCounter）
+`git push origin main` 即完成发布：CI 检查 → 自动部署 GH Pages → Lighthouse 全页评分 → 飞书通知，全程无手动步骤；PR 同样跑 CI 阻塞合并。流水线细节、质量基线与飞书告警配置见 [docs/CI-CD.md](docs/CI-CD.md)。
 
-1. 在 <https://www.goatcounter.com/> 注册
-2. 把分配的 code 填到 `src/utils/analytics.ts` 的 `goatcounterCode`
+## 文档
 
-### 启用飞书告警机器人（Feishu Webhook）
-
-1. 在飞书群里添加「自定义机器人」，拿到 Webhook 地址（可选开启签名校验）
-2. 仓库 **Settings → Secrets and variables → Actions** 添加：
-
-| Secret | 用途 | 必填 |
-| --- | --- | --- |
-| `FEISHU_WEBHOOK_URL` | 机器人 Webhook 地址，不配置则所有通知静默跳过 | CI/部署/宕机告警需要 |
-| `FEISHU_WEBHOOK_SECRET` | 机器人开启「签名校验」时的密钥 | 否 |
-| `GOATCOUNTER_API_TOKEN` | GoatCounter（个人设置 → API）生成的密钥 | 每日访客日报需要 |
-
-3. 发送脚本为 `.github/scripts/feishu-notify.mjs`，所有通知均为飞书卡片消息
-4. 每日日报用显式 `+08:00` 偏移查询统计，不依赖 GoatCounter 时区设置；
-   若想让 Dashboard 的按天分组也按北京时间切分：右上角用户名 → 用户设置 → **Preferences** 标签 → **Timezone** 选 `Asia/Shanghai` → Save
-
----
-
-## 部署 GitHub Pages
-
-本项目已接入 **GitHub Actions 全自动部署**，无需手动执行任何命令。
-
-### 一次性配置（仅首次需要）
-
-进入仓库 **Settings → Pages → Build and deployment**：
-
-- **Source** 选择 **GitHub Actions**
-
-### 日常发布流程
-
-```bash
-git push origin main
-```
-
-推送到 `main` 后，`.github/workflows/deploy.yml` 会自动：
-
-1. 安装依赖、跑 `typecheck` + `lint` + `build` + `size` 检查
-2. 上传 `dist/` 产物到 GitHub Pages
-3. 部署完成后对全站各页面跑 Lighthouse 评分（静态页 + 每类动态详情页代表，由脚本自动枚举，详见下方「Lighthouse CI」）
-
-PR 阶段也会跑同样的检查（`.github/workflows/ci.yml`），任何环节失败都会阻塞合并。
-
----
-
-## 自动化质量保障
-
-| 阶段 | 工具 | 触发 | 失败行为 |
-| --- | --- | --- | --- |
-| **本地 commit** | husky + lint-staged | `git commit` | 仅对暂存的 `.ts/.tsx` 跑 `eslint --fix`（毫秒级，仅检查改动） |
-| **本地 push** | husky | `git push` | 全量 `tsc --noEmit` 类型检查，类型错误本地拦截 |
-| **PR / push 到 main** | GitHub Actions `ci.yml` | 远端 | typecheck → lint → build → bundle size，任一失败阻塞 |
-| **合并到 main** | GitHub Actions `deploy.yml` | 远端 | 全量检查通过后自动构建 + 部署 + Lighthouse |
-| **依赖维护** | Dependabot | 每周一 | 自动开 PR 升级 npm 与 actions 依赖 |
-
-### 打包体积守门（`scripts/check-bundle-size.js`）
-
-智能区分**首屏关键 chunk** 与**按需加载 chunk**：
-
-| 维度 | 阈值（gzip） | 当前 |
-| --- | --- | --- |
-| 单个 JS chunk | ≤ 250 KB | ✅ 最大 markdown 187 KB（按需） |
-| 首屏关键 JS 总和 | ≤ 250 KB | ✅ 167 KB |
-| 全部 JS 总和 | ≤ 1500 KB | ✅ 1266 KB |
-| 单个 CSS | ≤ 50 KB | ✅ 最大 15.0 KB |
-
-> mermaid 各 diagram、katex、cytoscape、wardley、markdown、giscus 等被识别为按需加载，**不计入首屏关键体积**。如需调整阈值或新增懒加载模式，编辑脚本顶部的 `LIMITS` / `LAZY_PATTERNS`。
-
-### Lighthouse CI
-
-部署时由 `scripts/gen-lighthouse-pages.mjs` **自动枚举被测页面**并生成配置，覆盖全站：
-
-- **静态路由（8 个）**：首页 / 关于 / 博客 / 友链 / 同好 / 旅行 / 500 / 404
-- **动态详情页各 1 个代表**：自动取 `src/posts` 第一篇非草稿文章、`src/data/projects.ts` 第一个项目
-
-阈值（`lighthouserc.json` 基线，warn 级、不阻塞部署）：Performance ≥ 80 · Accessibility ≥ 90 · Best Practices ≥ 90 · SEO ≥ 90。
-
-报告上传到临时公开存储，**飞书「部署成功」卡片逐页列出各页面分数，并提供每个页面对应的报告链接**。因为是 `HashRouter` SPA，Lighthouse 会执行 JS 渲染对应路由后再审计，配合 `usePageMeta` 按路由更新 `title` / `meta description`，各页分数是真实独立的（不是同一个首页分）。
-
-> 生成的 `lighthouserc.generated.json` 与 `pages.json` 为 CI 运行时产物（已 gitignore），改阈值请改 `lighthouserc.json` 基线。
-
-### 飞书服务告警（Feishu Webhook）
-
-配置 `FEISHU_WEBHOOK_URL` secret 后自动生效（详见上方「配置指南」），通知均为简明卡片消息：
-
-| 通知 | 触发 | 工作流 |
-| --- | --- | --- |
-| 🚨 CI 失败 | push / PR 检查失败，卡片含失败步骤与日志链接 | `ci.yml` |
-| 🚀 部署成功 / 🚨 部署失败 | 部署流水线结束，含版本、gzip 体积、Lighthouse 分数 | `deploy.yml` |
-| 🚨 站点宕机 / ✅ 恢复 | 每 15 分钟探测 `blog.bobhuang.cn`（3 次重试防误报），状态翻转才通知，防轰炸 | `uptime.yml` |
-| 📊 每日日报 | 每天 08:05（北京时间）：昨日访客、本周访客、热门页面 TOP5、SSL 证书剩余天数（北京时间显示，不足 14 天转橙色警告） | `daily-report.yml` |
-
-> 本站托管在 GitHub Pages（无服务器/容器/备份），故 CPU / 内存 / 容器 / 备份类告警不适用。
-> schedule 任务在仓库 60 天无 push 后会被 GitHub 暂停，手动跑一次即可恢复。
-> 想看卡片效果：**Actions → 对应工作流 → Run workflow** 手动触发（`Uptime Monitor` 勾选 `force` 可强制发卡；`CI` 仅失败时才发通知）。
-
----
-
-## 后续迭代
-
-详见 [`docs/ROADMAP.md`](docs/ROADMAP.md)
+| 文档 | 内容 |
+| --- | --- |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | 分层规则、依赖方向、文件放置与注释约定 —— 参与开发前必读 |
+| [docs/CI-CD.md](docs/CI-CD.md) | 流水线、质量基线、飞书告警配置 |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | 迭代规划与版本历史 |

@@ -1,6 +1,6 @@
+/** 按路由动态更新 title / description / OG 标签 */
 import { useEffect } from 'react';
 
-/** 动态更新页面 title 和 meta description */
 export function usePageMeta(title: string, description?: string) {
   useEffect(() => {
     const prev = document.title;
@@ -17,8 +17,7 @@ export function usePageMeta(title: string, description?: string) {
       metaDesc.content = description;
     }
 
-    // OG tags
-    const ogTitle = document.querySelector<HTMLMetaElement>('meta[property="og:title"]');
+      const ogTitle = document.querySelector<HTMLMetaElement>('meta[property="og:title"]');
     const ogDesc = document.querySelector<HTMLMetaElement>('meta[property="og:description"]');
     const prevOgTitle = ogTitle?.content ?? '';
     const prevOgDesc = ogDesc?.content ?? '';

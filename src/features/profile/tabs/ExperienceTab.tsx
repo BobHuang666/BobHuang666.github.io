@@ -1,8 +1,8 @@
+/** 档案「经历」Tab：学生工作与社会实践 */
 import { Compass, Users } from 'lucide-react';
-import { practiceExperiences, studentWork } from '../../../data/profile';
+import { practiceExperiences, studentWork } from '@/data/profile';
 import { SectionHeading, TimelineCard } from './primitives';
 
-/** 学生工作 + 实践经历 */
 export const ExperienceTab = () => (
   <div className="space-y-10">
     <div>

@@ -1,6 +1,7 @@
+/** 「偶像墙」Tab */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { idols, type Idol } from '../../../data/fandom';
+import { idols, type Idol } from '@/data/fandom';
 
 /** 头像：有图加载图，失败或缺失时回退到首字渐变圆 */
 const Avatar = ({ idol, className }: { idol: Idol; className?: string }) => {

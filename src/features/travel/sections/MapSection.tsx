@@ -1,19 +1,20 @@
+/** 地图区块：年份筛选、播放控制、底图与详情侧栏 */
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, CalendarRange, Map as MapIcon, Globe2, Trash2 } from 'lucide-react';
-import { Chip } from '../../../shared/components/ui/Chip';
-import type { PlaceStatus, TravelTrip } from '../../../types';
-import { useInView } from '../../../hooks/useInView';
-import { useReducedMotion } from '../hooks/useReducedMotion';
-import { ChinaMap } from '../components/ChinaMap';
-import { WorldMap } from '../components/WorldMap';
-import { MapLegend } from '../components';
-import { PlaceCard } from '../components/PlaceCard';
-import { TripDetail } from '../components/TripDetail';
-import { segmentBounds } from '../utils/footprint';
-import type { FootprintPoint, FootprintStats, RouteSegment } from '../utils/footprint';
-import type { ChinaGeo, WorldGeo } from '../utils/projection';
-import { uiText } from '../../../data/uiText';
+import { Chip } from '@/shared/components/ui/Chip';
+import type { PlaceStatus, TravelTrip } from '@/types';
+import { useInView } from '@/hooks/useInView';
+import { useReducedMotion } from '@/features/travel/hooks/useReducedMotion';
+import { ChinaMap } from '@/features/travel/components/ChinaMap';
+import { WorldMap } from '@/features/travel/components/WorldMap';
+import { MapLegend } from '@/features/travel/components/primitives';
+import { PlaceCard } from '@/features/travel/components/PlaceCard';
+import { TripDetail } from '@/features/travel/components/TripDetail';
+import { segmentBounds } from '@/features/travel/utils/footprint';
+import type { FootprintPoint, FootprintStats, RouteSegment } from '@/features/travel/utils/footprint';
+import type { ChinaGeo, WorldGeo } from '@/features/travel/utils/projection';
+import { uiText } from '@/data/uiText';
 
 export type MapMode = 'china' | 'world';
 
@@ -63,7 +64,7 @@ export const MapSection = ({
   /** 是否显示出行路线（关闭则只显示城市，不画路径） */
   const [showRoutes, setShowRoutes] = useState(true);
 
-  // 切换地图后旧的选中项已不属于当前数据
+  // 切换地图后原选中项不在新数据里，一并清空
   useEffect(() => {
     setSelectedId(null);
   }, [mode]);
@@ -81,7 +82,7 @@ export const MapSection = ({
     return () => clearTimeout(timer);
   }, [playing, playIndex, stats.years]);
 
-  // 选中行程时，仅点亮该行程的端点城市（与年份筛选互斥）；住过/想去仍常亮
+  // 选中行程时与年份筛选互斥：只亮该行程的端点城市；住过/想去不受筛选影响，始终点亮
   const selectedTripPlaceIds = useMemo(() => {
     if (!selectedTripId) return null;
     const ids = new Set<string>();
@@ -98,11 +99,9 @@ export const MapSection = ({
     () =>
       points.filter(
         (p) =>
-          // 住过 / 想去 不受筛选影响，始终点亮
-          p.place.status === 'wishlist' ||
+                  p.place.status === 'wishlist' ||
           p.place.status === 'lived' ||
-          // 选中行程时与年份筛选互斥：只亮该行程的端点城市，忽略年份
-          (selectedTripPlaceIds
+                  (selectedTripPlaceIds
             ? selectedTripPlaceIds.has(p.place.id)
             : p.firstDate !== null && activeYears.has(Number(p.firstDate.slice(0, 4)))),
       ),

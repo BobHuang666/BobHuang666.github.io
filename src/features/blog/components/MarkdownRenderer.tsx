@@ -1,3 +1,4 @@
+/** Markdown 渲染器：GFM / 数学公式 / 代码高亮 / 自定义容器 */
 import { useState, useEffect, useRef, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -8,7 +9,7 @@ import 'highlight.js/styles/github-dark.css'; // 代码高亮主题，仅博客�
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import { Check, Copy } from 'lucide-react';
-import { getLangMeta } from './codeLanguage';
+import { getLangMeta } from '../codeLanguage';
 import CodeGroup from './CodeGroup';
 import type { CodeTab } from './CodeGroup';
 

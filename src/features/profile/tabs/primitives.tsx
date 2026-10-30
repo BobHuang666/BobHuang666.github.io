@@ -1,8 +1,8 @@
+/** profile 各 Tab 共用的展示原子 */
 import { Star } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import type { Experience } from '../../../types';
+import type { Experience } from '@/types';
 
-/** profile 各 Tab 共用的展示原子，避免每个 Tab 各写一份 */
 
 export const SectionHeading = ({ icon: Icon, title }: { icon: LucideIcon; title: string }) => (
   <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-5 flex items-center">

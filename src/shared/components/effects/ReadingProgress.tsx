@@ -1,6 +1,6 @@
+/** 顶部细条阅读进度 */
 import { useEffect, useState } from 'react';
 
-/** 顶部细条阅读进度，监听 window 滚动 */
 const ReadingProgress = () => {
   const [progress, setProgress] = useState(0);
 

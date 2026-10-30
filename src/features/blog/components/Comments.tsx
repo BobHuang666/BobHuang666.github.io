@@ -1,8 +1,9 @@
+/** giscus 评论区封装 */
 import Giscus from '@giscus/react';
 import { MessageSquare } from 'lucide-react';
-import { uiText } from '../../data/uiText';
-import { useTheme } from '../../hooks/useTheme';
-import { giscusConfig, isGiscusEnabled } from '../../data/giscus';
+import { uiText } from '@/data/uiText';
+import { useTheme } from '@/contexts/theme';
+import { giscusConfig, isGiscusEnabled } from '@/data/giscus';
 
 interface Props {
   /** 不传则用页面 pathname */

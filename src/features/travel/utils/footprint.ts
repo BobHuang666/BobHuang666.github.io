@@ -1,5 +1,6 @@
-import type { PlaceStatus, TravelLeg, TransportMode, TravelPlace, TravelTrip } from '../../../types';
-import { normalizeCityName, provinceOf } from '../meta';
+/** 足迹数据加工：点位归一、统计与里程计算 */
+import type { PlaceStatus, TravelLeg, TransportMode, TravelPlace, TravelTrip } from '@/types';
+import { normalizeCityName, provinceOf } from '@/features/travel/meta';
 import { haversineKm, type ChinaGeo, type GeoCity, type WorldGeo } from './projection';
 
 /** 一个「点亮的地点」：TravelPlace + 匹配到的地图行政区 */

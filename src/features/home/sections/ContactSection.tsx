@@ -1,12 +1,12 @@
+/** 首页联系区：邮箱复制与社交入口 */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Mail, Copy, Check } from 'lucide-react';
-import { uiText } from '../../../data/uiText';
-import { profile } from '../../../data/profile';
-import { SectionReveal } from '../../../shared/components/effects/SectionReveal';
+import { uiText } from '@/data/uiText';
+import { profile } from '@/data/profile';
+import { SectionReveal } from '@/shared/components/effects/SectionReveal';
 import { SectionHeader } from './SectionHeader';
 
-/** 联系方式：社交入口 + 邮箱一键复制 */
 export const ContactSection = () => {
   const [emailCopied, setEmailCopied] = useState(false);
 
@@ -25,15 +25,12 @@ export const ContactSection = () => {
         <SectionHeader title={uiText.home.contactTitle} subtitle={uiText.home.contactSub} />
 
         <SectionReveal delay={0.1}>
-          {/* 渐变卡片 */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 p-px shadow-xl">
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 p-px shadow-xl">
             <div className="relative rounded-[15px] bg-white dark:bg-slate-900 px-8 py-10">
-              {/* 装饰光晕 */}
-              <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+                    <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
               <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-pink-400/10 blur-3xl pointer-events-none" />
 
-              {/* 社交图标 */}
-              <div className="relative flex justify-center gap-4 mb-7">
+                    <div className="relative flex justify-center gap-4 mb-7">
                 {profile.github && (
                   <a
                     href={profile.github}
@@ -56,8 +53,7 @@ export const ContactSection = () => {
                 )}
               </div>
 
-              {/* 邮箱 + 复制按钮 */}
-              {profile.email && (
+                    {profile.email && (
                 <div className="relative flex items-center justify-center gap-2">
                   <code className="text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg font-mono">
                     {profile.email}
@@ -74,8 +70,7 @@ export const ContactSection = () => {
                 </div>
               )}
 
-              {/* 复制成功提示 */}
-              <motion.p
+                    <motion.p
                 initial={false}
                 animate={{ opacity: emailCopied ? 1 : 0, y: emailCopied ? 0 : 4 }}
                 transition={{ duration: 0.2 }}

@@ -1,3 +1,4 @@
+/** 图片放大浮层 */
 import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

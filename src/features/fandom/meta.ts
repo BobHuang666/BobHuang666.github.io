@@ -2,7 +2,7 @@ import {
   Disc3, Image as ImageIcon, Gift, PenLine, Ticket,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import type { CollectionCategory, Rarity } from '../../data/fandom';
+import type { CollectionCategory, Rarity } from '@/data/fandom';
 
 /**
  * fandom 的「枚举 → 展示」映射集中在这里。

@@ -1,12 +1,13 @@
-import { profile, skillGroups, hobbies, experiences, trainingExperiences, practiceExperiences, studentWork, works, research } from '../../data/profile';
-import { projects } from '../../data/projects';
-import { blogData } from '../../data/blog';
-import { awards } from '../../data/awards';
-import { travelPlaces, worldPlaces, travelTrips } from '../../data/travel';
-import { idols, concerts, checkIns, collections, fandomConfig, lessons } from '../../data/fandom';
-import { friends, myLinkCard } from '../../data/friends';
-import { uiText } from '../../data/uiText';
-import { formatAwardDate } from '../../utils/awardDate';
+/** AI 助手知识库：由 data 层派生检索块，含检索与提示词构建 */
+import { profile, skillGroups, hobbies, experiences, trainingExperiences, practiceExperiences, studentWork, works, research } from '@/data/profile';
+import { projects } from '@/data/projects';
+import { blogData } from '@/data/blog';
+import { awards } from '@/data/awards';
+import { travelPlaces, worldPlaces, travelTrips } from '@/data/travel';
+import { idols, concerts, checkIns, collections, fandomConfig, lessons } from '@/data/fandom';
+import { friends, myLinkCard } from '@/data/friends';
+import { uiText } from '@/data/uiText';
+import { formatAwardDate } from '@/utils/awardDate';
 
 export interface KBChunk {
   id: string;
@@ -299,11 +300,10 @@ export function buildKB(): KBChunk[] {
 const STOP_CHARS = new Set('的了呢吗吧呀哦嘛你你我他她它这那个有些什在和与跟就都很最也还又把被对让给是哪过会要能可以'.split(''));
 
 /**
- * 关键字优先的轻量检索：
- * 1. 中文查询按「连续汉字的二元词组」匹配（比单字精度高一个量级）；
- * 2. 命中优先级：关键字精确 > 关键字包含 > 标题 > 正文；
- * 3. 按chunk 权重（weight）打折后，只保留与最优结果明显相近的条目——
- *    相关性弱的内容不再被「凑满 topK」带进回答。
+ * 关键字优先的轻量检索。
+ * 中文按连续汉字的二元词组匹配，命中优先级为关键字 > 标题 > 正文；
+ * 得分乘以 chunk 权重后，只保留与最优结果明显相近的条目，
+ * 弱相关内容不会被凑数带进回答。
  */
 export function retrieve(query: string, chunks: KBChunk[], topK = 4): KBChunk[] {
   const lower = query.toLowerCase();
@@ -347,7 +347,6 @@ export function retrieve(query: string, chunks: KBChunk[], topK = 4): KBChunk[] 
     .map(x => x.chunk);
 }
 
-// 构建 RAG 系统提示词
 export function buildSystemPrompt(chunks: KBChunk[]): string {
   const context = chunks.map(c => `【${c.category}：${c.title}】\n${c.content}`).join('\n\n---\n\n');
   return `你是 Bob Huang 个人网站的 AI 助手，名叫「小bot」。Bob 是北京师范大学的本科生（数据科学与大数据技术专业，2023 级），已保研本校人工智能硕士（2027 年入学，目前研0），热爱算法竞赛、全栈开发与 AI 应用。
@@ -363,7 +362,6 @@ export function buildSystemPrompt(chunks: KBChunk[]): string {
 ${context}`;
 }
 
-// 生成无 API Key 的模板回复（直接整合检索结果）
 export function fallbackReply(chunks: KBChunk[]): string {
   if (chunks.length === 0) {
     return '抱歉，我没有找到相关信息。你可以访问 [角色档案](#/profile) 页面了解更多，或者换个关键词再问问 😊';

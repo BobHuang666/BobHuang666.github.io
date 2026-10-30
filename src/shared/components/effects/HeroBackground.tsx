@@ -1,3 +1,4 @@
+/** Hero 背景：网格 + 光斑 + 鼠标视差画布 */
 import { useEffect, useRef } from 'react';
 
 interface Particle {
@@ -11,12 +12,8 @@ interface Particle {
 }
 
 /**
- * Hero 增强背景
- * - canvas 粒子星空（无外部依赖）
- * - 3 个柔光 blob 持续漂移
- * - 鼠标视差
- * - Aurora 极光
- * - prefers-reduced-motion 降级
+ * canvas 粒子星空 + 柔光 blob + Aurora 极光 + 鼠标视差；
+ * 触摸设备与 prefers-reduced-motion 下逐层降级。
  */
 export const HeroBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,8 +22,7 @@ export const HeroBackground = () => {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // 移动端（触摸设备）跳过鼠标视差
-    const isMobile = window.matchMedia('(hover: none)').matches;
+      const isMobile = window.matchMedia('(hover: none)').matches;
 
     if (!reduced && !isMobile && containerRef.current) {
       let rafId = 0;
@@ -51,8 +47,7 @@ export const HeroBackground = () => {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // 移动端跳过 canvas 粒子循环，节省 GPU/CPU
-    const isMobile = window.matchMedia('(hover: none)').matches;
+      const isMobile = window.matchMedia('(hover: none)').matches;
     if (reduced || isMobile) return;
 
     const canvas = canvasRef.current;
@@ -87,25 +82,21 @@ export const HeroBackground = () => {
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
       for (const p of particles) {
-        // 更新
-        p.x += p.vx;
+          p.x += p.vx;
         p.y += p.vy;
         p.alpha += p.dAlpha;
         if (p.alpha <= 0 || p.alpha >= 1) p.dAlpha *= -1;
 
-        // 出界回收
-        if (p.y < -4) { p.y = h + 4; p.x = Math.random() * w; }
+          if (p.y < -4) { p.y = h + 4; p.x = Math.random() * w; }
         if (p.x < -4) p.x = w + 4;
         if (p.x > w + 4) p.x = -4;
 
-        // 绘制
-        ctx.save();
+          ctx.save();
         ctx.globalAlpha = Math.max(0, Math.min(1, p.alpha)) * 0.75;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(255,255,255,1)';
         ctx.fill();
-        // 光晕
         if (p.r > 1.2) {
           const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
           g.addColorStop(0, 'rgba(255,255,255,0.3)');
@@ -133,7 +124,6 @@ export const HeroBackground = () => {
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* 网格点阵 */}
       <div
         className="absolute inset-0 opacity-[0.15]"
         style={{
@@ -145,14 +135,12 @@ export const HeroBackground = () => {
         }}
       />
 
-      {/* Canvas 粒子星空 */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full opacity-70"
         aria-hidden="true"
       />
 
-      {/* 3 个柔光 blob */}
       <div
         className="absolute -top-20 -left-10 w-80 h-80 bg-pink-400/40 rounded-full blur-3xl animate-blob"
         style={{ transform: 'translate(var(--mx, 0), var(--my, 0))' }}
@@ -172,12 +160,10 @@ export const HeroBackground = () => {
         }}
       />
 
-      {/* Aurora 极光斜线 */}
       <div className="absolute inset-0 opacity-25 mix-blend-overlay">
         <div className="absolute -inset-[20%] bg-[conic-gradient(from_0deg,transparent_0%,rgba(255,255,255,.4)_25%,transparent_50%,rgba(255,255,255,.4)_75%,transparent_100%)] animate-[spin_30s_linear_infinite]" />
       </div>
 
-      {/* 底部柔化遮罩 */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/25" />
     </div>
   );

@@ -1,3 +1,4 @@
+/** AI 助手浮层：聊天面板、设置与消息渲染 */
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -22,14 +23,11 @@ const WELCOME = `你好！我是**小bot**，Bob Huang 个人网站的 AI 助手
 
 我能回答关于 Bob 的任何问题——学习经历、项目成果、技术技能、竞赛荣誉，还有旅行足迹、追星日常和友链互换。你也可以点击下方快捷提问，或者直接输入你的问题。`;
 
-// ── 流式 LLM 调用 ─────────────────────────────────────────
-
 // ── Markdown 轻量渲染（加粗 / 斜体 / 链接 / 换行）────────
 function renderMd(text: string) {
   const lines = text.split('\n');
   return lines.map((line, li) => {
-    // 处理 **bold** / *italic* / [text](url) / `code`
-    const parts: (string | JSX.Element)[] = [];
+      const parts: (string | JSX.Element)[] = [];
     let rem = line;
     let ki = 0;
     const push = (str: string) => str && parts.push(str);
@@ -60,14 +58,12 @@ function Bubble({ msg, onCopy }: { msg: Msg; onCopy: (t: string) => void }) {
   const isUser = msg.role === 'user';
   return (
     <div className={`flex gap-2 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-end`}>
-      {/* 头像 */}
       <div className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs ${
         isUser ? 'bg-indigo-500' : 'bg-gradient-to-br from-violet-500 to-indigo-600'
       }`}>
         {isUser ? <User size={14} /> : <Bot size={14} />}
       </div>
 
-      {/* 内容 */}
       <div className={`relative group max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
         isUser
           ? 'bg-indigo-500 text-white rounded-br-md'
@@ -81,7 +77,6 @@ function Bubble({ msg, onCopy }: { msg: Msg; onCopy: (t: string) => void }) {
             </span>
           : <>{renderMd(msg.content)}</>
         }
-        {/* 复制按钮 */}
         {!isUser && !msg.pending && (
           <button
             onClick={() => onCopy(msg.content)}
@@ -162,7 +157,6 @@ const AiAssistant = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // 懒加载知识库（首次渲染时一次性构建）
   const kb = useMemo(() => buildKB(), []);
 
   // 从 localStorage 还原配置
@@ -210,11 +204,9 @@ const AiAssistant = () => {
     setBusy(true);
 
     try {
-      // RAG 检索
-      const chunks = retrieve(text, kb);
+          const chunks = retrieve(text, kb);
 
       if (cfg.key.trim()) {
-        // ── LLM 流式调用 ──────────────────────────────────
         const systemPrompt = buildSystemPrompt(chunks);
         const history = msgs
           .filter(m => !m.pending && m.role !== 'system')
@@ -237,7 +229,6 @@ const AiAssistant = () => {
           },
         );
       } else {
-        // ── 无 API Key：直接展示检索结果 ──────────────────
         const reply = fallbackReply(chunks);
         setMsgs(prev =>
           prev.map(m => m.id === pendingId ? { ...m, content: reply, pending: false } : m)
@@ -263,7 +254,6 @@ const AiAssistant = () => {
 
   return (
     <>
-      {/* ── 浮动按钮 ── */}
       <motion.button
         onClick={() => setOpen(o => !o)}
         aria-label="打开 AI 助手"
@@ -281,13 +271,11 @@ const AiAssistant = () => {
               </motion.span>
           }
         </AnimatePresence>
-        {/* 未读红点 */}
-        {unread && !open && (
+          {unread && !open && (
           <span className="absolute top-0.5 right-0.5 w-3 h-3 bg-rose-500 rounded-full border-2 border-white" />
         )}
       </motion.button>
 
-      {/* ── 聊天面板 ── */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -304,7 +292,6 @@ const AiAssistant = () => {
             {showSettings
               ? <SettingsPanel cfg={cfg} onSave={saveCfg} onBack={() => setShowSettings(false)} />
               : <>
-                  {/* 标题栏 */}
                   <div className="flex items-center gap-2 px-3.5 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white shrink-0">
                     <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                       <Bot size={16} />
@@ -333,13 +320,11 @@ const AiAssistant = () => {
                     </div>
                   </div>
 
-                  {/* 消息列表 */}
                   <div className="flex-1 overflow-y-auto px-3.5 py-3 space-y-3">
                     {msgs.map(msg => (
                       <Bubble key={msg.id} msg={msg} onCopy={handleCopy} />
                     ))}
 
-                    {/* 快捷提问（仅初始状态显示） */}
                     {msgs.length === 1 && (
                       <div className="flex flex-wrap gap-2 pt-1">
                         {SUGGESTIONS.map(s => (
@@ -358,7 +343,6 @@ const AiAssistant = () => {
                     <div ref={bottomRef} />
                   </div>
 
-                  {/* 复制成功提示 */}
                   <AnimatePresence>
                     {copied && (
                       <motion.div
@@ -372,7 +356,6 @@ const AiAssistant = () => {
                     )}
                   </AnimatePresence>
 
-                  {/* 输入区域 */}
                   <div className="shrink-0 p-3 border-t border-black/10 dark:border-white/10">
                     <div className="flex gap-2 items-end">
                       <input

@@ -1,3 +1,4 @@
+/** 项目详情页：区块目录 + 概述/功能/技术栈/挑战/方案/成果/复盘 */
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
@@ -5,11 +6,11 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { getProjectDetail, projectsDetail } from '../../data/projects';
-import { uiText } from '../../data/uiText';
-import { gradient } from '../../utils/gradients';
-import { SmartImage } from '../../shared/components/ui/SmartImage';
-import { usePageMeta } from '../../hooks/usePageMeta';
+import { getProjectDetail, projectsDetail } from '@/data/projects';
+import { uiText } from '@/data/uiText';
+import { gradient } from '@/utils/gradients';
+import { SmartImage } from '@/shared/components/ui/SmartImage';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 type BulletField = 'features' | 'challenges' | 'solutions' | 'results' | 'lessons';
 
