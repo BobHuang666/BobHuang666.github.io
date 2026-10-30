@@ -58,7 +58,7 @@ export const CollectionTab = () => {
                 </span>
               </div>
               <div className="p-3">
-                <h4 className="font-medium text-sm text-slate-900 dark:text-slate-100 truncate">{c.name}</h4>
+                <h3 className="font-medium text-sm text-slate-900 dark:text-slate-100 truncate">{c.name}</h3>
                 <div className="flex items-center justify-between mt-1">
                   <span className="text-[11px] text-rose-500 truncate">{c.idol}</span>
                   {c.date && <span className="text-[10px] text-slate-400 dark:text-slate-500">{c.date}</span>}

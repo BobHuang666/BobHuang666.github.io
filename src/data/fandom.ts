@@ -4,8 +4,8 @@ import type { GradientTone } from '../utils/gradients';
  * 追星专题数据（公开页面，无需密码）
  *
  * 数据完全静态，可随时调整，不泄露任何敏感信息。
- * 头像通过 avatar 字段加载：网络 URL 或项目内路径（如 /img/fandom/xxx.jpg）。
- * 图片已保存到 public/img/fandom/，也可替换为官方图源。
+ * 头像通过 avatar 字段加载：网络 URL 或项目内路径（如 /img/fandom/xxx.webp）。
+ * 图片已保存到 public/img/fandom/（已统一转 webp），也可替换为官方图源。
  */
 export interface Idol {
   /** 显示名（昵称） */
@@ -16,7 +16,7 @@ export interface Idol {
   date?: string;
   /** 入坑时间 */
   since?: string;
-  /** 头像图片地址：网络 URL 或项目内路径（如 /img/fandom/xxx.jpg） */
+  /** 头像图片地址：网络 URL 或项目内路径（如 /img/fandom/xxx.webp） */
   avatar?: string;
 }
 
@@ -99,7 +99,7 @@ export const idols: Idol[] = [
     group: 'EXO / 染色体娱乐',
     date: '1991.10.07',
     since: '2017',
-    avatar: '/img/fandom/idol-lay.jpg',
+    avatar: '/img/fandom/idol-lay.webp',
   },
   {
     name: 'R.E.D',
@@ -113,35 +113,35 @@ export const idols: Idol[] = [
     group: 'SM Entertainment',
     date: '2012.04.08（出道）',
     since: '2017',
-    avatar: '/img/fandom/group-exo.jpg',
+    avatar: '/img/fandom/group-exo.webp',
   },
   {
     name: 'NCT',
     group: 'SM Entertainment',
     date: '2016.04.09（出道）',
     since: '2021',
-    avatar: '/img/fandom/group-nct.jpg',
+    avatar: '/img/fandom/group-nct.webp',
   },
   {
     name: 'Red Velvet',
     group: 'SM Entertainment',
     date: '2014.08.01（出道）',
     since: '2020',
-    avatar: '/img/fandom/group-redvelvet.jpg',
+    avatar: '/img/fandom/group-redvelvet.webp',
   },
   {
     name: 'Super Junior',
     group: 'SM Entertainment',
     date: '2005.11.06（出道）',
     since: '2021',
-    avatar: '/img/fandom/group-superjunior.jpg',
+    avatar: '/img/fandom/group-superjunior.webp',
   },
   {
     name: 'Taeyeon 金泰妍',
     group: '少女时代 / SM',
     date: '1989.03.09',
     since: '2022',
-    avatar: '/img/fandom/idol-taeyeon.jpg',
+    avatar: '/img/fandom/idol-taeyeon.webp',
   },
 ];
 

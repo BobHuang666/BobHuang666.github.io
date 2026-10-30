@@ -42,7 +42,7 @@ const ConcertCard = ({ c, idx }: { c: Concert; idx: number }) => (
           <Calendar className="h-3.5 w-3.5" />{fmtDate(c.date)}
         </span>
       </div>
-      <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-snug mb-2">{c.tour}</h4>
+      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-snug mb-2">{c.tour}</h3>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500 dark:text-slate-400">
         <span className="inline-flex items-center gap-1">
           <MapPin className="h-3.5 w-3.5" />{c.city} · {c.venue}
@@ -108,7 +108,7 @@ export const ConcertsTab = () => {
                         <div className="text-[10px] opacity-90">{days === 0 ? '就在今天' : '天后'}</div>
                       </div>
                     </div>
-                    <h4 className="text-lg font-bold mb-1">{c.tour}</h4>
+                    <h3 className="text-lg font-bold mb-1">{c.tour}</h3>
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm opacity-95">
                       <span className="inline-flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{fmtDate(c.date)}</span>
                       <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{c.city} · {c.venue}</span>

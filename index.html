@@ -27,6 +27,10 @@
 
     <link rel="icon" type="image/x-icon" href="/static/img/red-logo.ico" />
 
+    <!-- GoatCounter 统计脚本与上报端点提前建连（Lighthouse uses-rel-preconnect） -->
+    <link rel="preconnect" href="https://gc.zgo.at" />
+    <link rel="preconnect" href="https://bobhuang.goatcounter.com" crossorigin />
+
     <!-- 防 dark-mode 闪烁：在 React 加载前根据 localStorage / 系统偏好提前注入 class -->
     <script>
       (function () {

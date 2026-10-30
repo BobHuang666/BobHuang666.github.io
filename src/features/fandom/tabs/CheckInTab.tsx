@@ -97,7 +97,7 @@ export const CheckInTab = () => {
                         <CalendarDays className="h-3.5 w-3.5" />{fmtDate(c.date)}
                       </span>
                     </div>
-                    <h4 className="font-semibold text-slate-900 dark:text-slate-100 leading-snug mb-1.5">{c.place}</h4>
+                    <h3 className="font-semibold text-slate-900 dark:text-slate-100 leading-snug mb-1.5">{c.place}</h3>
                     {c.note && <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{c.note}</p>}
                   </div>
                 </motion.div>

@@ -48,7 +48,7 @@ export const ResearchTab = () => (
             className="border border-slate-200 dark:border-slate-700 rounded-xl p-5 hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 transition-all"
           >
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-3">
-              <h4 className="font-semibold text-slate-900 dark:text-slate-100">{w.title}</h4>
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100">{w.title}</h3>
               <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${badge(TYPE_BADGE, w.type)}`}>
                 {w.type}
               </span>
@@ -79,7 +79,7 @@ export const ResearchTab = () => (
             className={`border border-slate-200 dark:border-slate-700 border-l-4 rounded-xl p-5 hover:shadow-md transition-all ${badge(LEVEL_ACCENT, r.level)}`}
           >
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-3">
-              <h4 className="font-semibold text-base text-slate-900 dark:text-slate-100">{r.title}</h4>
+              <h3 className="font-semibold text-base text-slate-900 dark:text-slate-100">{r.title}</h3>
               <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${badge(LEVEL_BADGE, r.level)}`}>
                 {r.level}
               </span>

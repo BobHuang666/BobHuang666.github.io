@@ -5,15 +5,15 @@ import type { Experience } from '../../../types';
 /** profile 各 Tab 共用的展示原子，避免每个 Tab 各写一份 */
 
 export const SectionHeading = ({ icon: Icon, title }: { icon: LucideIcon; title: string }) => (
-  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-5 flex items-center">
+  <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-5 flex items-center">
     <Icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400 mr-2.5" />
     {title}
-  </h3>
+  </h2>
 );
 
 export const InfoLine = ({ label, value }: { label: string; value: string }) => (
   <div>
-    <h4 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1">{label}</h4>
+    <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1">{label}</h3>
     <p className="text-slate-800 dark:text-slate-200">{value}</p>
   </div>
 );
@@ -52,7 +52,7 @@ export const TimelineCard = ({
   return (
     <div className={`pl-5 pr-4 py-4 border-l-4 ${color} rounded-r-lg`}>
       <div className="flex flex-wrap items-baseline gap-x-3 mb-1">
-        <h4 className="font-semibold text-slate-900 dark:text-slate-100">{item.role}</h4>
+        <h3 className="font-semibold text-slate-900 dark:text-slate-100">{item.role}</h3>
         <span className="text-xs text-slate-500 dark:text-slate-400">@ {item.org}</span>
       </div>
       <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{item.time}</p>

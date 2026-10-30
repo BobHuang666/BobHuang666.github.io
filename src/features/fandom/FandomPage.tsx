@@ -134,6 +134,7 @@ const FandomPage = () => {
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.3 }}
           >
+            <h2 className="sr-only">{TABS.find((t) => t.id === tab)?.label}</h2>
             {tab === 'idols' && <IdolsTab />}
             {tab === 'concerts' && <ConcertsTab />}
             {tab === 'checkin' && <CheckInTab />}

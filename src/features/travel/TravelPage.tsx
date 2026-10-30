@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Loader2, MapPinned } from 'lucide-react';
+import { MapPinned } from 'lucide-react';
 import { travelPlaces, travelTrips, worldPlaces } from '../../data/travel';
 import { uiText } from '../../data/uiText';
 import { RelatedLink } from '../../shared/components/ui/RelatedLink';
@@ -88,13 +88,6 @@ const TravelPage = () => {
             {uiText.travel.subtitle}
           </p>
         </motion.div>
-
-        {active.loading && (
-          <div className="flex items-center justify-center gap-2 py-24 text-sm text-slate-500 dark:text-slate-400">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            {uiText.travel.loading}
-          </div>
-        )}
 
         {active.error && (
           <EmptyState

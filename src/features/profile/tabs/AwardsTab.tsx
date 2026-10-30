@@ -53,9 +53,9 @@ const AwardCard = ({
     <div className="flex items-start mb-3">
       <GradientIcon icon={resolveIcon(meta.icon, Star)} tone={meta.tone} className="mr-3 shadow" />
       <div className="min-w-0">
-        <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">
           {award.title}
-        </h4>
+        </h3>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
           {award.organization}
         </p>
@@ -179,15 +179,15 @@ export const AwardsTab = () => {
                       <div className="flex items-start gap-3">
                         <GradientIcon icon={resolveIcon(awardCategoryMeta(award.category).icon, Star)} tone={awardCategoryMeta(award.category).tone} size="sm" className="shadow" />
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                             {award.title}
-                          </h4>
+                          </h3>
                           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                             <span className={levelText(award.level)}>{award.level}</span>
                             {' · '}
                             {award.organization}
                             {' · '}
-                            <span className="text-slate-400 dark:text-slate-500 tabular-nums">{formatAwardDate(award.year, award.month, award.day)}</span>
+                            <span className="text-slate-500 dark:text-slate-400 tabular-nums">{formatAwardDate(award.year, award.month, award.day)}</span>
                           </p>
                           {award.description && (
                             <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400 mt-2 pl-3 border-l-2 border-slate-200 dark:border-slate-700 line-clamp-3">

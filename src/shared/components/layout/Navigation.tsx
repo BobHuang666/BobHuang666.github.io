@@ -179,7 +179,7 @@ const Navigation = () => {
           <NavLink
             to="/"
             className="flex items-center group focus:outline-none shrink-0"
-            aria-label="返回首页"
+            aria-label="返回首页 BobHuang"
           >
             <Code2 className="h-7 w-7 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform" />
             <span className="ml-2 text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors hidden min-[360px]:inline">

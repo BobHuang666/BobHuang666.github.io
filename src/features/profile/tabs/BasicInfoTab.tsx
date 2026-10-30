@@ -71,7 +71,7 @@ export const BasicInfoTab = () => (
           >
             <span className="font-medium text-slate-900 dark:text-slate-100">{c.name}</span>
             <span className="text-xs text-slate-500 dark:text-slate-400 tabular-nums">{c.date}</span>
-            <span className="text-xs text-slate-400 dark:text-slate-500">{c.issuer}</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">{c.issuer}</span>
           </div>
         ))}
       </div>

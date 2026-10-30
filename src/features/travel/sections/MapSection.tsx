@@ -259,7 +259,14 @@ export const MapSection = ({
         </div>
       )}
 
-      {!geo ? null : (
+      {!geo ? (
+        // 底图数据加载中：按地图真实宽高比预留空间，避免加载后整页位移（CLS）
+        <div
+          aria-hidden="true"
+          className="w-full rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-slate-100/60 dark:bg-slate-900/40 animate-pulse"
+          style={{ aspectRatio: isChina ? '1000 / 820' : '1000 / 391' }}
+        />
+      ) : (
         <div className={selected || selectedTrip ? 'grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px]' : ''}>
           <div className="min-w-0">
             {isChina ? (
