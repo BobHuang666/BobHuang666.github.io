@@ -21,6 +21,31 @@ type Step = 'password' | 'select' | 'preview';
 const t = uiText.friends.card;
 const CONFIGURED = BUSINESS_CARD_CIPHERTEXT.length > 0;
 
+const LangToggle = ({
+  lang,
+  onChange,
+}: {
+  lang: 'zh' | 'en';
+  onChange: (l: 'zh' | 'en') => void;
+}) => (
+  <div className="inline-flex rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden text-xs font-medium">
+    {(['zh', 'en'] as const).map((l) => (
+      <button
+        key={l}
+        type="button"
+        onClick={() => onChange(l)}
+        className={`px-3 py-1.5 transition-colors ${
+          lang === l
+            ? 'bg-indigo-600 text-white'
+            : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+        }`}
+      >
+        {l === 'zh' ? '中文' : 'English'}
+      </button>
+    ))}
+  </div>
+);
+
 export const BusinessCardModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const [step, setStep] = useState<Step>('password');
   const [password, setPassword] = useState('');
@@ -29,7 +54,8 @@ export const BusinessCardModal = ({ open, onClose }: { open: boolean; onClose: (
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<BusinessCardData | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [values, setValues] = useState<Record<string, string>>({});
+  const [values, setValues] = useState<Record<string, { zh: string; en: string }>>({});
+  const [lang, setLang] = useState<'zh' | 'en'>('zh');
   const [card, setCard] = useState<CardSvgResult | null>(null);
 
   const selectableKeys = useMemo(
@@ -48,6 +74,7 @@ export const BusinessCardModal = ({ open, onClose }: { open: boolean; onClose: (
       setData(null);
       setSelected(new Set());
       setValues({});
+      setLang('zh');
       setCard(null);
     }
   }, [open]);
@@ -77,7 +104,14 @@ export const BusinessCardModal = ({ open, onClose }: { open: boolean; onClose: (
       const decrypted = await decryptBusinessCard(BUSINESS_CARD_CIPHERTEXT, password);
       setData(decrypted);
       setSelected(new Set(Object.keys(decrypted.fields)));
-      setValues(Object.fromEntries(Object.entries(decrypted.fields).map(([k, v]) => [k, v.value])));
+      setValues(
+        Object.fromEntries(
+          Object.entries(decrypted.fields).map(([k, v]) => [
+            k,
+            { zh: v.value, en: v.enValue ?? v.value },
+          ]),
+        ),
+      );
       setStep('select');
     } catch {
       setError(t.passwordError);
@@ -95,32 +129,43 @@ export const BusinessCardModal = ({ open, onClose }: { open: boolean; onClose: (
     });
   };
 
-  const updateValue = (key: string, value: string) => {
-    setValues((prev) => ({ ...prev, [key]: value }));
+  const updateValue = (key: string, l: 'zh' | 'en', value: string) => {
+    setValues((prev) => ({ ...prev, [key]: { ...prev[key], [l]: value } }));
   };
 
-  const buildContent = () => {
+  const buildContent = (l: 'zh' | 'en') => {
     if (!data) return null;
     const fields = selectableKeys
       .filter((k) => selected.has(k))
-      .map((k) => ({
-        key: k,
-        label: data.fields[k].label,
-        value: values[k] ?? data.fields[k].value,
-      }));
-    return { title: t.cardTitle, fields };
+      .map((k) => {
+        const f = data.fields[k];
+        const label = l === 'en' ? f.enLabel ?? f.label : f.label;
+        const value = values[k]?.[l] ?? (l === 'en' ? f.enValue ?? f.value : f.value);
+        return { key: k, label, value };
+      });
+    return {
+      title: l === 'en' ? t.cardTitleEn : t.cardTitle,
+      kicker: l === 'en' ? 'CONTACT' : 'PERSONAL CARD',
+      fields,
+    };
   };
 
   const handleGenerate = () => {
-    const content = buildContent();
+    const content = buildContent(lang);
     if (!content) return;
     setCard(buildCardSvg(content));
     setStep('preview');
   };
 
+  const switchLang = (l: 'zh' | 'en') => {
+    setLang(l);
+    const content = buildContent(l);
+    if (content) setCard(buildCardSvg(content));
+  };
+
   const handleDownload = () => {
     if (!card) return;
-    const name = values.name || data?.fields.name?.value || '名片';
+    const name = values.name?.[lang] ?? data?.fields.name?.value ?? '名片';
     downloadSvgAsPng(card.svg, card.width, card.height, `名片-${name}.png`);
   };
 
@@ -128,6 +173,7 @@ export const BusinessCardModal = ({ open, onClose }: { open: boolean; onClose: (
     setData(null);
     setSelected(new Set());
     setValues({});
+    setLang('zh');
     setCard(null);
     setPassword('');
     setError('');
@@ -245,11 +291,24 @@ export const BusinessCardModal = ({ open, onClose }: { open: boolean; onClose: (
                         </button>
                       </div>
                     </div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">{t.langLabel}</span>
+                      <LangToggle lang={lang} onChange={setLang} />
+                    </div>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">{t.selectDesc}</p>
                     <div className="space-y-2">
                       {selectableKeys.map((key) => {
                         const f = data.fields[key];
                         const on = selected.has(key);
+                        const fieldLabel = lang === 'en' ? f.enLabel ?? f.label : f.label;
+                        const fieldValue =
+                          values[key]?.[lang] ?? (lang === 'en' ? f.enValue ?? f.value : f.value);
+                        const multiline = fieldValue.includes('\n');
+                        const inputCls = `w-full rounded-lg border px-3 py-2 text-sm text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors ${
+                          on
+                            ? 'border-slate-300 dark:border-slate-600'
+                            : 'border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed'
+                        }`;
                         return (
                           <div
                             key={key}
@@ -267,26 +326,32 @@ export const BusinessCardModal = ({ open, onClose }: { open: boolean; onClose: (
                                   ? 'bg-indigo-600 border-indigo-600 text-white'
                                   : 'border-slate-300 dark:border-slate-600 text-transparent hover:border-indigo-400'
                               }`}
-                              aria-label={on ? `取消展示${f.label}` : `展示${f.label}`}
+                              aria-label={on ? `取消展示${fieldLabel}` : `展示${fieldLabel}`}
                             >
                               <Check className="h-3.5 w-3.5" />
                             </button>
                             <div className="flex-1 min-w-0">
                               <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
-                                {f.label}
+                                {fieldLabel}
                               </label>
-                              <input
-                                type="text"
-                                value={values[key] ?? f.value}
-                                disabled={!on}
-                                onChange={(e) => updateValue(key, e.target.value)}
-                                placeholder={f.value}
-                                className={`w-full rounded-lg border px-3 py-2 text-sm text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors ${
-                                  on
-                                    ? 'border-slate-300 dark:border-slate-600'
-                                    : 'border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed'
-                                }`}
-                              />
+                              {multiline ? (
+                                <textarea
+                                  value={fieldValue}
+                                  disabled={!on}
+                                  onChange={(e) => updateValue(key, lang, e.target.value)}
+                                  rows={2}
+                                  className={`${inputCls} resize-y`}
+                                />
+                              ) : (
+                                <input
+                                  type="text"
+                                  value={fieldValue}
+                                  disabled={!on}
+                                  onChange={(e) => updateValue(key, lang, e.target.value)}
+                                  placeholder={fieldValue}
+                                  className={inputCls}
+                                />
+                              )}
                             </div>
                           </div>
                         );
@@ -301,7 +366,10 @@ export const BusinessCardModal = ({ open, onClose }: { open: boolean; onClose: (
 
               {step === 'preview' && card && (
                 <div className="space-y-4">
-                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{t.previewTitle}</p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{t.previewTitle}</p>
+                    <LangToggle lang={lang} onChange={switchLang} />
+                  </div>
                   <div className="card-preview mx-auto max-w-xs rounded-2xl overflow-hidden shadow-lg">
                     <div dangerouslySetInnerHTML={{ __html: card.svg }} />
                   </div>

@@ -132,6 +132,8 @@ export const uiText = {
     card: {
       title: '生成我的名片',
       cardTitle: '个人名片',
+      cardTitleEn: 'Personal Card',
+      langLabel: '语言',
       desc: '名片信息已加密保存，输入口令后可见；可勾选要展示的内容并导出图片。',
       button: '🎴 生成我的名片',
       passwordLabel: '输入口令',

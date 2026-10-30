@@ -40,6 +40,8 @@ async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey>
 export interface BusinessCardField {
   label: string;
   value: string;
+  enLabel?: string;
+  enValue?: string;
 }
 
 export interface BusinessCardData {

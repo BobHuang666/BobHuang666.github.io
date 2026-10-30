@@ -16,6 +16,7 @@ export interface CardField {
 
 export interface CardContent {
   title: string;
+  kicker?: string;
   fields: CardField[];
 }
 
@@ -63,24 +64,129 @@ function isCJK(ch: string): boolean {
   return (ch.codePointAt(0) ?? 0) > 0xff;
 }
 
-/** 按字符宽度（CJK=1，半角=0.55）估算折行，避免长地址 / 链接溢出 */
-function wrapText(text: string, maxUnits: number): string[] {
-  const lines: string[] = [];
-  let cur = '';
-  let units = 0;
-  for (const ch of text) {
-    const w = isCJK(ch) ? 1 : 0.55;
-    if (units + w > maxUnits && cur) {
-      lines.push(cur);
-      cur = ch;
-      units = w;
+interface WordToken {
+  text: string;
+  w: number; // 近似像素宽度（fontSize 为单位）
+  latin: boolean; // 拉丁词（按词间距对齐）还是 CJK 单字（按字间距对齐）
+  spaceBefore: boolean; // 原文中该词前是否有空格
+}
+
+/**
+ * 把一段文字切成「词」：CJK 逐字成词，拉丁连续字符（含数字 / 标点）成词，
+ * 空格仅作为词间间距标记（不单独成词），以便后续整词换行、避免英文断词。
+ */
+function tokenize(para: string, fontSize: number): WordToken[] {
+  const words: WordToken[] = [];
+  let buf = '';
+  let latin = false;
+  let spaceBefore = false;
+  const flush = () => {
+    if (!buf) return;
+    const w = [...buf].reduce((a, c) => a + (isCJK(c) ? 1 : 0.6), 0) * fontSize;
+    words.push({ text: buf, w, latin, spaceBefore });
+    buf = '';
+    spaceBefore = false;
+  };
+  for (const ch of para) {
+    if (ch === ' ') {
+      flush();
+      spaceBefore = true;
+      continue;
+    }
+    const cjk = isCJK(ch);
+    if (cjk) {
+      flush();
+      words.push({ text: ch, w: fontSize, latin: false, spaceBefore });
+      spaceBefore = false;
     } else {
-      cur += ch;
-      units += w;
+      if (buf && !latin) flush();
+      buf += ch;
+      latin = true;
     }
   }
-  if (cur) lines.push(cur);
-  return lines.length ? lines : [''];
+  flush();
+  return words;
+}
+
+/** 贪心折行：CJK 逐字换行，拉丁整词换行（不会把单词拆开） */
+function wrapWords(
+  words: WordToken[],
+  avail: number,
+  spaceW: number,
+): { tk: WordToken; gap: number }[][] {
+  const lines: { tk: WordToken; gap: number }[][] = [];
+  let line: { tk: WordToken; gap: number }[] = [];
+  let lineW = 0;
+  for (const tk of words) {
+    const gap = tk.spaceBefore ? spaceW : 0;
+    const cost = gap + tk.w;
+    if (line.length > 0 && lineW + cost > avail) {
+      lines.push(line);
+      line = [{ tk, gap: 0 }];
+      lineW = tk.w;
+    } else {
+      line.push({ tk, gap });
+      lineW += cost;
+    }
+  }
+  if (line.length) lines.push(line);
+  return lines;
+}
+
+/** 渲染单行：整行渲染为单个 <text>，由浏览器按真实字体排布（避免单词重叠）。
+ *  满行（非末行）用 textLength + lengthAdjust 做两端对齐。 */
+function renderLine(
+  line: { tk: WordToken; gap: number }[],
+  x0: number,
+  x1: number,
+  y: number,
+  fontSize: number,
+  color: string,
+  isLast: boolean,
+): string {
+  const avail = x1 - x0;
+  const n = line.length;
+  if (n === 0) return '';
+  const lineW = line.reduce((a, it) => a + it.gap + it.tk.w, 0);
+  const justify = !isLast && n > 1 && lineW >= avail * 0.85;
+
+  // 还原成整行文本（拉丁词间补真实空格，CJK 不加空格）
+  let text = '';
+  line.forEach((it, i) => {
+    if (i > 0 && it.tk.spaceBefore) text += ' ';
+    text += it.tk.text;
+  });
+
+  const justifyAttrs = justify
+    ? ` textLength="${avail.toFixed(2)}" lengthAdjust="spacing"`
+    : '';
+  const ls = justify ? '' : ' letter-spacing="0.3"';
+  return `<text x="${x0.toFixed(2)}" y="${y}" font-size="${fontSize}" font-weight="600"${ls} fill="${color}" font-family="${SANS}"${justifyAttrs}>${esc(text)}</text>`;
+}
+
+/** 渲染一段值（支持 \n 强制换行）；返回 SVG 与总行数 */
+function renderValueBlock(
+  value: string,
+  x0: number,
+  x1: number,
+  yTop: number,
+  fontSize: number,
+  lineH: number,
+  color: string,
+): { svg: string; lines: number } {
+  const avail = x1 - x0;
+  const spaceW = fontSize * 0.28;
+  const allLines: { tk: WordToken; gap: number }[][] = [];
+  for (const para of value.split('\n')) {
+    allLines.push(...wrapWords(tokenize(para, fontSize), avail, spaceW));
+  }
+  let svg = '';
+  let y = yTop;
+  allLines.forEach((ln, idx) => {
+    svg += renderLine(ln, x0, x1, y, fontSize, color, idx === allLines.length - 1);
+    y += lineH;
+  });
+  return { svg, lines: allLines.length };
 }
 
 export function buildCardSvg(content: CardContent): CardSvgResult {
@@ -101,35 +207,38 @@ export function buildCardSvg(content: CardContent): CardSvgResult {
   const labelFontSize = 20;
   const valueFontSize = 30;
   const valueLineH = 40;
-  const maxUnits = (contentRight - valueX) / valueFontSize; // ≈ 27.7
 
   let rowY = rowsStart;
   const rows: string[] = [];
 
   content.fields.forEach((f, idx) => {
-    const lines = wrapText(f.value, Math.floor(maxUnits));
     const isLast = idx === content.fields.length - 1;
-
     const labelBaseline = rowY + 26;
     const valueTop = rowY + 60;
-    const lastValueY = valueTop + (lines.length - 1) * valueLineH;
+    const { svg: valueSvg, lines } = renderValueBlock(
+      f.value,
+      valueX,
+      contentRight,
+      valueTop,
+      valueFontSize,
+      valueLineH,
+      '#eae6df',
+    );
+    const lastValueY = valueTop + (lines - 1) * valueLineH;
     const blockH = lastValueY - rowY + 24;
     const iconCy = rowY + blockH / 2;
 
     const iconPath = ICONS[f.key] ?? ICONS.name;
     const iconSvg = `<g transform="translate(${contentX},${iconCy - 12})" fill="none" stroke="${accent}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${iconPath}"/></g>`;
 
-    let textSvg = `<text x="${valueX}" y="${labelBaseline}" font-size="${labelFontSize}" font-weight="500" letter-spacing="2" fill="#8a939c" font-family="${SANS}">${esc(f.label)}</text>`;
-    lines.forEach((ln, i) => {
-      textSvg += `<text x="${valueX}" y="${valueTop + i * valueLineH}" font-size="${valueFontSize}" font-weight="600" letter-spacing="0.3" fill="#eae6df" font-family="${SANS}">${esc(ln)}</text>`;
-    });
+    const labelSvg = `<text x="${valueX}" y="${labelBaseline}" font-size="${labelFontSize}" font-weight="500" letter-spacing="2" fill="#8a939c" font-family="${SANS}">${esc(f.label)}</text>`;
 
     const sepY = rowY + blockH + 18;
     const separator = isLast
       ? ''
       : `<line x1="${contentX}" y1="${sepY}" x2="${contentRight}" y2="${sepY}" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1.5"/>`;
 
-    rows.push(`<g>${iconSvg}${textSvg}</g>${separator}`);
+    rows.push(`<g>${iconSvg}${labelSvg}${valueSvg}</g>${separator}`);
     rowY += blockH + (isLast ? 0 : 36);
   });
 
@@ -152,7 +261,7 @@ export function buildCardSvg(content: CardContent): CardSvgResult {
   <rect x="28" y="28" width="${W - 56}" height="${H - 56}" rx="6" fill="none" stroke="${accent}" stroke-opacity="0.35" stroke-width="1.5"/>
   <rect x="42" y="42" width="${W - 84}" height="${H - 84}" rx="4" fill="none" stroke="${accent}" stroke-opacity="0.12" stroke-width="1"/>
   <g transform="translate(${W - 96},118) rotate(45)"><rect x="-7" y="-7" width="14" height="14" fill="${accent}"/></g>
-  <text x="${contentX}" y="${kickerY}" font-size="20" font-weight="500" letter-spacing="6" fill="${accent}" font-family="${SANS}">PERSONAL CARD</text>
+  <text x="${contentX}" y="${kickerY}" font-size="20" font-weight="500" letter-spacing="6" fill="${accent}" font-family="${SANS}">${esc(content.kicker ?? 'PERSONAL CARD')}</text>
   <text x="${contentX}" y="${titleY}" font-size="${titleFontSize}" font-weight="500" letter-spacing="4" fill="#f2ece1" font-family="${SERIF}">${esc(content.title)}</text>
   <line x1="${contentX}" y1="${ruleY}" x2="${contentX + 96}" y2="${ruleY}" stroke="${accent}" stroke-width="3"/>
   ${rows.join('\n  ')}
