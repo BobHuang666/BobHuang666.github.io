@@ -183,7 +183,7 @@ jobs:
                 | select((.key | gsub("/+$";"")) == ($u | gsub("/+$";"")))
                 | .value' 2>/dev/null | head -n 1 || true)
             fi
-            link_entries+=("$(jq -nc --arg label "$label" --arg url "$link" '{label:$label, url:$link}')")
+            link_entries+=("$(jq -nc --arg label "$label" --arg url "$link" '{label:$label, url:$url}')")
           done
 
           scores_json=$(printf '%s\n' "${score_entries[@]}" | jq -sc '.')
