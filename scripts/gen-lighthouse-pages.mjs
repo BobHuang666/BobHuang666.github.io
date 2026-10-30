@@ -75,10 +75,10 @@ if (existsSync(projectsFile)) {
 
 writeFileSync(join(LH_DIR, 'pages.json'), JSON.stringify(pages, null, 2) + '\n')
 
-// 在既有 lighthouserc.json 的 collect 基础上注入 urls（保留 assert / settings）
+// 在既有 lighthouserc.json 的 collect 基础上注入 url（保留 assert / settings）
 const base = JSON.parse(readFileSync(join(LH_DIR, 'lighthouserc.json'), 'utf8'))
 base.ci = base.ci || {}
-base.ci.collect = { ...(base.ci.collect || {}), urls: pages.map((p) => p.url) }
+base.ci.collect = { ...(base.ci.collect || {}), url: pages.map((p) => p.url) }
 writeFileSync(
   join(LH_DIR, 'lighthouserc.generated.json'),
   JSON.stringify(base, null, 2) + '\n',
