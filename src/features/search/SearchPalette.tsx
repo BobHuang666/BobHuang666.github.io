@@ -1,5 +1,6 @@
 /** 全站搜索命令面板：Fuse.js 模糊检索 + 键盘导航 */
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Fuse from 'fuse.js';
 import { Search, X, ArrowRight, CornerDownLeft } from 'lucide-react';
 import { searchCorpus, type SearchItem, type SearchResultKind } from '@/data/searchIndex';
@@ -24,6 +25,7 @@ const SearchPalette = ({ open, onClose }: Props) => {
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const fuse = useMemo(
     () =>
@@ -84,11 +86,12 @@ const SearchPalette = ({ open, onClose }: Props) => {
 
   const jump = useCallback(
     (item: SearchItem) => {
-      // HashRouter 直接改 location.hash
-      window.location.hash = item.href.replace(/^#/, '');
+      // 索引里的 href 带 '#' 前缀（HashRouter 习惯写法），剥掉后走 Router 导航（PUSH）：
+      // 保证 ScrollRestoration 触发回顶，且 location.key 正常更新
+      navigate(item.href.replace(/^#/, ''));
       onClose();
     },
-    [onClose],
+    [navigate, onClose],
   );
 
   if (!open) return null;

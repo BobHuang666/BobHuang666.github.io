@@ -2,34 +2,33 @@
 import type { LucideIcon } from 'lucide-react';
 import { PLACE_STATUS_META, TRANSPORT_META } from '../meta';
 import { PLACE_STATUSES, TRANSPORT_MODES } from '@/types';
+import { StatPill as SharedStatPill } from '@/shared/components/ui/StatPill';
 
 
-const TONE_MAP: Record<string, string> = {
-  indigo: 'text-indigo-500 from-indigo-100 to-violet-100 dark:from-indigo-950/40 dark:to-violet-950/40',
-  emerald: 'text-emerald-500 from-emerald-100 to-teal-100 dark:from-emerald-950/40 dark:to-teal-950/40',
-  sky: 'text-sky-500 from-sky-100 to-blue-100 dark:from-sky-950/40 dark:to-blue-950/40',
-  amber: 'text-amber-500 from-amber-100 to-orange-100 dark:from-amber-950/40 dark:to-orange-950/40',
-  violet: 'text-violet-500 from-violet-100 to-purple-100 dark:from-violet-950/40 dark:to-purple-950/40',
+const TONE_MAP: Record<string, { text: string; gradient: string }> = {
+  indigo: { text: 'text-indigo-500', gradient: 'from-indigo-100 to-violet-100 dark:from-indigo-950/40 dark:to-violet-950/40' },
+  emerald: { text: 'text-emerald-500', gradient: 'from-emerald-100 to-teal-100 dark:from-emerald-950/40 dark:to-teal-950/40' },
+  sky: { text: 'text-sky-500', gradient: 'from-sky-100 to-blue-100 dark:from-sky-950/40 dark:to-blue-950/40' },
+  amber: { text: 'text-amber-500', gradient: 'from-amber-100 to-orange-100 dark:from-amber-950/40 dark:to-orange-950/40' },
+  violet: { text: 'text-violet-500', gradient: 'from-violet-100 to-purple-100 dark:from-violet-950/40 dark:to-purple-950/40' },
 };
 
-/** 统计胶囊：与 profile / fandom 保持同一视觉语言 */
+/** 统计胶囊：视觉实现在共享层，这里只负责页面主题色映射 */
 export const StatPill = ({
-  icon: Icon, value, label, tone,
+  icon, value, label, tone,
 }: {
   icon: LucideIcon;
   value: string | number;
   label: string;
   tone: keyof typeof TONE_MAP;
 }) => (
-  <div className={`rounded-2xl border border-white/60 dark:border-slate-800 bg-gradient-to-br ${TONE_MAP[tone]} p-3.5 flex items-center gap-3`}>
-    <span className="shrink-0 grid place-items-center w-9 h-9 rounded-xl bg-white/70 dark:bg-slate-900/60">
-      <Icon className={`h-5 w-5 ${TONE_MAP[tone].split(' ')[0]}`} />
-    </span>
-    <div className="min-w-0">
-      <div className="text-xl font-bold text-slate-900 dark:text-slate-100 leading-none">{value}</div>
-      <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 truncate">{label}</div>
-    </div>
-  </div>
+  <SharedStatPill
+    icon={icon}
+    value={value}
+    label={label}
+    textClass={TONE_MAP[tone].text}
+    gradientClass={TONE_MAP[tone].gradient}
+  />
 );
 
 /** 地图图例：足迹状态色块 + 交通方式图标，分两组。

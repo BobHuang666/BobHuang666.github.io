@@ -93,13 +93,13 @@ function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+    <div className="min-h-screen bg-canvas">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 md:p-8 mb-6 border border-slate-200 dark:border-slate-800"
+          className="tint-indigo bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 md:p-8 mb-6 border border-slate-200/80 dark:border-white/10"
         >
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
             <Avatar src={profile.avatar} name={profile.name} size="lg" showStatus />

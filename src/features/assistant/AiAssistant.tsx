@@ -59,7 +59,7 @@ function Bubble({ msg, onCopy }: { msg: Msg; onCopy: (t: string) => void }) {
   return (
     <div className={`flex gap-2 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-end`}>
       <div className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs ${
-        isUser ? 'bg-indigo-500' : 'bg-gradient-to-br from-violet-500 to-indigo-600'
+        isUser ? 'bg-indigo-500' : 'bg-gradient-to-br from-indigo-500 to-violet-600'
       }`}>
         {isUser ? <User size={14} /> : <Bot size={14} />}
       </div>
@@ -257,7 +257,7 @@ const AiAssistant = () => {
       <motion.button
         onClick={() => setOpen(o => !o)}
         aria-label="打开 AI 助手"
-        className="fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-transform duration-150 flex items-center justify-center"
+        className="fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:scale-110 active:scale-95 transition-transform duration-150 flex items-center justify-center"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -292,7 +292,7 @@ const AiAssistant = () => {
             {showSettings
               ? <SettingsPanel cfg={cfg} onSave={saveCfg} onBack={() => setShowSettings(false)} />
               : <>
-                  <div className="flex items-center gap-2 px-3.5 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white shrink-0">
+                  <div className="flex items-center gap-2 px-3.5 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white shrink-0">
                     <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                       <Bot size={16} />
                     </div>

@@ -99,7 +99,7 @@ const ProjectDetail = () => {
   const { content } = projectData;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen bg-canvas">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <button
           onClick={() => navigate(-1)}
@@ -142,7 +142,7 @@ const ProjectDetail = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 md:p-8"
+              className="tint-sky bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-white/10 p-6 md:p-8"
             >
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="lg:w-1/3">
@@ -170,10 +170,7 @@ const ProjectDetail = () => {
 
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {projectData.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 text-xs rounded-full"
-                      >
+                      <span key={tag} className="tag-chip rounded-full">
                         {tag}
                       </span>
                     ))}

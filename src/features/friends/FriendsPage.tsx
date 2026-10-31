@@ -34,8 +34,8 @@ Avatar: ${new URL(myLinkCard.avatar, myLinkCard.url).toString()}`;
     : undefined;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-canvas tint-violet">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}

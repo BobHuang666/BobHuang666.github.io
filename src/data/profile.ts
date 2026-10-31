@@ -7,7 +7,7 @@ export const profile = {
   title: '人工智能 研0',
   tagline: '',
   avatar: '/static/img/avatar.jpg',
-  email: '2295672887@qq.com',
+  email: 'bobhuang666@foxmail.com',
   location: '北京师范大学',
   politicalStatus: '中共预备党员',
   github: 'https://github.com/BobHuang666',

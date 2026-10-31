@@ -1,4 +1,5 @@
 /** 错误页视图（404/500 与错误边界共用） */
+import { Link } from 'react-router-dom';
 import { Home, RotateCcw } from 'lucide-react';
 
 interface Props {
@@ -28,12 +29,12 @@ export const ErrorState = ({ code, title, description, detail }: Props) => (
       <button type="button" onClick={() => window.location.reload()} className="btn-primary">
         <RotateCcw className="h-4 w-4 mr-2" /> 刷新重试
       </button>
-      <a
-        href="#/"
+      <Link
+        to="/"
         className="btn-outline text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950"
       >
         <Home className="h-4 w-4 mr-2" /> 返回主页
-      </a>
+      </Link>
     </div>
   </div>
 );

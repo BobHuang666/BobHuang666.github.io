@@ -10,7 +10,7 @@ import { formatAwardDate } from '@/utils/awardDate';
 import { SectionReveal } from '@/shared/components/effects/SectionReveal';
 import { Chip } from '@/shared/components/ui/Chip';
 import { GradientIcon } from '@/shared/components/ui/GradientIcon';
-import { SectionHeader } from './SectionHeader';
+import { SectionShell } from '@/shared/components/layout/SectionShell';
 
 type AwardFilter = 'all' | AwardLevel;
 const AWARD_FILTERS: AwardFilter[] = ['all', ...AWARD_LEVELS];
@@ -24,30 +24,33 @@ export const AwardsSection = () => {
   }, [awardFilter]);
 
   return (
-    <section id="awards" className="py-20 bg-slate-50 dark:bg-slate-900/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          title={uiText.home.awardsTitle}
-          subtitle={uiText.home.awardsSub(awards.length)}
-        />
+    <SectionShell
+      id="awards"
+      no="03"
+      eyebrow={uiText.home.awardsEyebrow}
+      title={uiText.home.awardsTitle}
+      subtitle={uiText.home.awardsSub(awards.length)}
+      tint="violet"
+      texture="blueprint"
+      textureFade
+    >
+      <div className="flex flex-wrap justify-center gap-2 mb-8">
+        {AWARD_FILTERS.map((lv) => (
+          <Chip
+            key={lv}
+            active={awardFilter === lv}
+            onClick={() => setAwardFilter(lv)}
+            className="px-3 py-1.5"
+          >
+            {lv === 'all' ? uiText.awards.all : lv}
+          </Chip>
+        ))}
+      </div>
 
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {AWARD_FILTERS.map((lv) => (
-            <Chip
-              key={lv}
-              active={awardFilter === lv}
-              onClick={() => setAwardFilter(lv)}
-              className="px-3 py-1.5"
-            >
-              {lv === 'all' ? uiText.awards.all : lv}
-            </Chip>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAwards.map((award, index) => {
-            const meta = awardCategoryMeta(award.category);
-            return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredAwards.map((award, index) => {
+          const meta = awardCategoryMeta(award.category);
+          return (
             <SectionReveal key={`${award.title}-${index}`} delay={index * 0.06}>
               <div className="card-base p-6 h-full">
                 <div className="flex items-center mb-3">
@@ -66,7 +69,7 @@ export const AwardsSection = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="px-2 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
+                  <span className="tag-chip rounded-full">
                     {formatAwardDate(award.year, award.month, award.day)}
                   </span>
                   <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -76,19 +79,18 @@ export const AwardsSection = () => {
               </div>
             </SectionReveal>
           );
-          })}
-        </div>
-
-        <div className="text-center mt-10">
-          <Link
-            to="/profile?tab=awards"
-            className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium"
-          >
-            {uiText.home.viewAllAwards(awards.length)} <ArrowRight className="h-4 w-4 ml-1" />
-          </Link>
-        </div>
+        })}
       </div>
-    </section>
+
+      <div className="text-center mt-10">
+        <Link
+          to="/profile?tab=awards"
+          className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium"
+        >
+          {uiText.home.viewAllAwards(awards.length)} <ArrowRight className="h-4 w-4 ml-1" />
+        </Link>
+      </div>
+    </SectionShell>
   );
 };
 

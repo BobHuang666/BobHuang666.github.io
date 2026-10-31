@@ -28,18 +28,29 @@ export default {
         },
       },
       fontFamily: {
+        // 系统字体栈（不加载 webfont，保证全平台渲染一致）
         sans: [
-          'Inter',
-          '"Noto Sans SC"',
           '-apple-system',
           'BlinkMacSystemFont',
           '"Segoe UI"',
+          '"PingFang SC"',
+          '"Hiragino Sans GB"',
+          '"Microsoft YaHei"',
+          '"Noto Sans SC"',
           'Roboto',
           '"Helvetica Neue"',
           'Arial',
           'sans-serif',
         ],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        mono: [
+          'ui-monospace',
+          '"Cascadia Mono"',
+          '"SF Mono"',
+          'Menlo',
+          'Consolas',
+          '"JetBrains Mono"',
+          'monospace',
+        ],
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',

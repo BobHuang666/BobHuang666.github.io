@@ -7,13 +7,15 @@ interface Props {
   emoji?: string;
   title: string;
   desc?: string;
+  /** 透传给根元素的类（用于 bento 布局拉伸等） */
+  className?: string;
 }
 
-export const RelatedLink = ({ to, emoji, title, desc }: Props) => {
+export const RelatedLink = ({ to, emoji, title, desc, className = '' }: Props) => {
   return (
     <Link
       to={to}
-      className="group flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all"
+      className={`group flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:shadow-[0_10px_28px_-14px_rgb(79_70_229/0.25)] transition-all ${className}`}
     >
       {emoji && <span className="text-xl shrink-0">{emoji}</span>}
       <div className="flex-1 min-w-0">

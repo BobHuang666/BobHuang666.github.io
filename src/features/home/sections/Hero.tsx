@@ -10,7 +10,7 @@ import Avatar from '@/shared/components/ui/Avatar';
 import { TypeWriter } from '@/features/home/TypeWriter';
 
 export const Hero = () => (
-  <section className="relative overflow-hidden pt-10 pb-20 md:pt-16 md:pb-28 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 dark:from-indigo-900 dark:via-purple-900 dark:to-slate-900 bg-[length:200%_200%] animate-gradient-x">
+  <section className="relative overflow-hidden pt-10 pb-20 md:pt-16 md:pb-28 bg-gradient-to-br from-indigo-500 via-violet-600 to-indigo-900 dark:from-indigo-950 dark:via-[#1b1440] dark:to-slate-950 bg-[length:200%_200%] animate-gradient-x">
     <HeroBackground />
 
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -31,7 +31,7 @@ export const Hero = () => (
         initial={{ y: 20 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight"
+        className="text-[clamp(2.25rem,1.6rem+3.2vw,4.25rem)] leading-[1.1] font-extrabold text-white mb-4 tracking-tight"
       >
         {profile.name}
         <span className="block text-lg md:text-2xl font-medium text-white/85 mt-2">

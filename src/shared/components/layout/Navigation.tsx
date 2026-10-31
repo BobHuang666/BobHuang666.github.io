@@ -1,6 +1,6 @@
 /** 全站导航栏：主导航、更多下拉、滚动隐藏与插槽 */
 import { useState, useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   Code2, Menu, X, ChevronDown,
   Music, UsersRound, MapPinned,
@@ -49,6 +49,7 @@ const Navigation = ({ desktopExtra, mobileExtra }: { desktopExtra?: React.ReactN
   const buttonRef = useRef<HTMLButtonElement>(null);
   const moreRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let ticking = false;
@@ -109,14 +110,22 @@ const Navigation = ({ desktopExtra, mobileExtra }: { desktopExtra?: React.ReactN
 
   const handleAnchorClick = (e: React.MouseEvent, anchor?: string) => {
     if (!anchor) return;
+    e.preventDefault();
     if (location.pathname === '/') {
-      e.preventDefault();
       scrollToAnchor(anchor);
     } else {
-      // 跨页时先跳首页再滚动到锚点
-      e.preventDefault();
-      window.location.hash = '/';
-      setTimeout(() => scrollToAnchor(anchor), 100);
+      // 跨页时先 Router 导航回首页（走 PUSH，ScrollRestoration 会先回顶），
+      // 再等锚点渲染完成后滚动——轮询而非固定延时，慢设备上更可靠
+      navigate('/');
+      let tries = 0;
+      const tryScroll = () => {
+        if (document.getElementById(anchor)) {
+          scrollToAnchor(anchor);
+          return;
+        }
+        if (tries++ < 20) setTimeout(tryScroll, 50);
+      };
+      setTimeout(tryScroll, 50);
     }
   };
 
@@ -163,8 +172,8 @@ const Navigation = ({ desktopExtra, mobileExtra }: { desktopExtra?: React.ReactN
     <nav
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'
         } ${isScrolled
-          ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur shadow-sm border-b border-slate-200/60 dark:border-slate-800/60'
-          : 'bg-white dark:bg-slate-950'
+          ? 'bg-white/75 dark:bg-slate-950/75 backdrop-blur-xl shadow-[0_1px_0_rgb(15_23_42/0.06),0_8px_24px_-16px_rgb(15_23_42/0.12)] border-b border-slate-200/50 dark:border-white/[0.06] dark:shadow-[0_1px_0_rgb(255_255_255/0.04)]'
+          : 'bg-white/45 dark:bg-slate-950/45 backdrop-blur-md border-b border-transparent'
         }`}
       role="navigation"
       aria-label="主导航"
@@ -218,7 +227,7 @@ const Navigation = ({ desktopExtra, mobileExtra }: { desktopExtra?: React.ReactN
               {isMoreOpen && (
                 <div
                   role="menu"
-                  className="absolute right-0 mt-2 w-72 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden animate-fade-up"
+                  className="absolute right-0 mt-2 w-72 rounded-xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-2xl overflow-hidden animate-fade-up"
                 >
                   {MORE_ITEMS.map((item) => (
                     <NavLink

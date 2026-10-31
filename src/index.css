@@ -15,6 +15,14 @@
 ::view-transition-new(root) { z-index: 9999; }
 
 /* ============ Global Base ============ */
+:root {
+  /* 页面底色：浅色模式用带一点冷调的灰，避免纯白的"平" */
+  --canvas: #f6f7f9;
+}
+.dark {
+  --canvas: #020617; /* slate-950 */
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -23,12 +31,73 @@ body {
   font-family: theme('fontFamily.sans');
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  @apply bg-white text-slate-900 transition-colors duration-300;
+  background-color: var(--canvas);
+  /* 全站极淡噪点：叠加在底色上，消除大面积同色的"塑料感" */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  @apply text-slate-900 transition-colors duration-300;
 }
 
 .dark body {
-  @apply bg-slate-950 text-slate-100;
+  @apply text-slate-100;
 }
+
+/* ============ 纹理与色调（手写类，置于 layer 外避免被 purge） ============ */
+/* 点阵网格：22px 圆点，工程图纸感 */
+.bg-dots {
+  background-image: radial-gradient(circle, rgb(15 23 42 / 0.06) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+.dark .bg-dots {
+  background-image: radial-gradient(circle, rgb(148 163 184 / 0.08) 1px, transparent 1.4px);
+}
+
+/* 恒暗表面（页脚）专用点阵：不随主题切换，永远用浅色点 */
+.bg-dots-dark {
+  background-image: radial-gradient(circle, rgb(148 163 184 / 0.08) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+
+/* 蓝图线网格：36px 1px 细线 */
+.bg-blueprint {
+  background-image:
+    linear-gradient(rgb(15 23 42 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(15 23 42 / 0.045) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+.dark .bg-blueprint {
+  background-image:
+    linear-gradient(rgb(148 163 184 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.05) 1px, transparent 1px);
+}
+
+/* 页面级 tint 洗色：极淡的单色 radial 渐变。
+   尺寸用固定像素（宽 140% 盖满左右、高 26rem），不随容器/页面高度缩放，
+   保证从页面顶部开始就是连续的染色，不会出现"先白一块再突然变色"的边界。 */
+.tint-indigo { --tint-rgb: 99 102 241; }
+.tint-violet { --tint-rgb: 139 92 246; }
+.tint-sky    { --tint-rgb: 14 165 233; }
+.tint-amber  { --tint-rgb: 245 158 11; }
+.tint-emerald{ --tint-rgb: 16 185 129; }
+.tint-rose   { --tint-rgb: 244 63 94; }
+.tint-indigo, .tint-violet, .tint-sky, .tint-amber, .tint-emerald, .tint-rose {
+  background-image: radial-gradient(
+    140% 26rem at var(--tint-x, 50%) var(--tint-pos, 0%),
+    rgb(var(--tint-rgb) / 0.07),
+    transparent 100%
+  );
+}
+.dark .tint-indigo, .dark .tint-violet, .dark .tint-sky,
+.dark .tint-amber, .dark .tint-emerald, .dark .tint-rose {
+  background-image: radial-gradient(
+    140% 26rem at var(--tint-x, 50%) var(--tint-pos, 0%),
+    rgb(var(--tint-rgb) / 0.12),
+    transparent 100%
+  );
+}
+/* 洗色改从底部升起（用于收尾节 / 页面结尾） */
+.tint-bottom { --tint-pos: 100%; }
+/* 洗色偏左（用于不对称布局） */
+.tint-left { --tint-x: 22%; }
 
 /* ============ Utilities ============ */
 @layer utilities {
@@ -70,15 +139,30 @@ body {
 /* ============ Components ============ */
 @layer components {
   .card-base {
-    @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300;
+    @apply bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 rounded-2xl shadow-[0_1px_2px_rgb(15_23_42/0.04)] hover:shadow-[0_16px_40px_-16px_rgb(79_70_229/0.25)] hover:border-indigo-200 dark:hover:border-indigo-400/30 transition-all duration-300;
+  }
+
+  /* 玻璃面板：用于悬浮面板 / 地图容器 / 联系卡片等"承载层" */
+  .card-glass {
+    @apply bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-white/10 rounded-2xl;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900;
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-500 active:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-950;
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-medium border-2 border-current transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900;
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-medium border-2 border-current transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-950;
+  }
+
+  /* mono 编号小标签：section 眉题（如 "01 / 精选项目"） */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400;
+  }
+
+  /* 标签徽章：替换散落各处的手写 tag 字符串 */
+  .tag-chip {
+    @apply px-2 py-0.5 text-xs rounded-md bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300;
   }
 
   .section-title {
@@ -87,6 +171,15 @@ body {
 
   .section-subtitle {
     @apply text-base text-slate-500 dark:text-slate-400 text-center mb-12 max-w-2xl mx-auto;
+  }
+
+  /* SectionShell 标题体系：左对齐 + 流式字号 */
+  .shell-title {
+    @apply font-bold tracking-tight text-slate-900 dark:text-white text-[clamp(1.6rem,1.1rem+2vw,2.5rem)];
+  }
+
+  .shell-subtitle {
+    @apply text-slate-500 dark:text-slate-400 mt-3 max-w-xl;
   }
 }
 

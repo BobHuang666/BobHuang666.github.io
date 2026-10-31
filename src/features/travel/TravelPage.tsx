@@ -62,7 +62,7 @@ const TravelPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-sky-50 dark:from-slate-950 dark:via-slate-950 dark:to-emerald-950/20">
+    <div className="min-h-screen bg-canvas tint-emerald">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* ===== Hero ===== */}
         <motion.div

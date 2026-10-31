@@ -43,7 +43,7 @@ const BlogDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950">
+    <div className="min-h-screen bg-canvas">
       <ReadingProgress />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <button
@@ -58,7 +58,7 @@ const BlogDetailPage = () => {
           <article id="blog-article" className="min-w-0">
             <header className="mb-8 pb-8 border-b border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-2 mb-4 flex-wrap">
-                <span className="px-2.5 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
+                <span className="tag-chip rounded-full">
                   {post.category}
                 </span>
               </div>

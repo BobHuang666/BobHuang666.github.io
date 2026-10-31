@@ -5,20 +5,18 @@ import { ProjectsSection } from './sections/ProjectsSection';
 import { BlogSection } from './sections/BlogSection';
 import { AwardsSection } from './sections/AwardsSection';
 import { SkillsSection } from './sections/SkillsSection';
-import { MoreSection } from './sections/MoreSection';
-import { ContactSection } from './sections/ContactSection';
+import { ClosingSection } from './sections/ClosingSection';
 
 function HomePage() {
   return (
-    <div className="bg-slate-50 dark:bg-slate-950">
+    <div>
       <Hero />
       <AnnouncementBar />
       <ProjectsSection />
       <BlogSection />
       <AwardsSection />
       <SkillsSection />
-      <MoreSection />
-      <ContactSection />
+      <ClosingSection />
     </div>
   );
 }

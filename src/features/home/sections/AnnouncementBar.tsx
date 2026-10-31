@@ -82,17 +82,17 @@ const AnnouncementItem = ({ post }: { post: (typeof blogMeta)[number] }) => {
       to={`/blog/${post.id}`}
       onMouseEnter={pause}
       onMouseLeave={play}
-      className="group flex items-center gap-3 rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40 px-4 py-3 hover:border-amber-300 dark:hover:border-amber-700 hover:bg-amber-50/70 dark:hover:bg-amber-950/30 transition-colors"
+      className="group flex items-center gap-3 rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40 px-4 py-3 hover:border-rose-300 dark:hover:border-rose-700 hover:bg-rose-100/70 dark:hover:bg-rose-950/40 transition-colors"
     >
       <span
-        className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500 text-white text-xs font-semibold group-hover:bg-amber-500 transition-colors"
+        className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500 text-white text-xs font-semibold group-hover:bg-rose-600 transition-colors"
         aria-label="通知公告"
       >
         <Megaphone className="h-3.5 w-3.5" />
       </span>
       <span
         ref={containerRef}
-        className="flex-1 min-w-0 overflow-hidden font-medium text-sm text-slate-700 dark:text-slate-200 group-hover:text-amber-600 dark:group-hover:text-amber-400"
+        className="flex-1 min-w-0 overflow-hidden font-medium text-sm text-slate-700 dark:text-slate-200 group-hover:text-rose-600 dark:group-hover:text-rose-400"
       >
         <span ref={trackRef} className={overflow ? 'flex w-max will-change-transform' : 'block'}>
           <span ref={textRef} className="inline-block whitespace-nowrap pr-8 shrink-0">
@@ -105,7 +105,7 @@ const AnnouncementItem = ({ post }: { post: (typeof blogMeta)[number] }) => {
           )}
         </span>
       </span>
-      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-slate-400 group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all" />
+      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-slate-400 group-hover:text-rose-500 group-hover:translate-x-0.5 transition-all" />
     </Link>
   );
 };

@@ -1,7 +1,7 @@
 /** 博客列表页：搜索、分类与标签筛选 */
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, FileText, Tag as TagIcon, Filter } from 'lucide-react';
+import { Search, FileText, Tag as TagIcon, Filter, Newspaper } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { blogData, blogCategories, blogTags } from '@/data/blog';
 import { uiText } from '@/data/uiText';
@@ -43,16 +43,25 @@ const BlogPage = () => {
   const hasFilter = searchTerm || selectedCategory !== 'all' || selectedTags.length > 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              <div className="text-center mb-10">
+    <div className="min-h-screen bg-canvas tint-indigo">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-10"
+        >
+          <div className="flex items-center gap-2 text-sm text-indigo-500 mb-3">
+            <Newspaper className="h-4 w-4" />
+            Blog · {uiText.nav.blog}
+          </div>
           <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
             {uiText.blog.title}
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-4">
+          <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
             {uiText.blog.subtitle}
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                   <aside className="lg:col-span-1">
@@ -151,7 +160,7 @@ const BlogPage = () => {
                   >
                     <Link to={`/blog/${post.id}`} className="block p-6">
                       <div className="flex items-center gap-2 mb-3 flex-wrap">
-                        <span className="px-2.5 py-0.5 text-xs rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300">
+                        <span className="tag-chip rounded-full">
                           {post.category}
                         </span>
                         <span className="text-xs text-slate-500 dark:text-slate-400">
