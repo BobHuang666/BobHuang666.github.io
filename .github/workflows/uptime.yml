@@ -29,10 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 恢复上次探测状态
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: .uptime-state
           key: uptime-state-${{ github.run_id }}
@@ -122,7 +122,7 @@ jobs:
 
       - name: 状态变化时保存
         if: steps.notify.outputs.changed == 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: .uptime-state
           key: uptime-state-${{ github.run_id }}
