@@ -20,7 +20,7 @@ jobs:
       HAS_GC_TOKEN: ${{ secrets.GOATCOUNTER_API_TOKEN != '' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 拉取 GoatCounter 昨日统计
         id: stats
