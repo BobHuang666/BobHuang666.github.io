@@ -147,7 +147,14 @@ export const travelPlaces: TravelPlace[] = [
     visits: [
       { date: '2023.07.09' },
       { date: '2015.08.18' },
+      { date: '2026.11.11' },
     ],
+  },
+  {
+    id: 'nanjing',
+    name: '南京市',
+    status: 'visited',
+    visits: [{ date: '2026.11.06', note: 'ICPC区域赛（南京航空航天大学）、夫子庙、蜜雪冰城旗舰店、钟山风景名胜区（明孝陵、音乐台、灵谷、美龄宫）、南京博物院、新街口、总统府' }],
   },
   {
     id: 'guilin',
@@ -318,6 +325,17 @@ export const travelTrips: TravelTrip[] = [
     legs: [
       { id: 'cq1', from: 'zhuhai', to: 'chongqing', date: '2025.11.27', transport: 'plane' },
       { id: 'cq2', from: 'chongqing', to: 'zhuhai', date: '2025.11.30', transport: 'plane' },
+    ],
+  },
+  {
+    id: 'trip-nanjing-2026',
+    title: '南京ICPC',
+    dateRange: ['2026.11.06', '2026.11.11'],
+    tone: 'cardSky',
+    scope: 'china',
+    legs: [
+      { id: 'nj1', from: 'zhuhai', to: 'nanjing', date: '2026.11.06', transport: 'plane' },
+      { id: 'nj2', from: 'nanjing', to: 'jieyang', date: '2026.11.11', transport: 'plane' },
     ],
   },
   {
